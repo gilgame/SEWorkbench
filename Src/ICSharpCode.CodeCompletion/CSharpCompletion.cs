@@ -31,6 +31,7 @@ namespace ICSharpCode.CodeCompletion
 //					typeof(System.Drawing.Bitmap).Assembly, // System.Drawing.dll
 //					typeof(Form).Assembly, // System.Windows.Forms.dll
 //					typeof(ICSharpCode.NRefactory.TypeSystem.IProjectContent).Assembly,
+                    typeof(Sandbox.ModAPI.Ingame.IMyTerminalBlock).Assembly, //Sandbox.Common.dll
                 };
 
             var unresolvedAssemblies = new IUnresolvedAssembly[assemblies.Count];
