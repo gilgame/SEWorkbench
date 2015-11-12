@@ -1,2 +1,4 @@
-﻿var a = "Hello";
-a.IndexOf('o');
+﻿void main()
+{
+
+}
