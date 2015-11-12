@@ -14,6 +14,7 @@
             </LinearGradientBrush>
         </ResourceDictionary>
     </Window.Resources>
+    
     <Grid Background="#FF2B3B58">
         <Grid.RowDefinitions>
             <RowDefinition Height="22" />
@@ -27,20 +28,43 @@
         
         <Menu Name="MainMenu" Height="22" VerticalAlignment="Top" Background="{StaticResource MainMenuBackground}" FontSize="11"
               Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-            <MenuItem Header="File">
-
+            <MenuItem Header="_File">
+                <MenuItem Header="_New">
+                    <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" />
+                    <MenuItem Header="_File..." InputGestureText="Ctrl+N" />
+                </MenuItem>
+                <MenuItem Header="_Open">
+                    <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Close" />
+                <Separator />
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" />
+                <MenuItem Header="Save _All" InputGestureText="Ctrl+Shift+S" />
+                <Separator />
+                <MenuItem Header="E_xit" InputGestureText="Alt+F4" />
             </MenuItem>
-            <MenuItem Header="Edit">
-
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" />
+                <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" />
+                <Separator />
+                <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" />
+                <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
+                <MenuItem Header="_Paste" InputGestureText="Ctrl+P" />
+                <MenuItem Header="_Delete" InputGestureText="Del" />
+                <MenuItem Header="Select _All" InputGestureText="Ctrl+A" />
+                <Separator />
+                <MenuItem Header="P_references" />
             </MenuItem>
-            <MenuItem Header="Project">
-
+            <MenuItem Header="_Project">
+                <MenuItem Header="Import _Blueprint" />
             </MenuItem>
-            <MenuItem Header="Window">
-
+            <MenuItem Header="_Window">
+                <MenuItem Header="_Close All" />
+                <Separator />
             </MenuItem>
-            <MenuItem Header="Help">
-
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" />
             </MenuItem>
         </Menu>
         

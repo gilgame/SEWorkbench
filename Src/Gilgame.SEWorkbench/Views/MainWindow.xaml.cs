@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace Gilgame.SEWorkbench.Views
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private ICSharpCode.CodeCompletion.CSharpCompletion _Completion;
@@ -33,8 +30,7 @@ namespace Gilgame.SEWorkbench.Views
             base.OnInitialized(e);
 
             _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
-            OpenFile(@"C:\Users\tfellows\Documents\GitHub\SEWorkbench\SampleFiles\SampleScript1.csx");
-            //OpenFile(@"C:\Users\tfellows\Documents\GitHub\SEWorkbench\SampleFiles\Sample1.cs");
+            OpenFile(@"NewFile.csx");
         }
 
         private void OpenFile(string fileName)
@@ -45,6 +41,13 @@ namespace Gilgame.SEWorkbench.Views
             editor.Completion = _Completion;
             editor.OpenFile(fileName);
             editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+
+            ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
+            {
+                ConvertTabsToSpaces = true,
+                IndentationSize = 4,
+            };
+            editor.Options = options;
 
             var tabItem = new TabItem();
             tabItem.Content = editor;
