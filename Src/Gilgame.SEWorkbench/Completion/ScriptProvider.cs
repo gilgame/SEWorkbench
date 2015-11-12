@@ -25,7 +25,7 @@ namespace Gilgame.SEWorkbench.Completion
         {
             List<String> variables = new List<string>()
             {
-                "static IMyGridTerminalSystem GridTerminalSystem = null;",
+                "static IMyGridTerminalSystem GridTerminalSystem = new Gilgame.SEWorkbench.Interop.GridTerminalSystem();",
             };
 
             return String.Join(Environment.NewLine, variables.ToArray());
