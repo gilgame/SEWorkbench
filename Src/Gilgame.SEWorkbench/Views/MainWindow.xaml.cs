@@ -31,6 +31,13 @@ namespace Gilgame.SEWorkbench.Views
 
             _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
             OpenFile(@"NewFile.csx");
+
+            //Gilgame.SEWorkbench.Interop.InGameScript script = new Interop.InGameScript("void main(){int id = 1;}");
+            //MessageBox.Show(script.LastError);
+            //foreach(string error in script.CompileErrors)
+            //{
+            //    MessageBox.Show(error);
+            //}
         }
 
         private void OpenFile(string fileName)
@@ -53,7 +60,6 @@ namespace Gilgame.SEWorkbench.Views
             tabItem.Content = editor;
             tabItem.Header = System.IO.Path.GetFileName(fileName);
             FileEditorTabControl.Items.Add(tabItem);
-
         }
     }
 }
