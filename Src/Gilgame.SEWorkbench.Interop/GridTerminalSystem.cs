@@ -6,12 +6,15 @@ using Sandbox.ModAPI.Ingame;
 
 namespace Gilgame.SEWorkbench.Interop
 {
+    /// <summary>
+    /// Basic class for implementing IMyGridTerminalSystem
+    /// </summary>
     public class GridTerminalSystem : IMyGridTerminalSystem
     {
         private List<IMyTerminalBlock> _Blocks = new List<IMyTerminalBlock>();
         List<IMyBlockGroup> _BlockGroups = new List<IMyBlockGroup>();
 
-        private void AddBlock(IMyTerminalBlock block)
+        internal void AddBlock(IMyTerminalBlock block)
         {
             _Blocks.Add(block);
         }
