@@ -1,6 +1,6 @@
 Space Engineers Workbench
 =================================
-SE Workbench is a development environment designed to help facilitate the creation and organization of in-game scripts, out of game. The focus of this project is to provide all the tools one would expect from a development platform without the hassle of configuring Visual Studio.
+SE Workbench is a development environment designed to help facilitate the creation and organization of in-game scripts, out of game. The focus of this project is to provide most of the tools one would expect from a development platform without the hassle of configuring Visual Studio.
 
 Features
 =================================
