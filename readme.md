@@ -11,6 +11,9 @@ As this project is currently in an early alpha development stage, not all featur
  * Out-Of-Game Script Compilation Checker
  * Script Organization Based Project -> Blueprint (Grid)
 
+![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
+![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-2.png)
+
 Attribution
 =================================
 This project makes use of works derived from:
