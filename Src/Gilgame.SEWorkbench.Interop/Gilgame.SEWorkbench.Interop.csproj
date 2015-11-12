@@ -33,6 +33,9 @@
     <Reference Include="Sandbox.Common">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin64\Sandbox.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Sandbox.Game">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin64\Sandbox.Game.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,8 +46,13 @@
     <Reference Include="VRage.Game">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin64\VRage.Game.dll</HintPath>
     </Reference>
+    <Reference Include="VRage.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin64\VRage.Library.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blueprint.cs" />
     <Compile Include="GridTerminalSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
