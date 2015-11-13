@@ -86,6 +86,17 @@ namespace ICSharpCode.AvalonEdit
 				e.Handled = true;
 			}
 		}
+
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseRightButtonDown(e);
+
+            var position = GetPositionFromPoint(e.GetPosition(this));
+            if (position.HasValue)
+            {
+                TextArea.Caret.Position = position.Value;
+            }
+        }
 		
 		#region Document property
 		/// <summary>
