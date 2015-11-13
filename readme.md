@@ -9,7 +9,7 @@ As this project is currently in an early alpha development stage, not all featur
  * Syntax Highlighting, Auto-Completion, and Refactoring
  * Blueprint to Object Conversion (GridTerminalSystem) for Auto-Completion Parser
  * Out-Of-Game Script Compilation Checker
- * Script Organization Based Project -> Blueprint (Grid)
+ * Script Organization Based on Project -> Blueprint (Grid)
 
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-2.png)
