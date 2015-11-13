@@ -96,6 +96,8 @@
     <None Include="NewFile.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Serialization\Convert.cs" />
+    <Compile Include="Serialization\ProjectFile.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
