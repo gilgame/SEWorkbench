@@ -230,6 +230,18 @@
   <ItemGroup>
     <Resource Include="Icons\ClosedFolder.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\NewFolder.png" />
+    <Resource Include="Icons\NewPage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\CopyHS.png" />
+    <Resource Include="Icons\CutHS.png" />
+    <Resource Include="Icons\DeleteHS.png" />
+    <Resource Include="Icons\OpenFile.png" />
+    <Resource Include="Icons\openfolderHS.png" />
+    <Resource Include="Icons\PasteHS.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

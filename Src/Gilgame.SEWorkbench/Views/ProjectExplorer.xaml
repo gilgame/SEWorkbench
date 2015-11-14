@@ -75,7 +75,10 @@
                 <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
                     <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
                         <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
-                            <Image />
+                            <Image Source="/Gilgame.SEWorkbench;component/Icons/NewFolder.png" />
+                        </Button>
+                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
+                            <Image Source="/Gilgame.SEWorkbench;component/Icons/NewPage.png" />
                         </Button>
                     </StackPanel>
 

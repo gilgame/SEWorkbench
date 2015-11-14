@@ -73,10 +73,26 @@
                     <MenuItem Header="_About" />
                 </MenuItem>
             </Menu>
-            
+
             <StackPanel Margin="4,2,4,2" Orientation="Horizontal" Grid.Row="1">
                 <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
-                    
+                    <Image Source="/Gilgame.SEWorkbench;component/Icons/openfolderHS.png" />
+                </Button>
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                    <Image Source="/Gilgame.SEWorkbench;component/Icons/OpenFile.png" />
+                </Button>
+                
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                    <Image Source="/Gilgame.SEWorkbench;component/Icons/CutHS.png" />
+                </Button>
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                    <Image Source="/Gilgame.SEWorkbench;component/Icons/CopyHS.png" />
+                </Button>
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                    <Image Source="/Gilgame.SEWorkbench;component/Icons/PasteHS.png" />
+                </Button>
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                    <Image Source="/Gilgame.SEWorkbench;component/Icons/DeleteHS.png" />
                 </Button>
             </StackPanel>
         </Grid>
@@ -88,7 +104,6 @@
 
         <TabControl Name="tcFileEditor" Style="{StaticResource VS_TabControl}" Margin="0,5,5,5"
                     Grid.Column="2" Grid.Row="1">
-            <TabItem Header="Test" />
         </TabControl>
     </Grid>
 </Window>

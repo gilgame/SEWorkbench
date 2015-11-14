@@ -40,14 +40,14 @@ namespace Gilgame.SEWorkbench.Views
         {
             return new Models.ProjectItem
             {
-                Name = "Project Name",
+                Name = "Alliance Fleet",
                 Type = Models.ProjectItemType.Root,
                 Project = project,
                 Children =
                 {
                     new Models.ProjectItem
                     {
-                        Name = "SS-BigDaddy",
+                        Name = "Dreadnaught",
                         Type = Models.ProjectItemType.Folder,
                         Project = project,
                         Children =
