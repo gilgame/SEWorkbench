@@ -10,6 +10,8 @@ namespace Gilgame.SEWorkbench.Models
 
         public ProjectItemType Type { get; set; }
 
+        public ViewModels.ProjectViewModel Project { get; set; }
+
         private ObservableCollection<ProjectItem> _Children = new ObservableCollection<ProjectItem>();
         public ObservableCollection<ProjectItem> Children
         {

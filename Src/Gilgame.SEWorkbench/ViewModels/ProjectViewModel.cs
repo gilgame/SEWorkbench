@@ -3,12 +3,14 @@ using Gilgame.SEWorkbench.Models;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
-    public class ProjectViewModel
+    public class ProjectViewModel : INotifyPropertyChanged
     {
         private IEnumerator<ProjectItemViewModel> _MatchingItemEnumerator;
+        private IEnumerator<ProjectItemViewModel> _SelectedItemEnumerator;
 
         private ObservableCollection<ProjectItemViewModel> _First;
         public ObservableCollection<ProjectItemViewModel> First
@@ -16,15 +18,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             get
             {
                 return _First;
-            }
-        }
-
-        private readonly ICommand _SearchCommand;
-        public ICommand SearchCommand
-        {
-            get
-            {
-                return _SearchCommand;
             }
         }
 
@@ -47,8 +40,22 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private readonly ProjectItemViewModel _RootItem;
-        public ProjectViewModel(ProjectItem root)
+        public ProjectViewModel()
+        {
+            _SearchCommand = new SearchProjectCommand(this);
+
+            _AddCommand = new Commands.AddFileCommand(this);
+            _AddExistingCommand = new Commands.AddExistingFileCommand(this);
+            _AddFolderCommand = new Commands.AddFolderCommand(this);
+
+            _ViewCodeCommand = new Commands.ViewCodeCommand(this);
+
+            _RenameCommand = new Commands.RenameCommand(this);
+            _DeleteCommand = new Commands.DeleteCommand(this);
+        }
+
+        private ProjectItemViewModel _RootItem;
+        public void SetRootItem(ProjectItem root)
         {
             _RootItem = new ProjectItemViewModel(root);
 
@@ -57,11 +64,101 @@ namespace Gilgame.SEWorkbench.ViewModels
                     _RootItem
                 }
             );
+        }
 
-            _SearchCommand = new SearchProjectCommand(this);
+        private ProjectItemViewModel SelectedItem
+        {
+            get
+            {
+                return FindSelectedItem();
+            }
+        }
+
+        public Models.ProjectItemType SelectedItemType
+        {
+            get
+            {
+                return (SelectedItem == null) ? Models.ProjectItemType.None : SelectedItem.Type;
+            }
+        }
+
+        private ProjectItemViewModel FindSelectedItem()
+        {
+            if (_SelectedItemEnumerator == null || !_SelectedItemEnumerator.MoveNext())
+            {
+                VerifySelectedItemEnumerator();
+            }
+
+            return _SelectedItemEnumerator.Current;
+        }
+
+        private void VerifySelectedItemEnumerator()
+        {
+            var matches = FindSelected(_RootItem);
+
+            _SelectedItemEnumerator = matches.GetEnumerator();
+            if (!_SelectedItemEnumerator.MoveNext())
+            {
+                // none selected
+            }
+        }
+
+        private IEnumerable<ProjectItemViewModel> FindSelected(ProjectItemViewModel item)
+        {
+            if (item.IsSelected)
+            {
+                yield return item;
+            }
+
+            foreach (ProjectItemViewModel child in item.Children)
+            {
+                foreach (ProjectItemViewModel match in FindSelected(child))
+                {
+                    // TODO fix collection modified exception
+                    yield return match;
+                }
+            }
+        }
+
+        private ProjectItemViewModel GetParentFolder(ProjectItemViewModel child)
+        {
+            if (child == null || child.Parent == null)
+            {
+                return null;
+            }
+
+            if (child.Parent.Type == ProjectItemType.Folder)
+            {
+                return child.Parent;
+            }
+
+            return GetParentFolder(child.Parent);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        public void SelectionChanged()
+        {
+            OnPropertyChanged("SelectedItemType");
         }
 
         #region SearchProjectCommand
+
+        private readonly ICommand _SearchCommand;
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return _SearchCommand;
+            }
+        }
 
         private class SearchProjectCommand : ICommand
         {
@@ -143,68 +240,62 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #region Add File Command
 
-        private class AddFileCommand : ICommand
+        private readonly ICommand _AddCommand;
+        public ICommand AddCommand
         {
-            private readonly ProjectViewModel _Project;
-
-            public AddFileCommand(ProjectViewModel project)
+            get
             {
-                _Project = project;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { }
-                remove { }
-            }
-
-            public void Execute(object parameter)
-            {
-                _Project.PerformAddNewFile();
+                return _AddCommand;
             }
         }
 
-        private void PerformAddNewFile()
+        public void PerformAddFile()
         {
-            // TODO add new file logic
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                return;
+            }
+
+            if (selected.Type != ProjectItemType.Folder)
+            {
+                selected = GetParentFolder(selected);
+            }
+            if (selected == null)
+            {
+                return;
+            }
+
+            Views.NewItemDialog dialog = new Views.NewItemDialog();
+            dialog.ShowDialog();
+
+            string name = String.Empty;
+            if (dialog.DialogResult != null && dialog.DialogResult.Value)
+            {
+                name = dialog.ItemName;
+            }
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                // TODO add to filesystem
+                selected.AddChild(new ProjectItem() { Name = name, Type = ProjectItemType.File });
+            }
         }
 
         #endregion
 
         #region Add Existing File Command
 
-        private class AddExistingFileCommand : ICommand
+        private readonly ICommand _AddExistingCommand;
+        public ICommand AddExistingCommand
         {
-            private readonly ProjectViewModel _Project;
-
-            public AddExistingFileCommand(ProjectViewModel project)
+            get
             {
-                _Project = project;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { }
-                remove { }
-            }
-
-            public void Execute(object parameter)
-            {
-                _Project.PerformAddExistingFile();
+                return _AddExistingCommand;
             }
         }
 
-        private void PerformAddExistingFile()
+        public void PerformAddExistingFile()
         {
             // TODO add existing file logic
         }
@@ -213,33 +304,34 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #region Add Folder Command
 
-        private class AddFolderCommand : ICommand
+        private readonly ICommand _AddFolderCommand;
+        public ICommand AddFolderCommand
         {
-            private readonly ProjectViewModel _Project;
-
-            public AddFolderCommand(ProjectViewModel project)
+            get
             {
-                _Project = project;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { }
-                remove { }
-            }
-
-            public void Execute(object parameter)
-            {
-                _Project.PerformAddNewFolder();
+                return _AddFolderCommand;
             }
         }
 
-        private void PerformAddNewFolder()
+        public void PerformAddFolder()
+        {
+            // TODO add new folder logic
+        }
+
+        #endregion
+
+        #region View Code Command
+
+        private readonly ICommand _ViewCodeCommand;
+        public ICommand ViewCodeCommand
+        {
+            get
+            {
+                return _ViewCodeCommand;
+            }
+        }
+
+        public void PerformViewCode()
         {
             // TODO add new folder logic
         }
@@ -248,33 +340,16 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #region Rename Command
 
-        private class RenameCommand : ICommand
+        private readonly ICommand _RenameCommand;
+        public ICommand RenameCommand
         {
-            private readonly ProjectViewModel _Project;
-
-            public RenameCommand(ProjectViewModel project)
+            get
             {
-                _Project = project;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { }
-                remove { }
-            }
-
-            public void Execute(object parameter)
-            {
-                _Project.PerformRename();
+                return _RenameCommand;
             }
         }
 
-        private void PerformRename()
+        public void PerformRename()
         {
             // TODO rename item logic
         }
@@ -283,33 +358,16 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #region Delete Command
 
-        private class DeleteCommand : ICommand
+        private readonly ICommand _DeleteCommand;
+        public ICommand DeleteCommand
         {
-            private readonly ProjectViewModel _Project;
-
-            public DeleteCommand(ProjectViewModel project)
+            get
             {
-                _Project = project;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { }
-                remove { }
-            }
-
-            public void Execute(object parameter)
-            {
-                _Project.PerformDelete();
+                return _DeleteCommand;
             }
         }
 
-        private void PerformDelete()
+        public void PerformDelete()
         {
             // TODO delete item logic
         }

@@ -92,7 +92,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Completion\ScriptProvider.cs" />
+    <Compile Include="Converters\CanBeRenamedConverter.cs" />
+    <Compile Include="Converters\FileCanBeAddedConverter.cs" />
+    <Compile Include="Converters\FileSelectedConverter.cs" />
+    <Compile Include="Converters\FolderCanBeAddedConverter.cs" />
+    <Compile Include="Converters\ItemTypeImageConverter.cs" />
     <Compile Include="Converters\LeftMarginMultiplierConverter.cs" />
+    <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Models\ProjectItem.cs" />
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\ProjectModel.cs" />
@@ -101,6 +107,12 @@
     </None>
     <Compile Include="Serialization\Convert.cs" />
     <Compile Include="Services\TreeViewItemExtensions.cs" />
+    <Compile Include="ViewModels\Commands\AddExistingFileCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddFileCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddFolderCommand.cs" />
+    <Compile Include="ViewModels\Commands\DeleteCommand.cs" />
+    <Compile Include="ViewModels\Commands\RenameCommand.cs" />
+    <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
     <Compile Include="ViewModels\ProjectItemViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="Views\BlueprintView.xaml.cs">
@@ -193,7 +205,6 @@
       <Name>ICSharpCode.CodeCompletion</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
@@ -210,6 +221,14 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Book.png" />
+    <Resource Include="Icons\Folder.png" />
+    <Resource Include="Icons\Page.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\ClosedFolder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -27,23 +27,35 @@ namespace Gilgame.SEWorkbench.Views
 
         private void BuildTree()
         {
-            Models.ProjectItem root = GetProjectItems();
+            _Project = new ViewModels.ProjectViewModel();
 
-            _Project = new ViewModels.ProjectViewModel(root);
+            Models.ProjectItem root = GetProjectItems(_Project);
+
+            _Project.SetRootItem(root);
 
             DataContext = _Project;
         }
 
-        private Models.ProjectItem GetProjectItems()
+        private Models.ProjectItem GetProjectItems(ViewModels.ProjectViewModel project)
         {
             return new Models.ProjectItem
             {
-                Name = "SS-BigDaddy",
-                Type = Models.ProjectItemType.Folder,
+                Name = "Project Name",
+                Type = Models.ProjectItemType.Root,
+                Project = project,
                 Children =
                 {
-                    new Models.ProjectItem { Name = "CloseDoors", Type = Models.ProjectItemType.File },
-                    new Models.ProjectItem { Name = "DisableTurrets", Type = Models.ProjectItemType.File },
+                    new Models.ProjectItem
+                    {
+                        Name = "SS-BigDaddy",
+                        Type = Models.ProjectItemType.Folder,
+                        Project = project,
+                        Children =
+                        {
+                            new Models.ProjectItem { Name = "CloseDoors", Type = Models.ProjectItemType.File, Project = project },
+                            new Models.ProjectItem { Name = "DisableTurrets", Type = Models.ProjectItemType.File, Project = project },
+                        }
+                    }
                 }
             };
         }
@@ -54,6 +66,11 @@ namespace Gilgame.SEWorkbench.Views
             //{
                 _Project.SearchCommand.Execute(null);
             //}
+        }
+
+        private void ProjectTreeView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // TODO select node on right click
         }
     }
 }

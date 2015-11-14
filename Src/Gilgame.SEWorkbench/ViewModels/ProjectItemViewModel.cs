@@ -34,6 +34,13 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return _ProjectItem.Name;
             }
         }
+        public ProjectItemType Type
+        {
+            get
+            {
+                return _ProjectItem.Type;
+            }
+        }
 
         private bool _IsExpanded = false;
         public bool IsExpanded
@@ -96,6 +103,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _IsSelected = value;
                     OnPropertyChanged("IsSelected");
+                    _ProjectItem.Project.SelectionChanged();
                 }
             }
         }
