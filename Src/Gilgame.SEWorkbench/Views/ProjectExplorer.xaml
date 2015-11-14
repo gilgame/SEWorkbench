@@ -3,21 +3,104 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Gilgame.SEWorkbench.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="175">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/HeaderLabel.xaml"/>
+                <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/TreeViewItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+            <!--<Style TargetType="{x:Type TreeViewItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                            <ControlTemplate.Resources>
+                                <local:LeftMarginMultiplierConverter Length="19" x:Key="lengthConverter" />
+                            </ControlTemplate.Resources>
+                            <StackPanel>
+                                <Border Name="Bd"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Padding="{TemplateBinding Padding}">
+                                    <Grid Margin="{Binding Converter={StaticResource lengthConverter},
+                                          RelativeSource={RelativeSource TemplatedParent}}">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="19" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <ToggleButton x:Name="Expander"
+                                                      Style="{StaticResource ExpandCollapseToggleStyle}"
+                                                      IsChecked="{Binding Path=IsExpanded,
+                                                      RelativeSource={RelativeSource TemplatedParent}}"
+                                                      ClickMode="Press"/>
+
+                                        <ContentPresenter x:Name="PART_Header" Grid.Column="1"
+                                                          ContentSource="Header"
+                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                    </Grid>
+                                </Border>
+                                <ItemsPresenter x:Name="ItemsHost" />
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>-->
         </ResourceDictionary>
     </UserControl.Resources>
+    
     <Grid Background="Transparent">
         <Border BorderThickness="1" CornerRadius="3,3,0,0" BorderBrush="#2B3B58" Margin="0">
             <DockPanel Background="#FF2B3B58">
                 <Label Content="Project Explorer" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
                        DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
-                <TreeView Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" DockPanel.Dock="Bottom" />
+                <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
+                    <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
+                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
+                            <Image />
+                        </Button>
+                    </StackPanel>
+                    
+                    <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
+                             KeyDown="SearchTextBox_KeyDown" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+                
+                <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" 
+                          DockPanel.Dock="Bottom" ItemsSource="{Binding First}" HorizontalContentAlignment="Stretch">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BoolToVis}, Mode=TwoWay}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="11" Height="11" />
+                                <TextBlock Text="{Binding Name}" Margin="3,0,0,0" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Add">
+                                <MenuItem Header="New Item..." Command="{Binding AddFileCommand}" />
+                                <MenuItem Header="Existing Item..." Command="{Binding AddExistingFileCommand}" />
+                                <MenuItem Header="New Folder..." Command="{Binding AddFolderCommand}" />
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem Header="Rename" Command="{Binding RenameCommand}" />
+                            <MenuItem Header="Delete" Command="{Binding DeleteCommand}" />
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                </TreeView>
             </DockPanel>
         </Border>
     </Grid>

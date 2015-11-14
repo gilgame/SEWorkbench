@@ -30,11 +30,12 @@ namespace Gilgame.SEWorkbench.Views
             base.OnInitialized(e);
 
             _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
+            OpenFile2(@"NewFile.csx");
             OpenFile(@"NewFile.csx");
 
             //Gilgame.SEWorkbench.Interop.InGameScript script = new Interop.InGameScript("void main(){int id = 1;}");
             //MessageBox.Show(script.LastError);
-            //foreach(string error in script.CompileErrors)
+            //foreach (string error in script.CompileErrors)
             //{
             //    MessageBox.Show(error);
             //}
@@ -44,10 +45,11 @@ namespace Gilgame.SEWorkbench.Views
         {
             var editor = new CodeTextEditor();
             editor.FontFamily = new FontFamily("Consolas");
-            editor.FontSize = 12;
+            editor.FontSize = 11;
             editor.Completion = _Completion;
             editor.OpenFile(fileName);
             editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+            editor.Margin = new Thickness(0, 6, 0, 6);
 
             ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
             {
@@ -58,8 +60,31 @@ namespace Gilgame.SEWorkbench.Views
 
             var tabItem = new TabItem();
             tabItem.Content = editor;
-            tabItem.Header = System.IO.Path.GetFileName(fileName);
-            FileEditorTabControl.Items.Add(tabItem);
+            tabItem.Header = "CloseDoors.csx"; // System.IO.Path.GetFileName(fileName);
+            tcFileEditor.Items.Add(tabItem);
+        }
+
+        private void OpenFile2(string fileName)
+        {
+            var editor = new CodeTextEditor();
+            editor.FontFamily = new FontFamily("Consolas");
+            editor.FontSize = 11;
+            editor.Completion = _Completion;
+            editor.OpenFile(fileName);
+            editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+            editor.Margin = new Thickness(0, 6, 0, 6);
+
+            ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
+            {
+                ConvertTabsToSpaces = true,
+                IndentationSize = 4,
+            };
+            editor.Options = options;
+
+            var tabItem = new TabItem();
+            tabItem.Content = editor;
+            tabItem.Header = "DisableTurrets.csx"; // System.IO.Path.GetFileName(fileName);
+            tcFileEditor.Items.Add(tabItem);
         }
     }
 }

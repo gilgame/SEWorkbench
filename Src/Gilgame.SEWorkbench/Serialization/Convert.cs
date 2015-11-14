@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gilgame.SEWorkbench.ViewModels;
+using System;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -64,7 +65,7 @@ namespace Gilgame.SEWorkbench.Serialization
             string root = document.Root.Name.ToString();
             switch (root)
             {
-                case "ProjectFile": return typeof(ProjectFile);
+                case "ProjectFile": return typeof(ProjectViewModel);
 
                 default: return typeof(Object);
             }
