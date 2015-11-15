@@ -65,7 +65,8 @@ namespace Gilgame.SEWorkbench.Serialization
             string root = document.Root.Name.ToString();
             switch (root)
             {
-                case "ProjectFile": return typeof(ProjectViewModel);
+                case "Item": return typeof(Models.ProjectItem);
+                case "Project": return typeof(Models.Project);
 
                 default: return typeof(Object);
             }

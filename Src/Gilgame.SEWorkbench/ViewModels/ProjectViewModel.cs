@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -11,6 +12,35 @@ namespace Gilgame.SEWorkbench.ViewModels
     {
         private IEnumerator<ProjectItemViewModel> _MatchingItemEnumerator;
         private IEnumerator<ProjectItemViewModel> _SelectedItemEnumerator;
+
+        public Models.Project Model
+        {
+            get
+            {
+                return new Models.Project()
+                {
+                    Name = _RootItem.Model.Name,
+                    RootItem = _RootItem.Model
+                };
+            }
+        }
+
+        private string _Path = @"C:\Users\Tim\Documents\SEWorkbench\";
+        public string Path
+        {
+            get
+            {
+                return _Path + Model.Name + @"\";
+            }
+        }
+
+        public string Filename
+        {
+            get
+            {
+                return String.Format(@"{0}{1}.seproj", Path, Model.Name);
+            }
+        }
 
         private ObservableCollection<ProjectItemViewModel> _First;
         public ObservableCollection<ProjectItemViewModel> First
@@ -42,7 +72,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public ProjectViewModel()
         {
-            _SearchCommand = new SearchProjectCommand(this);
+            _SearchCommand = new Commands.SearchCommand(this);
 
             _AddCommand = new Commands.AddFileCommand(this);
             _AddExistingCommand = new Commands.AddExistingFileCommand(this);
@@ -57,6 +87,8 @@ namespace Gilgame.SEWorkbench.ViewModels
         private ProjectItemViewModel _RootItem;
         public void SetRootItem(ProjectItem root)
         {
+            SetProject(root, this);
+
             _RootItem = new ProjectItemViewModel(root);
 
             _First = new ObservableCollection<ProjectItemViewModel>(
@@ -64,6 +96,53 @@ namespace Gilgame.SEWorkbench.ViewModels
                     _RootItem
                 }
             );
+        }
+
+        private void SetProject(ProjectItem parent, ProjectViewModel project)
+        {
+            parent.Project = project;
+            foreach (ProjectItem child in parent.Children)
+            {
+                SetProject(child, project);
+            }
+        }
+
+        public void SaveProject()
+        {
+            string serialized = Serialization.Convert.ToSerialized(this.Model);
+            serialized = System.Xml.Linq.XDocument.Parse(serialized).ToString() + Environment.NewLine;
+
+            if (!Directory.Exists(Path))
+            {
+                Directory.CreateDirectory(Path);
+            }
+
+            File.WriteAllText(Filename, serialized);
+        }
+
+        public void OpenProject(string path)
+        {
+            string serialized = File.ReadAllText(path);
+
+            Project project = (Project)Serialization.Convert.ToObject(serialized);
+
+            SetRootItem(project.RootItem);
+        }
+
+        public static ProjectViewModel NewProject(string name)
+        {
+            ProjectViewModel project = new ViewModels.ProjectViewModel();
+
+            ProjectItem root = new ProjectItem()
+            {
+                Name = name,
+                Type = Models.ProjectItemType.Root,
+                Path = name,
+                Project = project,
+            };
+            project.SetRootItem(root);
+
+            return project;
         }
 
         private ProjectItemViewModel SelectedItem
@@ -149,7 +228,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             OnPropertyChanged("SelectedItemType");
         }
 
-        #region SearchProjectCommand
+        #region Search Command
 
         private readonly ICommand _SearchCommand;
         public ICommand SearchCommand
@@ -160,33 +239,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private class SearchProjectCommand : ICommand
-        {
-            private readonly ProjectViewModel _Project;
-
-            public SearchProjectCommand(ProjectViewModel project)
-            {
-                _Project = project;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged
-            {
-                add { }
-                remove { }
-            }
-
-            public void Execute(object parameter)
-            {
-                _Project.PerformSearch();
-            }
-        }
-
-        private void PerformSearch()
+        public void PerformSearch()
         {
             if (_MatchingItemEnumerator == null || !_MatchingItemEnumerator.MoveNext())
             {

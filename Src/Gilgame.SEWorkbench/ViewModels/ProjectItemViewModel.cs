@@ -27,6 +27,13 @@ namespace Gilgame.SEWorkbench.ViewModels
         }
 
         private readonly ProjectItem _ProjectItem;
+        public ProjectItem Model
+        {
+            get
+            {
+                return _ProjectItem;
+            }
+        }
         public string Name
         {
             get
@@ -39,6 +46,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             get
             {
                 return _ProjectItem.Type;
+            }
+        }
+        public string Path
+        {
+            get
+            {
+                return _ProjectItem.Path;
             }
         }
 

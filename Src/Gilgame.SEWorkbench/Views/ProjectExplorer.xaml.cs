@@ -27,11 +27,14 @@ namespace Gilgame.SEWorkbench.Views
 
         private void BuildTree()
         {
-            _Project = new ViewModels.ProjectViewModel();
+            //_Project = new ViewModels.ProjectViewModel();
+            _Project = ViewModels.ProjectViewModel.NewProject("TestProject");
 
-            Models.ProjectItem root = GetProjectItems(_Project);
+            //Models.ProjectItem root = GetProjectItems(_Project);
 
-            _Project.SetRootItem(root);
+            //_Project.SetRootItem(root);
+
+            //_Project.OpenProject(@"C:\Users\Tim\Documents\SEWorkbench\AllianceFleet\AllianceFleet.seproj");
 
             DataContext = _Project;
         }
@@ -40,8 +43,9 @@ namespace Gilgame.SEWorkbench.Views
         {
             return new Models.ProjectItem
             {
-                Name = "Alliance Fleet",
+                Name = "AllianceFleet",
                 Type = Models.ProjectItemType.Root,
+                Path = "AllianceFleet",
                 Project = project,
                 Children =
                 {
@@ -49,11 +53,24 @@ namespace Gilgame.SEWorkbench.Views
                     {
                         Name = "Dreadnaught",
                         Type = Models.ProjectItemType.Folder,
+                        Path = "AllianceFleet/Dreadnaught",
                         Project = project,
                         Children =
                         {
-                            new Models.ProjectItem { Name = "CloseDoors", Type = Models.ProjectItemType.File, Project = project },
-                            new Models.ProjectItem { Name = "DisableTurrets", Type = Models.ProjectItemType.File, Project = project },
+                            new Models.ProjectItem
+                            {
+                                Name = "CloseDoors",
+                                Type = Models.ProjectItemType.File,
+                                Path = "AllianceFleet/Dreadnaught/CloseDoors.csx",
+                                Project = project
+                            },
+                            new Models.ProjectItem
+                            {
+                                Name = "DisableTurrets",
+                                Type = Models.ProjectItemType.File,
+                                Path = "AllianceFleet/Dreadnaught/DisableTurrets.csx",
+                                Project = project
+                            },
                         }
                     }
                 }
@@ -71,6 +88,11 @@ namespace Gilgame.SEWorkbench.Views
         private void ProjectTreeView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             // TODO select node on right click
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _Project.SaveProject();
         }
     }
 }
