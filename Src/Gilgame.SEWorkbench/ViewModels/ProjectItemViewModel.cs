@@ -17,7 +17,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private readonly ProjectItemViewModel _Parent;
+        private ProjectItemViewModel _Parent;
         public ProjectItemViewModel Parent
         {
             get
@@ -26,7 +26,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private readonly ProjectItem _ProjectItem;
+        private ProjectItem _ProjectItem;
         public ProjectItem Model
         {
             get
@@ -148,9 +148,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void AddChild(ProjectItem item)
         {
-            _Children.Add(new ProjectItemViewModel(item));
+            _Children.Add(new ProjectItemViewModel(item, this));
             Model.Children.Add(item);
-
         }
 
         public void Remove()
