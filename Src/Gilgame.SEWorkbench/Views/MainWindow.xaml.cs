@@ -1,18 +1,10 @@
-﻿using ICSharpCode.AvalonEdit.Highlighting;
-using ICSharpCode.CodeCompletion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.CodeCompletion;
 
 namespace Gilgame.SEWorkbench.Views
 {
@@ -85,6 +77,21 @@ namespace Gilgame.SEWorkbench.Views
             tabItem.Content = editor;
             tabItem.Header = "DisableTurrets.csx"; // System.IO.Path.GetFileName(fileName);
             tcFileEditor.Items.Add(tabItem);
+        }
+
+        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            tvProjectExplorer.StartNewProject();
+        }
+
+        private void OpenProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            tvProjectExplorer.OpenProject();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            tvProjectExplorer.SaveProject();
         }
     }
 }

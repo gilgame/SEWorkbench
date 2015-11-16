@@ -31,7 +31,7 @@ namespace Gilgame.SEWorkbench.Interop
             gridterminalsystem = null;
             foreach (MyObjectBuilder_ShipBlueprintDefinition blueprints in loaded.ShipBlueprints)
             {
-                name = blueprints.DisplayName;
+                name = blueprints.Id.SubtypeId;
                 foreach (MyObjectBuilder_CubeGrid grid in blueprints.CubeGrids)
                 {
                     try

@@ -15,6 +15,7 @@ namespace Gilgame.SEWorkbench.Converters
             Models.ProjectItemType type = GetValue(value);
             switch (type)
             {
+                case Models.ProjectItemType.Blueprints:
                 case Models.ProjectItemType.None:
                     return false;
 

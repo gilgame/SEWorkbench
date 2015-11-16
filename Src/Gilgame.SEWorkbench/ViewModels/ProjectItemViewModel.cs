@@ -149,11 +149,14 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void AddChild(ProjectItem item)
         {
             _Children.Add(new ProjectItemViewModel(item));
+            Model.Children.Add(item);
+
         }
 
         public void Remove()
         {
             _Parent.RemoveChild(this);
+            Parent.Model.Children.Remove(Model);
         }
 
         private void RemoveChild(ProjectItemViewModel child)

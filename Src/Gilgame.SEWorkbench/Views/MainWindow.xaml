@@ -36,16 +36,16 @@
                   Grid.Row="0">
                 <MenuItem Header="_File">
                     <MenuItem Header="_New">
-                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" />
+                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" Click="NewProjectButton_Click" />
                         <MenuItem Header="_File..." InputGestureText="Ctrl+N" />
                     </MenuItem>
                     <MenuItem Header="_Open">
-                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" />
+                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" Click="OpenProjectButton_Click" />
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="_Close" />
                     <Separator />
-                    <MenuItem Header="_Save" InputGestureText="Ctrl+S" />
+                    <MenuItem Header="_Save" InputGestureText="Ctrl+S" Click="SaveButton_Click" />
                     <MenuItem Header="Save _All" InputGestureText="Ctrl+Shift+S" />
                     <Separator />
                     <MenuItem Header="E_xit" InputGestureText="Alt+F4" />
@@ -97,7 +97,7 @@
             </StackPanel>
         </Grid>
         
-        <Views:ProjectExplorer Margin="5,5,0,5" Grid.Column="0" Grid.Row="1" />
+        <Views:ProjectExplorer x:Name="tvProjectExplorer" Margin="5,5,0,5" Grid.Column="0" Grid.Row="1" />
         
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="1" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
