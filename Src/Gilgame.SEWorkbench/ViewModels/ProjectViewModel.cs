@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using Gilgame.SEWorkbench.Services;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -95,7 +96,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void SaveProject()
         {
             string serialized = Serialization.Convert.ToSerialized(Model);
-            
+
             // make it human readable
             serialized = System.Xml.Linq.XDocument.Parse(serialized).ToString() + Environment.NewLine;
 
@@ -193,10 +194,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private ProjectItemViewModel FindSelectedItem()
         {
-            if (_SelectedItemEnumerator == null || !_SelectedItemEnumerator.MoveNext())
-            {
-                VerifySelectedItemEnumerator();
-            }
+            VerifySelectedItemEnumerator();
 
             return _SelectedItemEnumerator.Current;
         }
@@ -219,14 +217,14 @@ namespace Gilgame.SEWorkbench.ViewModels
                 yield return item;
             }
 
-            foreach (ProjectItemViewModel child in item.Children)
-            {
-                foreach (ProjectItemViewModel match in FindSelected(child))
+                foreach (ProjectItemViewModel child in item.Children)
                 {
-                    // TODO fix collection modified exception
-                    yield return match;
+                    foreach (ProjectItemViewModel match in FindSelected(child))
+                    {
+                        // TODO fix collection modified exception
+                        yield return match;
+                    }
                 }
-            }
         }
 
         private ProjectItemViewModel GetParentFolder(ProjectItemViewModel child)
@@ -612,7 +610,51 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformDelete()
         {
-            // TODO delete item logic
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null || selected.Type == ProjectItemType.Root)
+            {
+                return;
+            }
+
+            string message = String.Format("'{0}' will be deleted permanantly?", selected.Name);
+
+            //var result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.ShowQuestion(message);
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                bool success = false;
+                try
+                {
+                    switch(selected.Type)
+                    {
+                        case ProjectItemType.Blueprints:
+                        case ProjectItemType.Folder:
+                            Directory.Delete(selected.Path, true);
+                            break;
+
+                        case ProjectItemType.File:
+                            File.Delete(selected.Path);
+                            break;
+
+                        default:
+                            MessageBox.ShowError("Deleting this object is not supported or you have reached this message in error.");
+                            break;
+                    }
+                    success = true;
+                }
+                catch (Exception)
+                {
+                    string error = String.Format("Unable to delete ({0}). Make sure you have permission and that the file is not read-only.", selected.Path);
+                    MessageBox.ShowError(error);
+                }
+                finally
+                {
+                    if (success)
+                    {
+                        selected.Remove();
+                    }
+                }
+            }
         }
 
         #endregion

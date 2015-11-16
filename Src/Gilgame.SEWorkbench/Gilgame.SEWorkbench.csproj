@@ -117,6 +117,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Serialization\Convert.cs" />
+    <Compile Include="Services\MessageBox.cs" />
     <Compile Include="Services\TreeViewItemExtensions.cs" />
     <Compile Include="ViewModels\Commands\AddBlueprintsCommand.cs" />
     <Compile Include="ViewModels\Commands\AddExistingFileCommand.cs" />
@@ -145,10 +146,6 @@
       <DependentUpon>ProjectExplorer.xaml</DependentUpon>
     </Compile>
     <Page Include="Styles\HeaderLabel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\TreeViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
