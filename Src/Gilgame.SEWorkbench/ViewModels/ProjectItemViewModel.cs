@@ -156,11 +156,11 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void Remove()
         {
             _Parent.RemoveChild(this);
-            Parent.Model.Children.Remove(Model);
         }
 
         private void RemoveChild(ProjectItemViewModel child)
         {
+            Model.Children.Remove(child.Model);
             _Children.Remove(child);
         }
 
