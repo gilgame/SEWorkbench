@@ -408,6 +408,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     selected.AddChild(item);
                     selected.IsExpanded = true;
                 }
+                SaveProject();
             }
         }
 
@@ -467,6 +468,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     selected.AddChild(item);
                     selected.IsExpanded = true;
                 }
+                SaveProject();
             }
         }
 
@@ -522,6 +524,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                 };
                 selected.AddChild(item);
                 selected.IsExpanded = true;
+
+                SaveProject();
             }
         }
 
@@ -585,6 +589,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                     };
                     rootitem.AddChild(item, grid);
                     rootitem.IsExpanded = true;
+
+                    SaveProject();
                 }
             }
         }
@@ -683,6 +689,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                     {
                         selected.Remove();
                     }
+
+                    SaveProject();
                 }
             }
         }
