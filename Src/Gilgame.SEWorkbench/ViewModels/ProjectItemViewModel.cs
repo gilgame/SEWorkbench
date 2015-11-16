@@ -56,6 +56,22 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private Interop.GridTerminalSystem _Grid;
+        public Interop.GridTerminalSystem Grid
+        {
+            get
+            {
+                return _Grid;
+            }
+            set
+            {
+                if (value != _Grid)
+                {
+                    _Grid = value;
+                }
+            }
+        }
+
         private bool _IsExpanded = false;
         public bool IsExpanded
         {
@@ -149,6 +165,15 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void AddChild(ProjectItem item)
         {
             _Children.Add(new ProjectItemViewModel(item, this));
+            Model.Children.Add(item);
+        }
+
+        public void AddChild(ProjectItem item, Interop.GridTerminalSystem grid)
+        {
+            ProjectItemViewModel vm = new ProjectItemViewModel(item, this);
+            vm.Grid = grid;
+
+            _Children.Add(vm);
             Model.Children.Add(item);
         }
 
