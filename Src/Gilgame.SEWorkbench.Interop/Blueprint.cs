@@ -17,15 +17,22 @@ namespace Gilgame.SEWorkbench.Interop
     /// </summary>
     public class Blueprint
     {
+        private static bool Initialized = false;
+
         /// <summary>
         /// Runs the SE init. Do this first
         /// </summary>
         public static void RunInit()
         {
-            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string sepath = String.Format("{0}\\SpaceEngineers", appdata);
+            if (!Initialized)
+            {
+                string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string sepath = String.Format("{0}\\SpaceEngineers", appdata);
 
-            VRage.FileSystem.MyFileSystem.Init(sepath, sepath);
+                VRage.FileSystem.MyFileSystem.Init(sepath, sepath);
+
+                Initialized = true;
+            }
         }
 
         public static void Import(string filename, out string name, out GridTerminalSystem gridterminalsystem)
