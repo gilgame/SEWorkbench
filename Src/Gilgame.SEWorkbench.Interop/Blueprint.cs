@@ -30,10 +30,18 @@ namespace Gilgame.SEWorkbench.Interop
 
         public static void Import(string filename, out string name, out GridTerminalSystem gridterminalsystem)
         {
-            MyObjectBuilder_Definitions loaded = MyGuiBlueprintScreenBase.LoadPrefab(filename);
-
             name = string.Empty;
             gridterminalsystem = null;
+
+            MyObjectBuilder_Definitions loaded = MyGuiBlueprintScreenBase.LoadPrefab(filename);
+            if (loaded == null)
+            {
+                string message = String.Format("Failed to load blueprint ({0}).", filename);
+                System.Windows.MessageBox.Show(message);
+
+                return;
+            }
+
             foreach (MyObjectBuilder_ShipBlueprintDefinition blueprints in loaded.ShipBlueprints)
             {
                 name = blueprints.Id.SubtypeId;
