@@ -18,6 +18,9 @@ namespace Gilgame.SEWorkbench.Models
         [XmlElement("Path")]
         public string Path { get; set; }
 
+        [XmlElement("Blueprint")]
+        public string Blueprint { get; set; }
+
         [XmlIgnore]
         public ViewModels.ProjectViewModel Project { get; set; }
 

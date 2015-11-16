@@ -56,6 +56,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public string Blueprint
+        {
+            get
+            {
+                return _ProjectItem.Blueprint;
+            }
+        }
+
         private Interop.GridTerminalSystem _Grid;
         public Interop.GridTerminalSystem Grid
         {
