@@ -17,14 +17,19 @@ namespace Gilgame.SEWorkbench.Interop
     /// </summary>
     public class Blueprint
     {
-        public static void Import(string filename, out string name, out GridTerminalSystem gridterminalsystem)
+        /// <summary>
+        /// Runs the SE init. Do this first
+        /// </summary>
+        public static void RunInit()
         {
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string sepath = String.Format("{0}\\SpaceEngineers", appdata);
 
-            // TODO load init, this should probably happen somewhere else
             VRage.FileSystem.MyFileSystem.Init(sepath, sepath);
+        }
 
+        public static void Import(string filename, out string name, out GridTerminalSystem gridterminalsystem)
+        {
             MyObjectBuilder_Definitions loaded = MyGuiBlueprintScreenBase.LoadPrefab(filename);
 
             name = string.Empty;
