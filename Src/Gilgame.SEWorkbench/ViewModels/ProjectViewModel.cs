@@ -138,6 +138,35 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 Project project = (Project)Serialization.Convert.ToObject(serialized);
                 SetRootItem(project.RootItem);
+
+                LoadBlueprints();
+            }
+        }
+
+        private void LoadBlueprints()
+        {
+            Interop.Blueprint.RunInit();
+
+            LoadBlueprints(_RootItem);
+        }
+
+        private void LoadBlueprints(ProjectItemViewModel parent)
+        {
+            if (parent.Type == ProjectItemType.Blueprints)
+            {
+                string name;
+                Interop.GridTerminalSystem grid;
+
+                Interop.Blueprint.Import(parent.Blueprint, out name, out grid);
+
+                parent.Grid = grid;
+            }
+            else
+            {
+                foreach(ProjectItemViewModel child in parent.Children)
+                {
+                    LoadBlueprints(child);
+                }
             }
         }
 
@@ -533,6 +562,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 Interop.GridTerminalSystem grid;
 
                 // TODO gonna need to import on another thread
+                Interop.Blueprint.RunInit();
                 Interop.Blueprint.Import(fullpath, out name, out grid);
 
                 if (grid != null)
@@ -549,11 +579,11 @@ namespace Gilgame.SEWorkbench.ViewModels
                     {
                         Name = name,
                         Path = savepath,
+                        Blueprint = fullpath,
                         Type = ProjectItemType.Blueprints,
-                        Grid = grid,
                         Project = this,
                     };
-                    rootitem.AddChild(item);
+                    rootitem.AddChild(item, grid);
                     rootitem.IsExpanded = true;
                 }
             }
