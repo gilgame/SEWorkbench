@@ -21,9 +21,12 @@ namespace Gilgame.SEWorkbench.Models
         [XmlIgnore]
         public ViewModels.ProjectViewModel Project { get; set; }
 
+        [XmlIgnore]
+        public Interop.GridTerminalSystem Grid { get; set; }
+
         private ObservableCollection<ProjectItem> _Children = new ObservableCollection<ProjectItem>();
 
-        [XmlElement("Children")]
+        [XmlElement("Items")]
         public ObservableCollection<ProjectItem> Children
         {
             get

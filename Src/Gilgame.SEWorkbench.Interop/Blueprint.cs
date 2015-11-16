@@ -4,7 +4,11 @@ using System.Text;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Common.ObjectBuilders.Definitions;
 using Sandbox.Game.Gui;
+using Sandbox.Game.Entities;
 using Sandbox.ModAPI.Ingame;
+using Sandbox.Game.Entities.Cube;
+using System.Reflection;
+
 
 namespace Gilgame.SEWorkbench.Interop
 {
@@ -13,60 +17,53 @@ namespace Gilgame.SEWorkbench.Interop
     /// </summary>
     public class Blueprint
     {
-        private MyObjectBuilder_ShipBlueprintDefinition _Blueprint;
-        private bool IsLoaded
-        {
-            get
-            {
-                return (_Blueprint != null);
-            }
-        }
-
-        private GridTerminalSystem _GridTerminalSystem;
-        public GridTerminalSystem GridTerminalSystem
-        {
-            get
-            {
-                return _GridTerminalSystem;
-            }
-        }
-
-        private StringBuilder _Buffer;
-        private StringBuilder CreateBuffer()
-        {
-            _Buffer = new StringBuilder();
-            return _Buffer;
-        }
-
-        public void Import(string filename)
+        public static void Import(string filename, out string name, out GridTerminalSystem gridterminalsystem)
         {
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string sepath = String.Format("{0}\\SpaceEngineers", appdata);
 
-            // load init, this should probably happen somewhere else
+            // TODO load init, this should probably happen somewhere else
             VRage.FileSystem.MyFileSystem.Init(sepath, sepath);
 
             MyObjectBuilder_Definitions loaded = MyGuiBlueprintScreenBase.LoadPrefab(filename);
 
-            foreach (MyObjectBuilder_ShipBlueprintDefinition blueprint in loaded.ShipBlueprints)
+            name = string.Empty;
+            gridterminalsystem = null;
+            foreach (MyObjectBuilder_ShipBlueprintDefinition blueprints in loaded.ShipBlueprints)
             {
-                _Blueprint = blueprint;
-                Convert();
-                return;
-            }
-        }
-
-        private void Convert()
-        {
-            _GridTerminalSystem = new GridTerminalSystem();
-            if (IsLoaded)
-            {
-                foreach (MyObjectBuilder_CubeGrid grid in _Blueprint.CubeGrids)
+                name = blueprints.DisplayName;
+                foreach (MyObjectBuilder_CubeGrid grid in blueprints.CubeGrids)
                 {
-                    foreach (MyObjectBuilder_CubeBlock block in grid.CubeBlocks)
+                    try
                     {
-                        _GridTerminalSystem.AddBlock((IMyTerminalBlock)block);
+                        gridterminalsystem = new GridTerminalSystem();
+
+                        var cubegrid = MyEntities.CreateFromObjectBuilder(grid) as MyCubeGrid;
+                        foreach (var block in cubegrid.GetBlocks())
+                        {
+                            if (block.FatBlock != null)
+                            {
+                                var functional = block.FatBlock as MyTerminalBlock;
+                                if (functional != null)
+                                {
+                                    gridterminalsystem.AddBlock(functional);
+                                }
+                            }
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        if (ex.InnerException is ReflectionTypeLoadException)
+                        {
+                            ReflectionTypeLoadException lex = (ReflectionTypeLoadException)ex.InnerException;
+                            foreach (var item in lex.LoaderExceptions)
+                            {
+                                System.Windows.MessageBox.Show(item.Message);
+                            }
+                        }
+                    }
+
+                    return; // TODO support for multiple grids per blueprint?
                 }
             }
         }

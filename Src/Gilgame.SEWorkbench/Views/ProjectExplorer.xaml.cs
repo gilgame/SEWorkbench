@@ -18,7 +18,7 @@ namespace Gilgame.SEWorkbench.Views
     public partial class ProjectExplorer : UserControl
     {
         private ViewModels.ProjectViewModel _Project;
-
+        
         public ProjectExplorer()
         {
             InitializeComponent();
@@ -28,7 +28,7 @@ namespace Gilgame.SEWorkbench.Views
         private void BuildTree()
         {
             //_Project = new ViewModels.ProjectViewModel();
-            _Project = ViewModels.ProjectViewModel.NewProject("TestProject");
+            _Project = ViewModels.ProjectViewModel.NewProject("C:/Users/Tim/Documents/SEWorkbench", "TestProject");
 
             //Models.ProjectItem root = GetProjectItems(_Project);
 

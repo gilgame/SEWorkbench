@@ -20,17 +20,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return new Models.Project()
                 {
                     Name = _RootItem.Model.Name,
+                    Path = _RootItem.Path,
                     RootItem = _RootItem.Model
                 };
-            }
-        }
-
-        private string _Path = @"C:\Users\Tim\Documents\SEWorkbench\";
-        public string Path
-        {
-            get
-            {
-                return _Path + Model.Name + @"\";
             }
         }
 
@@ -38,7 +30,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             get
             {
-                return String.Format(@"{0}{1}.seproj", Path, Model.Name);
+                return String.Format(@"{0}{1}.seproj", Model.Path, Model.Name);
             }
         }
 
@@ -75,6 +67,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             _SearchCommand = new Commands.SearchCommand(this);
 
             _AddCommand = new Commands.AddFileCommand(this);
+            _AddBlueprintsCommand = new Commands.AddBlueprintsCommand(this);
             _AddExistingCommand = new Commands.AddExistingFileCommand(this);
             _AddFolderCommand = new Commands.AddFolderCommand(this);
 
@@ -112,9 +105,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             string serialized = Serialization.Convert.ToSerialized(this.Model);
             serialized = System.Xml.Linq.XDocument.Parse(serialized).ToString() + Environment.NewLine;
 
-            if (!Directory.Exists(Path))
+            if (!Directory.Exists(Model.Path))
             {
-                Directory.CreateDirectory(Path);
+                Directory.CreateDirectory(Model.Path);
             }
 
             File.WriteAllText(Filename, serialized);
@@ -129,7 +122,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             SetRootItem(project.RootItem);
         }
 
-        public static ProjectViewModel NewProject(string name)
+        public static ProjectViewModel NewProject(string path, string name)
         {
             ProjectViewModel project = new ViewModels.ProjectViewModel();
 
@@ -319,19 +312,25 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return;
             }
 
-            Views.NewItemDialog dialog = new Views.NewItemDialog();
-            dialog.ShowDialog();
-
-            string name = String.Empty;
-            if (dialog.DialogResult != null && dialog.DialogResult.Value)
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
             {
-                name = dialog.ItemName;
-            }
+                DefaultExt = ".csx",
+                Filter = "Script File (.csx)|*.csx",
+            };
 
-            if (!String.IsNullOrEmpty(name))
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
             {
-                // TODO add to filesystem
-                selected.AddChild(new ProjectItem() { Name = name, Type = ProjectItemType.File });
+                string fullpath = dialog.FileName;
+                string name = Path.GetFileName(fullpath);
+
+                ProjectItem item = new ProjectItem()
+                {
+                    Name = name,
+                    Path = fullpath,
+                    Type = ProjectItemType.File,
+                };
+                selected.AddChild(item);
             }
         }
 
@@ -350,7 +349,43 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformAddExistingFile()
         {
-            // TODO add existing file logic
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                return;
+            }
+
+            if (selected.Type != ProjectItemType.Folder)
+            {
+                selected = GetParentFolder(selected);
+            }
+            if (selected == null)
+            {
+                return;
+            }
+
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
+            {
+                DefaultExt = ".csx",
+                Filter = "Script File (.csx)|*.csx",
+            };
+
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                foreach (string fullpath in dialog.FileNames)
+                {
+                    string name = Path.GetFileName(fullpath);
+
+                    ProjectItem item = new ProjectItem()
+                    {
+                        Name = name,
+                        Path = fullpath,
+                        Type = ProjectItemType.File,
+                    };
+                    selected.AddChild(item);
+                }
+            }
         }
 
         #endregion
@@ -368,7 +403,68 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformAddFolder()
         {
-            // TODO add new folder logic
+            // TODO add folder logic
+        }
+
+        #endregion
+
+        #region Add Blueprints Command
+
+        private readonly ICommand _AddBlueprintsCommand;
+        public ICommand AddBlueprintsCommand
+        {
+            get
+            {
+                return _AddBlueprintsCommand;
+            }
+        }
+
+        public void PerformAddBlueprints()
+        {
+            ProjectItemViewModel rootitem = _RootItem;
+
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string blueprints = String.Format("{0}{1}SpaceEngineers{1}Blueprints", appdata, Path.DirectorySeparatorChar);
+
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
+            {
+                DefaultExt = ".sbc",
+                Filter = "Blueprints File (.sbc)|*.sbc",
+                Multiselect = false,
+                InitialDirectory = blueprints,
+            };
+
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                string fullpath = dialog.FileName;
+
+                string name;
+                Interop.GridTerminalSystem grid;
+
+                // TODO gonna need to import on another thread
+                Interop.Blueprint.Import(fullpath, out name, out grid);
+
+                if (grid != null)
+                {
+                    string rootpath = Path.GetDirectoryName(rootitem.Path);
+                    string savepath = String.Format("{0}{1}{2}{1}", rootpath, Path.DirectorySeparatorChar, name);
+
+                    if (!Directory.Exists(savepath))
+                    {
+                        Directory.CreateDirectory(savepath);
+                    }
+
+                    ProjectItem item = new ProjectItem()
+                    {
+                        Name = name,
+                        Path = savepath,
+                        Type = ProjectItemType.Blueprints,
+                        Grid = grid,
+                    };
+                    rootitem.AddChild(item);
+                }
+            }
         }
 
         #endregion

@@ -21,6 +21,7 @@ namespace Gilgame.SEWorkbench.Interop
 
         public void GetBlockGroups(List<IMyBlockGroup> blockGroups)
         {
+            // TODO add block groups support
             throw new NotImplementedException();
         }
 
@@ -57,7 +58,16 @@ namespace Gilgame.SEWorkbench.Interop
 
         public void SearchBlocksOfName(string name, List<IMyTerminalBlock> blocks, Func<IMyTerminalBlock, bool> collect = null)
         {
-            throw new NotImplementedException();
+            foreach (IMyTerminalBlock block in _Blocks)
+            {
+                if (block.CustomName.ToLower().IndexOf(name.ToLower()) > -1)
+                {
+                    if (collect == null || collect.Invoke(block))
+                    {
+                        blocks.Add(block);
+                    }
+                }
+            }
         }
     }
 }

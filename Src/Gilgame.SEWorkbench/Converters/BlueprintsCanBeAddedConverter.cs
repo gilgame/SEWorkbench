@@ -6,7 +6,7 @@ using System.Windows.Data;
 
 namespace Gilgame.SEWorkbench.Converters
 {
-    public class FolderCanBeAddedConverter : IValueConverter
+    public class BlueprintsCanBeAddedConverter : IValueConverter
     {
         public double Length { get; set; }
 
@@ -15,6 +15,7 @@ namespace Gilgame.SEWorkbench.Converters
             Models.ProjectItemType type = GetValue(value);
             switch (type)
             {
+                case Models.ProjectItemType.Root:
                 case Models.ProjectItemType.Folder:
                 case Models.ProjectItemType.File:
                 case Models.ProjectItemType.None:
