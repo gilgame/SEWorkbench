@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Gilgame.SEWorkbench.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="175">
     <UserControl.Resources>
@@ -100,8 +102,14 @@
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger  EventName="PreviewMouseRightButtonDown">
+                                        <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Image Width="11" Height="11" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" />
-                                <TextBlock Text="{Binding Name}" Margin="3,0,0,0" />
+                                <TextBlock Text="{Binding Name}" Margin="3,0,0,0">
+                                </TextBlock>
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
