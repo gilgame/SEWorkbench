@@ -362,7 +362,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             if (result == true)
             {
                 string fullpath = dialog.FileName;
-                string name = Path.GetFileName(fullpath);
+                string name = Path.GetFileNameWithoutExtension(fullpath);
 
                 if (!File.Exists(fullpath))
                 {
@@ -428,7 +428,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 foreach (string fullpath in dialog.FileNames)
                 {
-                    string name = Path.GetFileName(fullpath);
+                    string name = Path.GetFileNameWithoutExtension(fullpath);
 
                     ProjectItem item = new ProjectItem()
                     {
