@@ -263,7 +263,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return null;
             }
 
-            if (child.Parent.Type == ProjectItemType.Folder)
+            if (child.Parent.Type == ProjectItemType.Blueprints || child.Parent.Type == ProjectItemType.Folder)
             {
                 return child.Parent;
             }
@@ -367,7 +367,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return;
             }
 
-            if (selected.Type != ProjectItemType.Folder)
+            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
             {
                 selected = GetParentFolder(selected);
             }
@@ -433,7 +433,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return;
             }
 
-            if (selected.Type != ProjectItemType.Folder)
+            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
             {
                 selected = GetParentFolder(selected);
             }
@@ -545,6 +545,10 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformAddBlueprints()
         {
             ProjectItemViewModel rootitem = _RootItem;
+            if (rootitem == null)
+            {
+                return;
+            }
 
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string blueprints = String.Format("{0}{1}SpaceEngineers{1}Blueprints", appdata, Path.DirectorySeparatorChar);
