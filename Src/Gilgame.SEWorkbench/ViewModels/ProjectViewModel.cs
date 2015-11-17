@@ -27,8 +27,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private ObservableCollection<ProjectItemViewModel> _First;
-        public ObservableCollection<ProjectItemViewModel> First
+        private ObservableSortedList<ProjectItemViewModel> _First;
+        public ObservableSortedList<ProjectItemViewModel> First
         {
             get
             {
@@ -77,10 +77,9 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             _RootItem = new ProjectItemViewModel(root);
 
-            _First = new ObservableCollection<ProjectItemViewModel>(
-                new ProjectItemViewModel[] { 
-                    _RootItem
-                }
+            _First = new Services.ObservableSortedList<ProjectItemViewModel>(
+                new ProjectItemViewModel[] { _RootItem },
+                new Comparers.ProjectItemComparer<ProjectItemViewModel>()
             );
         }
 

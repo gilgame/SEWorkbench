@@ -118,6 +118,7 @@
     </None>
     <Compile Include="Serialization\Convert.cs" />
     <Compile Include="Services\MessageBox.cs" />
+    <Compile Include="Services\ObservableSortedList.cs" />
     <Compile Include="Services\TreeViewItemExtensions.cs" />
     <Compile Include="ViewModels\Commands\AddBlueprintsCommand.cs" />
     <Compile Include="ViewModels\Commands\AddExistingFileCommand.cs" />
@@ -127,6 +128,9 @@
     <Compile Include="ViewModels\Commands\RenameCommand.cs" />
     <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
+    <Compile Include="ViewModels\Comparers\ProjectItemComparer.cs" />
+    <Compile Include="ViewModels\EditorViewModel.cs" />
+    <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\ProjectItemViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="Views\BlueprintView.xaml.cs">

@@ -8,8 +8,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 {
     public class ProjectItemViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<ProjectItemViewModel> _Children;
-        public ObservableCollection<ProjectItemViewModel> Children
+        private Services.ObservableSortedList<ProjectItemViewModel> _Children;
+        public Services.ObservableSortedList<ProjectItemViewModel> Children
         {
             get
             {
@@ -165,8 +165,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             _ProjectItem = item;
             _Parent = parent;
 
-            _Children = new ObservableCollection<ProjectItemViewModel>(
-                (from child in _ProjectItem.Children select new ProjectItemViewModel(child, this)).ToList<ProjectItemViewModel>()
+            _Children = new Services.ObservableSortedList<ProjectItemViewModel>(
+                (from child in _ProjectItem.Children select new ProjectItemViewModel(child, this)).ToList<ProjectItemViewModel>(),
+                new Comparers.ProjectItemComparer<ProjectItemViewModel>()
             );
         }
 
