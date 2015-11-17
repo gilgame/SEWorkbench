@@ -6,7 +6,7 @@ namespace Gilgame.SEWorkbench.Services
 {
     public static class NewFile
     {
-        private const string FILE = "NewFiles.csx";
+        private const string FILE = "NewFile.csx";
 
         public static string Contents
         {
@@ -18,13 +18,14 @@ namespace Gilgame.SEWorkbench.Services
 
         private static string GetContents()
         {
-            if (!File.Exists(FILE))
+            string filename = GetFilename();
+            if (!File.Exists(filename))
             {
                 return CreateNewFile();
             }
             else
             {
-                return File.ReadAllText(FILE);
+                return File.ReadAllText(filename);
             }
         }
 
@@ -32,13 +33,17 @@ namespace Gilgame.SEWorkbench.Services
         {
             StringBuilder result = new StringBuilder();
 
-            result.AppendLine("var main");
+            result.AppendLine("void main()");
             result.AppendLine("{");
             result.AppendLine("    ");
             result.AppendLine("}");
-            result.AppendLine();
 
             return result.ToString();
+        }
+
+        private static string GetFilename()
+        {
+            return String.Format("{0}{1}{2}", Environment.CurrentDirectory, Path.DirectorySeparatorChar, FILE);
         }
     }
 }
