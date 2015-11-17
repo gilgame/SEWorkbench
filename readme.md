@@ -16,7 +16,7 @@ As this project is currently in an early alpha development stage, not all featur
 
 Caveats
 =================================
-Currently, the project requires that Space Engineers is installed on the computer. Since Space Engineers is now open source, this could change in the future. As I'm not sure if SteamSDK.dll and steam_api.dll can be distributed with this project, steam_api.dll must be copied over to the working directory of the exe. The Visual Studio project will attempt to do this itself as long as Space Engineers is installed on the developer's computer.
+Currently, the project requires that Space Engineers is installed on the computer. As I'm not sure if SteamSDK.dll and steam_api.dll can be distributed with this project, steam_api.dll must be copied over to the working directory of the exe. The Visual Studio project will attempt to do this itself as long as Space Engineers is installed.
 
 Attribution
 =================================
