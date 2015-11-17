@@ -22,6 +22,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private string _Filename = String.Empty;
+        public string Filename
+        {
+            get
+            {
+                return _Filename;
+            }
+            set
+            {
+                _Filename = value;
+                OnPropertyChanged("Filename");
+            }
+        }
+
         public ViewModels.EditorViewModel Editor { get; set; }
 
         private bool _IsSelected = false;
