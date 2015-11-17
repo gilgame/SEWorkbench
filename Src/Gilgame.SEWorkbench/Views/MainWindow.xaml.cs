@@ -22,10 +22,11 @@ namespace Gilgame.SEWorkbench.Views
             base.OnInitialized(e);
 
             ViewModels.EditorViewModel vm = new ViewModels.EditorViewModel();
-            vm.Items.Add(new ViewModels.PageViewModel("Test1.csx") { IsSelected = true });
-            vm.Items.Add(new ViewModels.PageViewModel("Test2.csx"));
+            //vm.Items.Add(new ViewModels.PageViewModel("Test1.csx") { IsSelected = true });
+            //vm.Items.Add(new ViewModels.PageViewModel("Test2.csx"));
 
             tcFileEditor.DataContext = vm;
+            tvProjectExplorer.SetEditor(vm);
 
             //_Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
             //OpenFile2(@"NewFile.csx");
@@ -87,7 +88,7 @@ namespace Gilgame.SEWorkbench.Views
 
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            tvProjectExplorer.StartNewProject();
+            tvProjectExplorer.NewProject();
         }
 
         private void OpenProjectButton_Click(object sender, RoutedEventArgs e)

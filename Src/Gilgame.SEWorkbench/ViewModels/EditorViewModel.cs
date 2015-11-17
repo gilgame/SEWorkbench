@@ -48,5 +48,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             // TODO implementation (if needed ?)
             //OnPropertyChanged("SelectedItemType");
         }
+
+        public void OpenProjectFile(ProjectItemViewModel item)
+        {
+            if (item != null && item.Type == Models.ProjectItemType.File)
+            {
+                PageViewModel vm = new PageViewModel(item.Name)
+                    {
+                        Filename = item.Path,
+                    };
+
+                Items.Add(vm);
+
+                vm.IsSelected = true;
+            }
+        }
     }
 }

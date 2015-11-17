@@ -112,12 +112,6 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void OpenProject()
         {
-            //string serialized = File.ReadAllText(path);
-
-            //Project project = (Project)Serialization.Convert.ToObject(serialized);
-
-            //SetRootItem(project.RootItem);
-
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string initial = String.Format("{0}{1}{2}", documents, Path.DirectorySeparatorChar, "SEWorkbench");
 
@@ -140,6 +134,20 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 LoadBlueprints();
             }
+        }
+
+        public ProjectItemViewModel GetSelectedFile()
+        {
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                return null;
+            }
+            if (selected.Type == ProjectItemType.File)
+            {
+                return selected;
+            }
+            return null;
         }
 
         private void LoadBlueprints()
@@ -392,13 +400,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 if (!File.Exists(fullpath))
                 {
-                    File.Create(fullpath);
+                    File.WriteAllText(fullpath, Services.NewFile.Contents);
                 }
 
                 if (File.Exists(fullpath))
                 {
-                    File.WriteAllText(fullpath, Services.NewFile.Contents);
-
                     ProjectItem item = new ProjectItem()
                     {
                         Name = name,

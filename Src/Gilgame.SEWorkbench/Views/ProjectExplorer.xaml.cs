@@ -1,30 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Gilgame.SEWorkbench.ViewModels;
+using System;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Gilgame.SEWorkbench.Views
 {
     public partial class ProjectExplorer : UserControl
     {
+        // TODO if any one knows a decent way to invoke methods with a binding, please message me
         private ViewModels.ProjectViewModel _Project;
+
+        private EditorViewModel _Editor;
         
         public ProjectExplorer()
         {
             InitializeComponent();
         }
 
-        public void StartNewProject()
+        public void SetEditor(EditorViewModel editor)
+        {
+            // TODO there's probably a better MVVM way of doing this
+            if (editor != null)
+            {
+                _Editor = editor;
+            }
+        }
+
+        public void NewProject()
         {
             _Project = ViewModels.ProjectViewModel.NewProject();
 
@@ -55,22 +57,29 @@ namespace Gilgame.SEWorkbench.Views
             }
         }
 
+        public void OpenSelected()
+        {
+            if (_Project != null && _Editor != null)
+            {
+                ProjectItemViewModel selected = _Project.GetSelectedFile();
+                if (selected != null)
+                {
+                    _Editor.OpenProjectFile(selected);
+                }
+            }
+        }
+
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (e.Key == Key.Enter)
-            //{
+            if (_Project != null)
+            {
                 _Project.SearchCommand.Execute(null);
-            //}
+            }
         }
 
-        private void ProjectTreeView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void PojectTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            // TODO select node on right click
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            _Project.SaveProject();
+            OpenSelected();
         }
     }
 }

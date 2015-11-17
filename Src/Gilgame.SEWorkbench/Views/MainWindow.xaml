@@ -115,7 +115,7 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <av:CodeTextEditor Margin="0,5,0,5" />
+                    <av:CodeTextEditor Margin="0,5,0,5" Filename="{Binding Filename}" />
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

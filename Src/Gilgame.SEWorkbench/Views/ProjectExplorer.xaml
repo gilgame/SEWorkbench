@@ -37,7 +37,7 @@
                        DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
                 <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
                     <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
-                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22" Click="Button_Click">
+                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
                             <Image Source="/Gilgame.SEWorkbench;component/Icons/NewFolder.png" />
                         </Button>
                         <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
@@ -51,7 +51,7 @@
 
                 <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" 
                           DockPanel.Dock="Bottom" ItemsSource="{Binding First}" HorizontalContentAlignment="Stretch"
-                          PreviewMouseRightButtonDown="ProjectTreeView_PreviewMouseRightButtonDown">
+                          MouseDoubleClick="PojectTreeView_MouseDoubleClick">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
