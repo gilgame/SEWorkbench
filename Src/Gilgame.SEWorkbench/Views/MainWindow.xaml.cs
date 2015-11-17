@@ -5,6 +5,8 @@ using System.Windows.Media;
 
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.CodeCompletion;
+using Gilgame.SEWorkbench.ViewModels;
+using System.IO;
 
 namespace Gilgame.SEWorkbench.Views
 {
@@ -21,16 +23,14 @@ namespace Gilgame.SEWorkbench.Views
         {
             base.OnInitialized(e);
 
-            ViewModels.EditorViewModel vm = new ViewModels.EditorViewModel();
+            _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
+
+            //ViewModels.EditorViewModel vm = new ViewModels.EditorViewModel();
             //vm.Items.Add(new ViewModels.PageViewModel("Test1.csx") { IsSelected = true });
             //vm.Items.Add(new ViewModels.PageViewModel("Test2.csx"));
 
-            tcFileEditor.DataContext = vm;
-            tvProjectExplorer.SetEditor(vm);
-
-            //_Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
-            //OpenFile2(@"NewFile.csx");
-            //OpenFile(@"NewFile.csx");
+            //tcFileEditor.DataContext = vm;
+            //tvProjectExplorer.SetEditor(vm);
 
             //Gilgame.SEWorkbench.Interop.InGameScript script = new Interop.InGameScript("void main(){int id = 1;}");
             //MessageBox.Show(script.LastError);
@@ -40,13 +40,13 @@ namespace Gilgame.SEWorkbench.Views
             //}
         }
 
-        private void OpenFile(string fileName)
+        private void OpenFile(string filename)
         {
             var editor = new CodeTextEditor();
             editor.FontFamily = new FontFamily("Consolas");
             editor.FontSize = 11;
             editor.Completion = _Completion;
-            editor.OpenFile(fileName);
+            editor.OpenFile(filename);
             editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
             editor.Margin = new Thickness(0, 6, 0, 6);
 
@@ -57,33 +57,20 @@ namespace Gilgame.SEWorkbench.Views
             };
             editor.Options = options;
 
-            var tabItem = new TabItem();
-            tabItem.Content = editor;
-            tabItem.Header = "CloseDoors.csx"; // System.IO.Path.GetFileName(fileName);
-            tcFileEditor.Items.Add(tabItem);
+            var tabitem = new TabItem();
+            tabitem.Content = editor;
+            tabitem.Header = Path.GetFileNameWithoutExtension(filename);
+            tcFileEditor.Items.Add(tabitem);
+
+            SelectLastTab();
         }
 
-        private void OpenFile2(string fileName)
+        private void SelectLastTab()
         {
-            var editor = new CodeTextEditor();
-            editor.FontFamily = new FontFamily("Consolas");
-            editor.FontSize = 11;
-            editor.Completion = _Completion;
-            editor.OpenFile(fileName);
-            editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-            editor.Margin = new Thickness(0, 6, 0, 6);
-
-            ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
+            if (tcFileEditor.Items.Count > 0)
             {
-                ConvertTabsToSpaces = true,
-                IndentationSize = 4,
-            };
-            editor.Options = options;
-
-            var tabItem = new TabItem();
-            tabItem.Content = editor;
-            tabItem.Header = "DisableTurrets.csx"; // System.IO.Path.GetFileName(fileName);
-            tcFileEditor.Items.Add(tabItem);
+                tcFileEditor.SelectedIndex = tcFileEditor.Items.Count - 1;
+            }
         }
 
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
@@ -99,6 +86,20 @@ namespace Gilgame.SEWorkbench.Views
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             tvProjectExplorer.SaveProject();
+        }
+
+        private void ProjectExplorer_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ProjectItemViewModel item = tvProjectExplorer.SelectedFile;
+            if (item != null)
+            {
+                OpenFile(item.Path);
+            }
+        }
+
+        private void FileEditor_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
         }
     }
 }

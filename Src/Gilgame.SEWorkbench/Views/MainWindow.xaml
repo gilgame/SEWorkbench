@@ -1,9 +1,9 @@
-﻿<Window xmlns:CodeCompletion="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"  xmlns:Views="clr-namespace:Gilgame.SEWorkbench.Views"  x:Class="Gilgame.SEWorkbench.Views.MainWindow"
+﻿<Window xmlns:Interop="clr-namespace:Gilgame.SEWorkbench.Interop;assembly=Gilgame.SEWorkbench.Interop"  xmlns:CodeCompletion="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"  xmlns:Views="clr-namespace:Gilgame.SEWorkbench.Views"  x:Class="Gilgame.SEWorkbench.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:av="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"
         Title="Space Engineers Workbench" Height="400" Width="800"
         MinHeight="400" MinWidth="600">
+    <!--xmlns:av="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"-->
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -100,12 +100,17 @@
             </StackPanel>
         </Grid>
         
-        <Views:ProjectExplorer x:Name="tvProjectExplorer" Margin="5,5,0,5" Grid.Column="0" Grid.Row="1" />
+        <Views:ProjectExplorer x:Name="tvProjectExplorer" Margin="5,5,0,5" Grid.Column="0" Grid.Row="1"
+                               MouseDoubleClick="ProjectExplorer_MouseDoubleClick"/>
         
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="1" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
-        <TabControl Name="tcFileEditor" Margin="0,5,5,5" Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
+        <TabControl Name="tcFileEditor" Margin="0,5,5,5"
+                    Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
+                    Grid.Column="2" Grid.Row="1"
+                     />
+        <!--<TabControl Name="tcFileEditor" Margin="0,5,5,5" Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
                     ItemsSource="{Binding Items}"
                     Grid.Column="2" Grid.Row="1">
             <TabControl.ItemTemplate>
@@ -115,9 +120,21 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <av:CodeTextEditor Margin="0,5,0,5" Filename="{Binding Filename}" />
+                    --><!--<av:CodeTextEditor Margin="0,5,0,5" File="{Binding Filename}" />-->
+                    <!--<Interop:CodeEditorWrapper Margin="0,5,0,5" 
+                                               Completion="{Binding Completion}"
+                                               Filename="{Binding Filename}"
+                                               FontFamily="{Binding FontFamily}"
+                                               FontSize="{Binding FontSize}"
+                                               SyntaxHighlighting="{Binding SyntaxHighlighting}" />-->
+
+                    <!--<Interop:CodeEditorWrapper Margin="0,5,0,5"
+                                               Filename="{Binding Filename}"
+                                               FontFamily="{Binding FontFamily}"
+                                               FontSize="{Binding FontSize}"
+                                               SyntaxHighlighting="{Binding SyntaxHighlighting}" />--><!--
                 </DataTemplate>
             </TabControl.ContentTemplate>
-        </TabControl>
+        </TabControl>-->
     </Grid>
 </Window>

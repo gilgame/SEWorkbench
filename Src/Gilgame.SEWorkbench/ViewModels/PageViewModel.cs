@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.CodeCompletion;
+using System;
 using System.ComponentModel;
 
 namespace Gilgame.SEWorkbench.ViewModels
@@ -16,8 +18,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 if (value != _Name)
                 {
-                    _Name = value;
-                    OnPropertyChanged("Name");
+                    if (_Name != value)
+                    {
+                        _Name = value;
+                        OnPropertyChanged("Name");
+                    }
                 }
             }
         }
@@ -31,8 +36,62 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             set
             {
-                _Filename = value;
-                OnPropertyChanged("Filename");
+                if (_Filename != value)
+                {
+                    _Filename = value;
+                    OnPropertyChanged("Filename");
+                }
+            }
+        }
+
+        private System.Windows.Media.FontFamily _FontFamily = new System.Windows.Media.FontFamily("Consolas");
+        public System.Windows.Media.FontFamily FontFamily
+        {
+            get
+            {
+                return _FontFamily;
+            }
+            set
+            {
+                if (_FontFamily != value)
+                {
+                    _FontFamily = value;
+                    OnPropertyChanged("FontFamily");
+                }
+            }
+        }
+
+        private double _FontSize = 11;
+        public double Fontsize
+        {
+            get
+            {
+                return _FontSize;
+            }
+            set
+            {
+                if (_FontSize != value)
+                {
+                    _FontSize = value;
+                    OnPropertyChanged("Fontsize");
+                }
+            }
+        }
+
+        private IHighlightingDefinition _SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+        public IHighlightingDefinition SyntaxHighlighting
+        {
+            get
+            {
+                return _SyntaxHighlighting;
+            }
+            set
+            {
+                if (_SyntaxHighlighting != value)
+                {
+                    _SyntaxHighlighting = value;
+                    OnPropertyChanged("SyntaxHighlighting");
+                }
             }
         }
 
@@ -51,12 +110,21 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _IsSelected = value;
                     OnPropertyChanged("IsSelected");
-                    
+
                     if (Editor != null)
                     {
                         Editor.SelectionChanged();
                     }
                 }
+            }
+        }
+
+        private CSharpCompletion _Completion = new CSharpCompletion(new Completion.ScriptProvider());
+        public CSharpCompletion Completion
+        {
+            get
+            {
+                return _Completion;
             }
         }
 

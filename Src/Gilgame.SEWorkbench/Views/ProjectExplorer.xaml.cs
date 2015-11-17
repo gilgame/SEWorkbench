@@ -17,6 +17,21 @@ namespace Gilgame.SEWorkbench.Views
             InitializeComponent();
         }
 
+        public ProjectItemViewModel SelectedFile
+        {
+            get
+            {
+                if (_Project == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return _Project.GetSelectedFile();
+                }
+            }
+        }
+
         public void SetEditor(EditorViewModel editor)
         {
             // TODO there's probably a better MVVM way of doing this
