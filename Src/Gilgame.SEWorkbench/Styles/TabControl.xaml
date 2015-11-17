@@ -16,9 +16,10 @@
         <GradientStop Color="#FFE8A6" Offset="0.5" />
     </LinearGradientBrush>
 
-    <Style x:Key="VS_TabControl" TargetType="{x:Type TabControl}">
+    <Style TargetType="{x:Type TabControl}">
         <Style.Resources>
             <Style TargetType="{x:Type TabItem}">
+                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                 <Setter Property="Margin" Value="0,0,0,1" />
                 <Setter Property="Template">
                     <Setter.Value>

@@ -34,6 +34,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return _ProjectItem;
             }
         }
+
         public string Name
         {
             get

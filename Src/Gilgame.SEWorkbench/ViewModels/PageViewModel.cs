@@ -22,12 +22,33 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private string _TabName;
-        public string TabName { get; private set; }
+        public ViewModels.EditorViewModel Editor { get; set; }
 
-        public PageViewModel(string tabname)
+        private bool _IsSelected = false;
+        public bool IsSelected
         {
-            _TabName = tabname;
+            get
+            {
+                return _IsSelected;
+            }
+            set
+            {
+                if (value != _IsSelected)
+                {
+                    _IsSelected = value;
+                    OnPropertyChanged("IsSelected");
+                    
+                    if (Editor != null)
+                    {
+                        Editor.SelectionChanged();
+                    }
+                }
+            }
+        }
+
+        public PageViewModel(string name)
+        {
+            _Name = name;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

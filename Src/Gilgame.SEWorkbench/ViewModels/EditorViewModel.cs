@@ -23,5 +23,11 @@ namespace Gilgame.SEWorkbench.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
+
+        public void SelectionChanged()
+        {
+            // TODO implementation (if needed ?)
+            //OnPropertyChanged("SelectedItemType");
+        }
     }
 }

@@ -21,9 +21,15 @@ namespace Gilgame.SEWorkbench.Views
         {
             base.OnInitialized(e);
 
-            _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
-            OpenFile2(@"NewFile.csx");
-            OpenFile(@"NewFile.csx");
+            ViewModels.EditorViewModel vm = new ViewModels.EditorViewModel();
+            vm.Items.Add(new ViewModels.PageViewModel("Test1.csx") { IsSelected = true });
+            vm.Items.Add(new ViewModels.PageViewModel("Test2.csx"));
+
+            tcFileEditor.DataContext = vm;
+
+            //_Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
+            //OpenFile2(@"NewFile.csx");
+            //OpenFile(@"NewFile.csx");
 
             //Gilgame.SEWorkbench.Interop.InGameScript script = new Interop.InGameScript("void main(){int id = 1;}");
             //MessageBox.Show(script.LastError);
