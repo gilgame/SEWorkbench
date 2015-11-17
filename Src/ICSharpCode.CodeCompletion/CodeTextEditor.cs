@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.NRefactory.Editor;
+using System.Windows;
 
 namespace ICSharpCode.CodeCompletion
 {
@@ -35,15 +36,30 @@ namespace ICSharpCode.CodeCompletion
         {
             get
             {
-                return _Filename;
+                return (string)GetValue(FilenameProperty);
             }
             set
             {
-                if (File.Exists(value))
-                {
-                    _Filename = value;
-                    OpenFile(_Filename);
-                }
+                SetValue(FilenameProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty FilenameProperty =
+            DependencyProperty.Register(
+                "Filename",
+                typeof(string),
+                typeof(CodeTextEditor),
+                new PropertyMetadata(default(string), OnFilenamePropertyChanged)
+            );
+
+        private static void OnFilenamePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            CodeTextEditor source = d as CodeTextEditor;
+
+            string filename = e.NewValue as String;
+            if (filename != null)
+            {
+                source.OpenFile(filename);
             }
         }
 
