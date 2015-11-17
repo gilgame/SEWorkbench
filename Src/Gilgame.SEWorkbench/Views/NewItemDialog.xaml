@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Gilgame.SEWorkbench.Views.NewItemDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="New Item..." Height="91" Width="500" WindowStyle="ToolWindow" ResizeMode="NoResize">
+        Title="New Item..." Height="131" Width="500" WindowStyle="ToolWindow" ResizeMode="NoResize">
     <Grid Background="#FF2B3B58">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150" />
