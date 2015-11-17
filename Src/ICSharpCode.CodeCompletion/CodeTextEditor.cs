@@ -30,6 +30,23 @@ namespace ICSharpCode.CodeCompletion
             this.CommandBindings.Add(cb);
         }
 
+        private string _Filename;
+        public string Filename
+        {
+            get
+            {
+                return _Filename;
+            }
+            set
+            {
+                if (File.Exists(value))
+                {
+                    _Filename = value;
+                    OpenFile(_Filename);
+                }
+            }
+        }
+
         public CSharpCompletion Completion { get; set; }
 
         #region Open & Save File
