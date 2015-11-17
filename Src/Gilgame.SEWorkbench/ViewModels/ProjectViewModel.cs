@@ -397,6 +397,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 if (File.Exists(fullpath))
                 {
+                    File.WriteAllText(fullpath, Services.NewFile.Contents);
+
                     ProjectItem item = new ProjectItem()
                     {
                         Name = name,

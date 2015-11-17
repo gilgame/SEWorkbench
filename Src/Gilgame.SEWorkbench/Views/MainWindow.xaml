@@ -9,6 +9,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/TabControl.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
             <LinearGradientBrush x:Key="MainMenuBackground" EndPoint="0,1">
                 <GradientStop Color="#CAD3E2" Offset="0.0" />
@@ -103,7 +105,7 @@
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="1" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
-        <TabControl Name="tcFileEditor" Margin="0,5,5,5"
+        <TabControl Name="tcFileEditor" Margin="0,5,5,5" Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
                     ItemsSource="{Binding Items}"
                     Grid.Column="2" Grid.Row="1">
             <TabControl.ItemTemplate>

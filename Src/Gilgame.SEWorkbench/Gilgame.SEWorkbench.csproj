@@ -118,6 +118,7 @@
     </None>
     <Compile Include="Serialization\Convert.cs" />
     <Compile Include="Services\MessageBox.cs" />
+    <Compile Include="Services\NewFile.cs" />
     <Compile Include="Services\ObservableSortedList.cs" />
     <Compile Include="Services\TreeViewItemExtensions.cs" />
     <Compile Include="ViewModels\Commands\AddBlueprintsCommand.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace Gilgame.SEWorkbench.ViewModels
@@ -13,6 +14,24 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return _Items;
             }
+        }
+        
+        public bool HasChildren
+        {
+            get
+            {
+                return _Items.Count > 0;
+            }
+        }
+
+        public EditorViewModel()
+        {
+            _Items.CollectionChanged += OnCollectionChanged;
+        }
+
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("HasChildren");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
