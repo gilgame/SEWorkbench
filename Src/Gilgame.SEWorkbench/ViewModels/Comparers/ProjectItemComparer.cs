@@ -48,7 +48,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Comparers
                         {
                             if (IsFolder(right))
                             {
-                                return -1;
+                                return 1;
                             }
                             else
                             {
