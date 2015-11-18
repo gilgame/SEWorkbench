@@ -8,6 +8,7 @@ using Sandbox.Game.Entities;
 using Sandbox.ModAPI.Ingame;
 using Sandbox.Game.Entities.Cube;
 using System.Reflection;
+using VRage.Win32;
 
 
 namespace Gilgame.SEWorkbench.Interop
@@ -58,6 +59,11 @@ namespace Gilgame.SEWorkbench.Interop
                     {
                         gridterminalsystem = new GridTerminalSystem();
 
+                        bool memorylimits = Sandbox.MySandboxGame.Config.MemoryLimits; // TODO Config not being set any more??? Causing NullReferenceException
+                        long memory = System.GC.GetTotalMemory(false);
+                        long workingset = WinApi.WorkingSet;
+
+                        //Sandbox.Game.Entities.MyEntities.IgnoreMemoryLimits = true;
                         var cubegrid = MyEntities.CreateFromObjectBuilder(grid) as MyCubeGrid;
                         foreach (var block in cubegrid.GetBlocks())
                         {
