@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3819B16F-4174-442A-A817-C7F695645228}</ProjectGuid>
+    <ProjectGuid>{D7A53B68-1699-47F3-9C10-2E0CEC463EB7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Gilgame.SEWorkbench.ScriptAPI</RootNamespace>
@@ -37,90 +37,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="VRage.Game">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin64\VRage.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="VRage.Math">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin\VRage.Math.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMyAirVent.cs" />
-    <Compile Include="IMyAssembler.cs" />
-    <Compile Include="IMyBatteryBlock.cs" />
-    <Compile Include="IMyBeacon.cs" />
-    <Compile Include="IMyBlockGroup.cs" />
-    <Compile Include="IMyButtonPanel.cs" />
-    <Compile Include="IMyCameraBlock.cs" />
-    <Compile Include="IMyCargoContainer.cs" />
-    <Compile Include="IMyCockpit.cs" />
-    <Compile Include="IMyCollector.cs" />
-    <Compile Include="IMyControlPanel.cs" />
-    <Compile Include="IMyConveyorSorter.cs" />
-    <Compile Include="IMyCubeBlock.cs" />
-    <Compile Include="IMyCubeGrid.cs" />
-    <Compile Include="IMyDoor.cs" />
-    <Compile Include="IMyEntity.cs" />
-    <Compile Include="IMyFunctionalBlock.cs" />
-    <Compile Include="IMyGravityGenerator.cs" />
-    <Compile Include="IMyGravityGeneratorBase.cs" />
-    <Compile Include="IMyGravityGeneratorSphere.cs" />
-    <Compile Include="IMyGridTerminalSystem.cs" />
-    <Compile Include="IMyGyro.cs" />
-    <Compile Include="IMyInteriorLight.cs" />
-    <Compile Include="IMyInventory.cs" />
-    <Compile Include="IMyJumpDrive.cs" />
-    <Compile Include="IMyLandingGear.cs" />
-    <Compile Include="IMyLargeConveyorTurretBase.cs" />
-    <Compile Include="IMyLargeGatlingTurret.cs" />
-    <Compile Include="IMyLargeInteriorTurret.cs" />
-    <Compile Include="IMyLargeMissileTurret.cs" />
-    <Compile Include="IMyLargeTurretBase.cs" />
-    <Compile Include="IMyLaserAntenna.cs" />
-    <Compile Include="IMyLCDScreen.cs" />
-    <Compile Include="IMyLightingBlock.cs" />
-    <Compile Include="IMyMedicalRoom.cs" />
-    <Compile Include="IMyMotorAdvancedStator.cs" />
-    <Compile Include="IMyMotorBase.cs" />
-    <Compile Include="IMyMotorStator.cs" />
-    <Compile Include="IMyMotorSuspension.cs" />
-    <Compile Include="IMyOreDetector.cs" />
-    <Compile Include="IMyOxygenFarm.cs" />
-    <Compile Include="IMyOxygenGenerator.cs" />
-    <Compile Include="IMyOxygenTank.cs" />
-    <Compile Include="IMyPistonBase.cs" />
-    <Compile Include="IMyProductionBlock.cs" />
-    <Compile Include="IMyProgrammableBlock.cs" />
-    <Compile Include="IMyProjector.cs" />
-    <Compile Include="IMyRadioAntenna.cs" />
-    <Compile Include="IMyReactor.cs" />
-    <Compile Include="IMyRefinery.cs" />
-    <Compile Include="IMyReflectorLight.cs" />
-    <Compile Include="IMyRemoteControl.cs" />
-    <Compile Include="IMySensorBlock.cs" />
-    <Compile Include="IMyShipConnector.cs" />
-    <Compile Include="IMyShipController.cs" />
-    <Compile Include="IMyShipDrill.cs" />
-    <Compile Include="IMyShipGrinder.cs" />
-    <Compile Include="IMyShipMergeBlock.cs" />
-    <Compile Include="IMyShipToolBase.cs" />
-    <Compile Include="IMyShipWelder.cs" />
-    <Compile Include="IMySlimBlock.cs" />
-    <Compile Include="IMySmallGatlingGun.cs" />
-    <Compile Include="IMySmallMissileLauncher.cs" />
-    <Compile Include="IMySmallMissileLauncherReload.cs" />
-    <Compile Include="IMySolarPanel.cs" />
-    <Compile Include="IMySoundBlock.cs" />
-    <Compile Include="IMySpaceBall.cs" />
-    <Compile Include="IMyTerminalBlock.cs" />
-    <Compile Include="IMyTextPanel.cs" />
-    <Compile Include="IMyThrust.cs" />
-    <Compile Include="IMyTimerBlock.cs" />
-    <Compile Include="IMyUpgradableBlock.cs" />
-    <Compile Include="IMyUpgradeModule.cs" />
-    <Compile Include="IMyUserControllableGun.cs" />
-    <Compile Include="IMyVirtualMass.cs" />
-    <Compile Include="IMyWarhead.cs" />
-    <Compile Include="ITerminalAction.cs" />
-    <Compile Include="ITerminalProperty.cs" />
-    <Compile Include="MyGridProgram.cs" />
-    <Compile Include="PistonStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TerminalActionParameter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
