@@ -20,6 +20,10 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             get
             {
+                if (_Items == null)
+                {
+                    return false;
+                }
                 return _Items.Count > 0;
             }
         }
