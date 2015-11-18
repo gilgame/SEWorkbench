@@ -1,5 +1,28 @@
 MIT License (MIT)
 
+
+For the code copied from SharpDevelop & NRefactory
+
+	Copyright 2002-2012 by
+
+		AlphaSierraPapa, Christoph Wille
+		Vordernberger Strasse 27/8
+		A-8700 Leoben
+		Austria
+
+		email: office@alphasierrapapa.com
+		court of jurisdiction: Landesgericht Leoben
+
+
+Space Engineers Workbench
+
+	Copyright (c) 2015 by
+
+		Gilgame, Tim Fellows
+
+		email: tdfellows@gmail.com
+
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights

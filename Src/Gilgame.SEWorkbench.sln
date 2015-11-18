@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{6055D402-CC45-4BC8-ADA2-41418A649C7A}"
 	ProjectSection(SolutionItems) = preProject
-		..\Doc\copyright.txt = ..\Doc\copyright.txt
 		..\Doc\license.txt = ..\Doc\license.txt
 	EndProjectSection
 EndProject
@@ -21,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gilgame.SEWorkbench", "Gilgame.SEWorkbench\Gilgame.SEWorkbench.csproj", "{7AB6A095-38FC-40AB-9722-357E20DC00F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gilgame.SEWorkbench.Interop", "Gilgame.SEWorkbench.Interop\Gilgame.SEWorkbench.Interop.csproj", "{5A14548F-DCAF-4F03-A703-36C68FDC9EC5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gilgame.SEWorkbench.ScriptAPI", "Gilgame.SEWorkbench.ScriptAPI\Gilgame.SEWorkbench.ScriptAPI.csproj", "{3819B16F-4174-442A-A817-C7F695645228}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +43,6 @@ Global
 		{5A14548F-DCAF-4F03-A703-36C68FDC9EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A14548F-DCAF-4F03-A703-36C68FDC9EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A14548F-DCAF-4F03-A703-36C68FDC9EC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3819B16F-4174-442A-A817-C7F695645228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3819B16F-4174-442A-A817-C7F695645228}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3819B16F-4174-442A-A817-C7F695645228}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3819B16F-4174-442A-A817-C7F695645228}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
