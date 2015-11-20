@@ -1,19 +1,14 @@
-﻿using Sandbox.Common.ObjectBuilders;
-using Sandbox.Common.ObjectBuilders.Definitions;
-using Sandbox.Game.Entities;
-using Sandbox.Game.Entities.Cube;
-using Sandbox.ModAPI.Ingame;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
+using Sandbox.Common.ObjectBuilders;
+using Sandbox.Common.ObjectBuilders.Definitions;
 using VRage.ObjectBuilders;
 
 
 namespace Gilgame.SEWorkbench.Interop
 {
-    /// <summary>
-    /// Imports blueprint from file and converts to GridTerminalSystem
-    /// </summary>
     public class Blueprint
     {
         private static bool Initialized = false;
@@ -58,7 +53,6 @@ namespace Gilgame.SEWorkbench.Interop
                     {
                         foreach (MyObjectBuilder_CubeBlock block in grid.CubeBlocks)
                         {
-                            //block.ComponentContainer.SubtypeId
                             if (block is MyObjectBuilder_TerminalBlock)
                             {
                                 MyObjectBuilder_TerminalBlock terminalblock = (MyObjectBuilder_TerminalBlock)block;
@@ -76,6 +70,8 @@ namespace Gilgame.SEWorkbench.Interop
                             }
                         }
                     }
+
+                    // loaded.ShipBlueprints
                 }
             }
 
