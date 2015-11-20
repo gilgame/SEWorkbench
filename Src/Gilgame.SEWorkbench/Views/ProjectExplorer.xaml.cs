@@ -11,6 +11,8 @@ namespace Gilgame.SEWorkbench.Views
         private ViewModels.ProjectViewModel _Project;
 
         private EditorViewModel _Editor;
+
+        public event BlueprintSelectedEventHandler BlueprintSelected;
         
         public ProjectExplorer()
         {
@@ -74,12 +76,22 @@ namespace Gilgame.SEWorkbench.Views
 
         public void OpenSelected()
         {
-            if (_Project != null && _Editor != null)
+            if (_Project != null)
             {
-                ProjectItemViewModel selected = _Project.GetSelectedFile();
+                ProjectItemViewModel selected = _Project.SelectedItem;
                 if (selected != null)
                 {
-                    _Editor.OpenProjectFile(selected);
+                    if (selected.Type == Models.ProjectItemType.File && _Editor != null)
+                    {
+                        _Editor.OpenProjectFile(selected);
+                    }
+                    if (selected.Type == Models.ProjectItemType.Blueprints)
+                    {
+                        if (BlueprintSelected != null)
+                        {
+                            BlueprintSelected(this, new BlueprintSelectedEventArgs() { Item = selected });
+                        }
+                    }
                 }
             }
         }

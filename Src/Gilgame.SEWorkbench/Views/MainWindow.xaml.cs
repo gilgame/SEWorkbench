@@ -17,6 +17,8 @@ namespace Gilgame.SEWorkbench.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            tvProjectExplorer.BlueprintSelected += ProjectExplorer_BlueprintSelected;
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -38,6 +40,11 @@ namespace Gilgame.SEWorkbench.Views
             //{
             //    MessageBox.Show(error);
             //}
+        }
+
+        private void ProjectExplorer_BlueprintSelected(object sender, BlueprintSelectedEventArgs e)
+        {
+            tvBlueprint.SetDataContext(e.Item);
         }
 
         private void OpenFile(string filename)

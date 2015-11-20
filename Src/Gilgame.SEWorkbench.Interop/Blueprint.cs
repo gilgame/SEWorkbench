@@ -26,10 +26,10 @@ namespace Gilgame.SEWorkbench.Interop
             }
         }
 
-        public static void Import(string filename, out string name, out Dictionary<string, List<TerminalBlock>> blocks)
+        public static void Import(string filename, out string name, out Interop.Grid grid)
         {
             name = string.Empty;
-            blocks = new Dictionary<string, List<TerminalBlock>>();
+            grid = new Interop.Grid();
 
             MyObjectBuilder_Definitions loaded = null;
             if (File.Exists(filename))
@@ -46,9 +46,10 @@ namespace Gilgame.SEWorkbench.Interop
                 {
                     name = blueprints.Id.SubtypeId;
 
-                    foreach (MyObjectBuilder_CubeGrid grid in blueprints.CubeGrids)
+                    grid.Name = name;
+                    foreach (MyObjectBuilder_CubeGrid cubegrid in blueprints.CubeGrids)
                     {
-                        foreach (MyObjectBuilder_CubeBlock block in grid.CubeBlocks)
+                        foreach (MyObjectBuilder_CubeBlock block in cubegrid.CubeBlocks)
                         {
                             if (block is MyObjectBuilder_TerminalBlock)
                             {
@@ -59,13 +60,7 @@ namespace Gilgame.SEWorkbench.Interop
                                 // TODO Use MyTexts.GetString(MyStringId id) to get default blocks names from MyTexts.resx ?
                                 string customname = String.IsNullOrEmpty(terminalblock.CustomName) ? type : terminalblock.CustomName;
 
-                                if (!blocks.ContainsKey(type))
-                                {
-                                    List<TerminalBlock> list = new List<TerminalBlock>();
-                                    blocks.Add(type, list);
-                                }
-
-                                blocks[type].Add(new TerminalBlock() { Name = customname });
+                                grid.AddBlock(type, new TerminalBlock() { Name = customname });
                             }
                         }
                     }

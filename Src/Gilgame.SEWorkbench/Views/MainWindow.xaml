@@ -25,12 +25,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" MinWidth="150"/>
+            <ColumnDefinition Width="150" MinWidth="150"/>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" MinWidth="400"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="150" MinWidth="150"/>
         </Grid.ColumnDefinitions>
         <Grid Background="{StaticResource MainMenuBackground}"
-              Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+              Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="22" />
                 <RowDefinition Height="*" />
@@ -106,10 +108,14 @@
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="1" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
-        <TabControl Name="tcFileEditor" Margin="0,5,5,5"
+        <TabControl Name="tcFileEditor" Margin="0,5,0,5"
                     Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
-                    Grid.Column="2" Grid.Row="1"
-                     />
+                    Grid.Column="2" Grid.Row="1" />
+
+        <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
+                      Grid.Column="3" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
+        
+        <Views:BlueprintView x:Name="tvBlueprint" Margin="0,5,5,5" Grid.Column="4" Grid.Row="1" />
         <!--<TabControl Name="tcFileEditor" Margin="0,5,5,5" Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
                     ItemsSource="{Binding Items}"
                     Grid.Column="2" Grid.Row="1">

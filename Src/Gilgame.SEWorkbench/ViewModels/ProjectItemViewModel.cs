@@ -66,8 +66,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private Dictionary<string, List<Interop.TerminalBlock>> _Grid;
-        public Dictionary<string, List<Interop.TerminalBlock>> Grid
+        private GridItemViewModel _Grid;
+        public GridItemViewModel Grid
         {
             get
             {
@@ -78,6 +78,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _Grid)
                 {
                     _Grid = value;
+                    OnPropertyChanged("Grid");
                 }
             }
         }
@@ -179,10 +180,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             Model.Children.Add(item);
         }
 
-        public void AddChild(ProjectItem item, Dictionary<string, List<Interop.TerminalBlock>> grid)
+        public void AddChild(ProjectItem item, Interop.Grid grid)
         {
             ProjectItemViewModel vm = new ProjectItemViewModel(item, this);
-            vm.Grid = grid;
+            vm.Grid = CreateGridViewModel(grid);
 
             _Children.Add(vm);
             Model.Children.Add(item);
@@ -206,6 +207,26 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return false;
             }
             return Name.IndexOf(text, StringComparison.InvariantCultureIgnoreCase) > -1;
+        }
+
+        public void SetGrid(Interop.Grid grid)
+        {
+            Grid = CreateGridViewModel(grid);
+        }
+
+        private GridItemViewModel CreateGridViewModel(Interop.Grid grid)
+        {
+            GridItemViewModel root = new GridItemViewModel(new GridItem() { Name = grid.Name });
+            foreach(KeyValuePair<string, List<Interop.TerminalBlock>> pair in grid.Blocks)
+            {
+                GridItemViewModel node = new GridItemViewModel(new GridItem() { Name = pair.Key });
+                foreach(Interop.TerminalBlock block in pair.Value)
+                {
+                    node.AddChild(new GridItemViewModel(new GridItem() { Name = block.Name }));
+                }
+                root.AddChild(node);
+            }
+            return root;
         }
     }
 }

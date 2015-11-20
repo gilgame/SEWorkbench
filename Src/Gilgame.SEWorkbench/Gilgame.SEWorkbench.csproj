@@ -110,6 +110,7 @@
     <Compile Include="Converters\ItemTypeImageConverter.cs" />
     <Compile Include="Converters\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
+    <Compile Include="Models\GridItem.cs" />
     <Compile Include="Models\ProjectItem.cs" />
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />
@@ -129,11 +130,14 @@
     <Compile Include="ViewModels\Commands\RenameCommand.cs" />
     <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
+    <Compile Include="ViewModels\Comparers\GridItemComparer.cs" />
     <Compile Include="ViewModels\Comparers\ProjectItemComparer.cs" />
     <Compile Include="ViewModels\EditorViewModel.cs" />
+    <Compile Include="ViewModels\GridItemViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\ProjectItemViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
+    <Compile Include="Views\EventArgs\BlueprintSelectedEventArgs.cs" />
     <Compile Include="Views\BlueprintView.xaml.cs">
       <DependentUpon>BlueprintView.xaml</DependentUpon>
     </Compile>
