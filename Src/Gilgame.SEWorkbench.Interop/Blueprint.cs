@@ -13,9 +13,6 @@ namespace Gilgame.SEWorkbench.Interop
     {
         private static bool Initialized = false;
 
-        /// <summary>
-        /// Runs the SE init. Do this first
-        /// </summary>
         public static void RunInit()
         {
             if (!Initialized)
@@ -58,6 +55,8 @@ namespace Gilgame.SEWorkbench.Interop
                                 MyObjectBuilder_TerminalBlock terminalblock = (MyObjectBuilder_TerminalBlock)block;
 
                                 string type = GetBlockType(block.TypeId.ToString());
+
+                                // TODO Use MyTexts.GetString(MyStringId id) to get default blocks names from MyTexts.resx ?
                                 string customname = String.IsNullOrEmpty(terminalblock.CustomName) ? type : terminalblock.CustomName;
 
                                 if (!blocks.ContainsKey(type))
