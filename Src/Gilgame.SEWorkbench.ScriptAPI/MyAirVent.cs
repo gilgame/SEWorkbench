@@ -21,3 +21,4 @@ namespace Gilgame.SEWorkbench.ScriptAPI
         }
     }
 }
+//\n\s+\{\n\s+get\n\s+\{\n\s+throw new NotImplementedException\(\);\n\s+\}\n\s+\}

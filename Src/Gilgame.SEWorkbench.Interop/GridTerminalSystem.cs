@@ -11,7 +11,7 @@ namespace Gilgame.SEWorkbench.Interop
         private List<IMyTerminalBlock> _Blocks = new List<IMyTerminalBlock>();
         private List<IMyBlockGroup> _BlockGroups = new List<IMyBlockGroup>();
 
-        public void AddBlock(IMyTerminalBlock block)
+        internal void AddBlock(IMyTerminalBlock block)
         {
             if (block != null)
             {
@@ -19,7 +19,7 @@ namespace Gilgame.SEWorkbench.Interop
             }
         }
 
-        public void AddRange(List<IMyTerminalBlock> blocks)
+        internal void AddRange(List<IMyTerminalBlock> blocks)
         {
             _Blocks.AddRange(blocks);
         }
@@ -29,10 +29,7 @@ namespace Gilgame.SEWorkbench.Interop
             blocks.Clear();
             foreach (IMyTerminalBlock block in _Blocks)
             {
-                //if (block.IsAccessibleForProgrammableBlock)
-                {
-                    blocks.Add(block);
-                }
+                blocks.Add(block);
             }
         }
 
@@ -47,7 +44,7 @@ namespace Gilgame.SEWorkbench.Interop
             blocks.Clear();
             foreach (IMyTerminalBlock block in _Blocks)
             {
-                if (block is T /*&& block.IsAccessibleForProgrammableBlock*/)
+                if (block is T)
                 {
                     if (collect == null || collect.Invoke(block))
                     {
@@ -62,7 +59,7 @@ namespace Gilgame.SEWorkbench.Interop
             blocks.Clear();
             foreach (IMyTerminalBlock block in _Blocks)
             {
-                if (block.CustomName.ToLower().IndexOf(name.ToLower()) > -1 /*&& block.IsAccessibleForProgrammableBlock*/)
+                if (block.CustomName.ToLower().IndexOf(name.ToLower()) > -1)
                 {
                     if (collect == null || collect.Invoke(block))
                     {
@@ -76,7 +73,7 @@ namespace Gilgame.SEWorkbench.Interop
         {
             foreach (IMyTerminalBlock block in _Blocks)
             {
-                if (block.CustomName == name /*&& block.IsAccessibleForProgrammableBlock*/)
+                if (block.CustomName == name)
                 {
                     return block;
                 }

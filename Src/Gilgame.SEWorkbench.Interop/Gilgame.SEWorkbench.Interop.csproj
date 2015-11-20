@@ -76,7 +76,9 @@
     <Compile Include="Blueprint.cs" />
     <Compile Include="GridTerminalSystem.cs" />
     <Compile Include="InGameScript.cs" />
+    <Compile Include="MyTerminalBlock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TerminalBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ICSharpCode.AvalonEdit\ICSharpCode.AvalonEdit.csproj">

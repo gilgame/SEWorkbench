@@ -3,6 +3,7 @@ using System.Linq;
 using Gilgame.SEWorkbench.Models;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -65,8 +66,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private Interop.GridTerminalSystem _Grid;
-        public Interop.GridTerminalSystem Grid
+        private Dictionary<string, List<Interop.TerminalBlock>> _Grid;
+        public Dictionary<string, List<Interop.TerminalBlock>> Grid
         {
             get
             {
@@ -178,7 +179,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             Model.Children.Add(item);
         }
 
-        public void AddChild(ProjectItem item, Interop.GridTerminalSystem grid)
+        public void AddChild(ProjectItem item, Dictionary<string, List<Interop.TerminalBlock>> grid)
         {
             ProjectItemViewModel vm = new ProjectItemViewModel(item, this);
             vm.Grid = grid;

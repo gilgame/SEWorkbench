@@ -162,7 +162,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             if (parent.Type == ProjectItemType.Blueprints)
             {
                 string name;
-                Interop.GridTerminalSystem grid;
+                Dictionary<string, List<Interop.TerminalBlock>> grid;
 
                 Interop.Blueprint.Import(parent.Blueprint, out name, out grid);
 
@@ -574,7 +574,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 string fullpath = dialog.FileName;
 
                 string name;
-                Interop.GridTerminalSystem grid;
+                Dictionary<string, List<Interop.TerminalBlock>> grid;
 
                 // TODO gonna need to import on another thread
                 Interop.Blueprint.RunInit();
