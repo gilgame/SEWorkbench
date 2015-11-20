@@ -66,11 +66,14 @@
     <Reference Include="VRage.Library">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SpaceEngineers\Bin\VRage.Library.dll</HintPath>
     </Reference>
+    <Reference Include="VRage.Math, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin\VRage.Math.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blueprint.cs" />
-    <Compile Include="CodeEditor.cs" />
     <Compile Include="GridTerminalSystem.cs" />
     <Compile Include="InGameScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
