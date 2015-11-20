@@ -4,6 +4,7 @@ using Gilgame.SEWorkbench.Models;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Gilgame.SEWorkbench.Services;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -66,20 +67,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private GridItemViewModel _Grid;
-        public GridItemViewModel Grid
+        private ObservableSortedList<GridItemViewModel> _Grid;
+        public ObservableSortedList<GridItemViewModel> Grid
         {
             get
             {
                 return _Grid;
-            }
-            set
-            {
-                if (value != _Grid)
-                {
-                    _Grid = value;
-                    OnPropertyChanged("Grid");
-                }
             }
         }
 
@@ -183,7 +176,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void AddChild(ProjectItem item, Interop.Grid grid)
         {
             ProjectItemViewModel vm = new ProjectItemViewModel(item, this);
-            vm.Grid = CreateGridViewModel(grid);
+            vm.Grid.Add(CreateGridViewModel(grid));
 
             _Children.Add(vm);
             Model.Children.Add(item);
@@ -211,7 +204,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void SetGrid(Interop.Grid grid)
         {
-            Grid = CreateGridViewModel(grid);
+            GridItemViewModel vm = CreateGridViewModel(grid);
+
+            _Grid = new Services.ObservableSortedList<GridItemViewModel>(
+                new GridItemViewModel[] { vm },
+                new Comparers.GridItemComparer<GridItemViewModel>()
+            );
         }
 
         private GridItemViewModel CreateGridViewModel(Interop.Grid grid)

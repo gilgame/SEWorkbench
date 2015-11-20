@@ -51,7 +51,7 @@
 
                 <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" 
                           DockPanel.Dock="Bottom" ItemsSource="{Binding First}" HorizontalContentAlignment="Stretch"
-                          MouseDoubleClick="PojectTreeView_MouseDoubleClick">
+                          MouseDoubleClick="PojectTreeView_MouseDoubleClick" SelectedItemChanged="PojectTreeView_SelectedItemChanged">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">

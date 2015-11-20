@@ -85,13 +85,6 @@ namespace Gilgame.SEWorkbench.Views
                     {
                         _Editor.OpenProjectFile(selected);
                     }
-                    if (selected.Type == Models.ProjectItemType.Blueprints)
-                    {
-                        if (BlueprintSelected != null)
-                        {
-                            BlueprintSelected(this, new BlueprintSelectedEventArgs() { Item = selected });
-                        }
-                    }
                 }
             }
         }
@@ -107,6 +100,30 @@ namespace Gilgame.SEWorkbench.Views
         private void PojectTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             OpenSelected();
+        }
+
+        private void PojectTreeView_SelectedItemChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (_Project != null)
+            {
+                ProjectItemViewModel selected = _Project.GetSelectedBlueprint();
+                if (selected != null)
+                {
+                    BlueprintSelectedEventArgs args = new BlueprintSelectedEventArgs();
+                    if (selected.Type == Models.ProjectItemType.Blueprints)
+                    {
+                        args.Item = selected;
+                    }
+                    else
+                    {
+                        args.Item = null;
+                    }
+                    if (BlueprintSelected != null)
+                    {
+                        BlueprintSelected(this, args);
+                    }
+                }
+            }
         }
     }
 }

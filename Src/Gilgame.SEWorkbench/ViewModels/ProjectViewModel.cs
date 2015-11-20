@@ -248,19 +248,24 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private IEnumerable<ProjectItemViewModel> FindSelected(ProjectItemViewModel item)
         {
+            if (item == null)
+            {
+                yield return null;
+            }
+
             if (item.IsSelected)
             {
                 yield return item;
             }
 
-                foreach (ProjectItemViewModel child in item.Children)
+            foreach (ProjectItemViewModel child in item.Children)
+            {
+                foreach (ProjectItemViewModel match in FindSelected(child))
                 {
-                    foreach (ProjectItemViewModel match in FindSelected(child))
-                    {
-                        // TODO fix collection modified exception
-                        yield return match;
-                    }
+                    // TODO fix collection modified exception
+                    yield return match;
                 }
+            }
         }
 
         private ProjectItemViewModel GetParentFolder(ProjectItemViewModel child)
@@ -271,6 +276,39 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
 
             if (child.Parent.Type == ProjectItemType.Blueprints || child.Parent.Type == ProjectItemType.Folder)
+            {
+                return child.Parent;
+            }
+
+            return GetParentFolder(child.Parent);
+        }
+
+        public ProjectItemViewModel GetSelectedBlueprint()
+        {
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                selected = _RootItem;
+            }
+            if (selected.Type != ProjectItemType.Blueprints)
+            {
+                selected = GetParentBlueprint(selected);
+            }
+            if (selected == null)
+            {
+                return null;
+            }
+            return selected;
+        }
+
+        public ProjectItemViewModel GetParentBlueprint(ProjectItemViewModel child)
+        {
+            if (child == null || child.Parent == null)
+            {
+                return null;
+            }
+
+            if (child.Parent.Type == ProjectItemType.Blueprints)
             {
                 return child.Parent;
             }
@@ -290,6 +328,21 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void SelectionChanged()
         {
             OnPropertyChanged("SelectedItemType");
+
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                selected = _RootItem;
+            }
+
+            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
+            {
+                selected = GetParentFolder(selected);
+            }
+            if (selected == null)
+            {
+                return;
+            }
         }
 
         #region Search Command

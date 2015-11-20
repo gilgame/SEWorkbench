@@ -14,7 +14,15 @@ namespace Gilgame.SEWorkbench.Views
 
         public void SetDataContext(ProjectItemViewModel item)
         {
-            DataContext = item;
+            if (item == null)
+            {
+                DataContext = new Object();
+                tvPoject.Items.Clear();
+            }
+            else
+            {
+                DataContext = item;
+            }
         }
     }
 }
