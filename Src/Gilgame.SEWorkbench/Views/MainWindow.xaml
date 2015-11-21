@@ -68,7 +68,7 @@
                     <MenuItem Header="P_references" />
                 </MenuItem>
                 <MenuItem Header="_Project">
-                    <MenuItem Header="Add _Blueprint" />
+                    <MenuItem Header="_Run Script" InputGestureText="F5" Click="RunButton_Click" />
                 </MenuItem>
                 <MenuItem Header="_Window">
                     <MenuItem Header="_Close All" />

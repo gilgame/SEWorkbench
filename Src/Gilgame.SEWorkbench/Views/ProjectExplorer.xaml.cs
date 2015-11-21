@@ -104,6 +104,7 @@ namespace Gilgame.SEWorkbench.Views
 
         private void PojectTreeView_SelectedItemChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<object> e)
         {
+            // TODO logic needs to be moved to viewmodel
             if (_Project != null)
             {
                 ProjectItemViewModel selected = _Project.GetSelectedBlueprint();
