@@ -275,7 +275,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return null;
             }
 
-            if (child.Parent.Type == ProjectItemType.Blueprints || child.Parent.Type == ProjectItemType.Folder)
+            if (child.Parent.Type == ProjectItemType.Root || child.Parent.Type == ProjectItemType.Blueprints || child.Parent.Type == ProjectItemType.Folder)
             {
                 return child.Parent;
             }
@@ -553,10 +553,11 @@ namespace Gilgame.SEWorkbench.ViewModels
                 selected = _RootItem;
             }
 
-            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
+            if (selected.Type != ProjectItemType.Root && selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
             {
                 selected = GetParentFolder(selected);
             }
+
             if (selected == null)
             {
                 return;
@@ -568,7 +569,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             if (result == true)
             {
                 string name = dialog.ItemName;
-                string path = String.Format("{0}{1}{2}", selected.Path, Path.DirectorySeparatorChar, name);
+
+                // wtf
+                string path = String.Format("{0}{1}{2}", Path.GetDirectoryName(selected.Path), Path.DirectorySeparatorChar, name);
 
                 if (!Directory.Exists(path))
                 {

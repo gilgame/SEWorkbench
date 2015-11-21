@@ -67,10 +67,20 @@ namespace Gilgame.SEWorkbench.Interop
 
                     // loaded.ShipBlueprints
                 }
+
+                
+
+                //Save(@"C:\Users\Tim\Desktop\result\bp.sbc", loaded);
             }
 
             return;
         }
+
+        private static void Save(string path, MyObjectBuilder_Base blueprint)
+        {
+            MyObjectBuilderSerializer.SerializeXML(path, false, blueprint);
+        }
+
 
         private static string GetBlockType(string name)
         {
