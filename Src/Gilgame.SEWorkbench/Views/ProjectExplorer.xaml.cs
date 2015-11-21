@@ -107,9 +107,9 @@ namespace Gilgame.SEWorkbench.Views
             if (_Project != null)
             {
                 ProjectItemViewModel selected = _Project.GetSelectedBlueprint();
+                BlueprintSelectedEventArgs args = new BlueprintSelectedEventArgs();
                 if (selected != null)
                 {
-                    BlueprintSelectedEventArgs args = new BlueprintSelectedEventArgs();
                     if (selected.Type == Models.ProjectItemType.Blueprints)
                     {
                         args.Item = selected;
@@ -118,10 +118,10 @@ namespace Gilgame.SEWorkbench.Views
                     {
                         args.Item = null;
                     }
-                    if (BlueprintSelected != null)
-                    {
-                        BlueprintSelected(this, args);
-                    }
+                }
+                if (BlueprintSelected != null)
+                {
+                    BlueprintSelected(this, args);
                 }
             }
         }

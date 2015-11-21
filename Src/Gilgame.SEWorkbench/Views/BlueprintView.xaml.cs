@@ -17,11 +17,14 @@ namespace Gilgame.SEWorkbench.Views
             if (item == null)
             {
                 DataContext = new Object();
-                tvPoject.Items.Clear();
             }
             else
             {
                 DataContext = item;
+                if (!item.IsExpanded)
+                {
+                    item.IsExpanded = true;
+                }
             }
         }
     }
