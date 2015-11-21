@@ -33,11 +33,32 @@ namespace Gilgame.SEWorkbench.ViewModels.Comparers
                     }
                     else
                     {
-                        if (IsFolder(left))
+                        if (IsDirectory(left))
                         {
-                            if (IsFolder(right))
+                            if (IsDirectory(right))
                             {
-                                return left.Name.CompareTo(right.Name);
+                                if (left.Type == Models.ProjectItemType.Blueprints)
+                                {
+                                    if (right.Type == Models.ProjectItemType.Blueprints)
+                                    {
+                                        return left.Name.CompareTo(right.Name);
+                                    }
+                                    else
+                                    {
+                                        return -1;
+                                    }
+                                }
+                                else
+                                {
+                                    if (right.Type == Models.ProjectItemType.Blueprints)
+                                    {
+                                        return 1;
+                                    }
+                                    else
+                                    {
+                                        return left.Name.CompareTo(right.Name);
+                                    }
+                                }
                             }
                             else
                             {
@@ -46,7 +67,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Comparers
                         }
                         else
                         {
-                            if (IsFolder(right))
+                            if (IsDirectory(right))
                             {
                                 return 1;
                             }
@@ -64,7 +85,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Comparers
             }
         }
 
-        private bool IsFolder(ProjectItemViewModel item)
+        private bool IsDirectory(ProjectItemViewModel item)
         {
             switch (item.Type)
             {

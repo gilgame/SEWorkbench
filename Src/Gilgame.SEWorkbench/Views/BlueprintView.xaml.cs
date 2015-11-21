@@ -23,7 +23,10 @@ namespace Gilgame.SEWorkbench.Views
                 DataContext = item;
                 if (!item.IsExpanded)
                 {
-                    item.IsExpanded = true;
+                    if (item.Grid.Count > 0)
+                    {
+                        item.Grid[0].IsExpanded = true;
+                    }
                 }
             }
         }
