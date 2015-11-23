@@ -5,7 +5,6 @@
         xmlns:svc="clr-namespace:Gilgame.SEWorkbench.Services"
         Title="Space Engineers Workbench" Height="500" Width="900"
         MinHeight="400" MinWidth="600">
-    <!--xmlns:av="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"-->
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -65,48 +64,6 @@
                     </HierarchicalDataTemplate>
                 </Menu.Resources>
             </Menu>
-            
-            <!--<Menu Height="22" VerticalAlignment="Top" Background="Transparent" FontSize="11"
-                  Grid.Row="0">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_New">
-                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" Click="NewProjectButton_Click" />
-                        <MenuItem Header="_File..." InputGestureText="Ctrl+N" />
-                    </MenuItem>
-                    <MenuItem Header="_Open">
-                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" Click="OpenProjectButton_Click" />
-                    </MenuItem>
-                    <Separator />
-                    <MenuItem Header="_Close" />
-                    <Separator />
-                    <MenuItem Header="_Save" InputGestureText="Ctrl+S" Click="SaveButton_Click" />
-                    <MenuItem Header="Save _All" InputGestureText="Ctrl+Shift+S" />
-                    <Separator />
-                    <MenuItem Header="E_xit" InputGestureText="Alt+F4" />
-                </MenuItem>
-                <MenuItem Header="_Edit">
-                    <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" />
-                    <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" />
-                    <Separator />
-                    <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" />
-                    <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
-                    <MenuItem Header="_Paste" InputGestureText="Ctrl+P" />
-                    <MenuItem Header="_Delete" InputGestureText="Del" />
-                    <MenuItem Header="Select _All" InputGestureText="Ctrl+A" />
-                    <Separator />
-                    <MenuItem Header="P_references" />
-                </MenuItem>
-                <MenuItem Header="_Project">
-                    <MenuItem Header="_Run Script" InputGestureText="F5" Click="RunButton_Click" />
-                </MenuItem>
-                <MenuItem Header="_Window">
-                    <MenuItem Header="_Close All" />
-                    <Separator />
-                </MenuItem>
-                <MenuItem Header="_Help">
-                    <MenuItem Header="_About" />
-                </MenuItem>
-            </Menu>-->
 
             <StackPanel Margin="4,2,4,2" Orientation="Horizontal" Grid.Row="1">
                 <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
@@ -131,45 +88,17 @@
             </StackPanel>
         </Grid>
         
-        <Views:ProjectExplorer x:Name="tvProjectExplorer" Margin="5,5,0,5" Grid.Column="0" Grid.Row="1"
-                               MouseDoubleClick="ProjectExplorer_MouseDoubleClick"/>
+        <Views:ProjectExplorer x:Name="tvProjectExplorer" Margin="5,5,0,5" Grid.Column="0" Grid.Row="1" />
         
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="1" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
-        <TabControl Name="tcFileEditor" Margin="0,5,0,5"
-                    Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
-                    Grid.Column="2" Grid.Row="1" />
+        <TabControl Name="tcFileEditor" Margin="0,5,0,5" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding TabItems}" />
 
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="3" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
         
         <Views:BlueprintView x:Name="tvBlueprint" Margin="0,5,5,5" Grid.Column="4" Grid.Row="1" />
-        <!--<TabControl Name="tcFileEditor" Margin="0,5,5,5" Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}, Mode=OneWay}"
-                    ItemsSource="{Binding Items}"
-                    Grid.Column="2" Grid.Row="1">
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    --><!--<av:CodeTextEditor Margin="0,5,0,5" File="{Binding Filename}" />-->
-                    <!--<Interop:CodeEditorWrapper Margin="0,5,0,5" 
-                                               Completion="{Binding Completion}"
-                                               Filename="{Binding Filename}"
-                                               FontFamily="{Binding FontFamily}"
-                                               FontSize="{Binding FontSize}"
-                                               SyntaxHighlighting="{Binding SyntaxHighlighting}" />-->
 
-                    <!--<Interop:CodeEditorWrapper Margin="0,5,0,5"
-                                               Filename="{Binding Filename}"
-                                               FontFamily="{Binding FontFamily}"
-                                               FontSize="{Binding FontSize}"
-                                               SyntaxHighlighting="{Binding SyntaxHighlighting}" />--><!--
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>-->
     </Grid>
 </Window>

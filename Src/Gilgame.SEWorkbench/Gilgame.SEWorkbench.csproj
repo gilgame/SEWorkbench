@@ -116,6 +116,7 @@
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Models\GridItem.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\Page.cs" />
     <Compile Include="Models\ProjectItem.cs" />
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />

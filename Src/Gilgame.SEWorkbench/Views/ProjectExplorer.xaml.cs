@@ -83,7 +83,7 @@ namespace Gilgame.SEWorkbench.Views
                 {
                     if (selected.Type == Models.ProjectItemType.File && _Editor != null)
                     {
-                        _Editor.OpenProjectFile(selected);
+                        //Editor.OpenProjectFile(selected);
                     }
                 }
             }

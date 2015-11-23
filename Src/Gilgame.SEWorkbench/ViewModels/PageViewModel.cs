@@ -1,101 +1,94 @@
-﻿using ICSharpCode.AvalonEdit.Highlighting;
+﻿using System;
+
 using ICSharpCode.CodeCompletion;
-using System;
-using System.ComponentModel;
+using System.Windows.Media;
+using ICSharpCode.AvalonEdit.Highlighting;
+using System.Windows;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
-    public class PageViewModel : INotifyPropertyChanged
+    public class PageViewModel : BaseViewModel
     {
-        private string _Name;
+        private ICSharpCode.CodeCompletion.CSharpCompletion _Completion;
+
+        private Models.Page _Model;
+        public Models.Page Model
+        {
+            get
+            {
+                return _Model;
+            }
+            private set
+            {
+                _Model = value;
+            }
+        }
+
         public string Name
         {
             get
             {
-                return _Name;
+                return _Model.Name;
             }
-            set
+            private set
             {
-                if (value != _Name)
+                if (_Model.Name != value)
                 {
-                    if (_Name != value)
-                    {
-                        _Name = value;
-                        OnPropertyChanged("Name");
-                    }
+                    _Model.Name = value;
+                    OnPropertyChanged("Name");
                 }
             }
         }
 
-        private string _Filename = String.Empty;
         public string Filename
         {
             get
             {
-                return _Filename;
+                return _Model.Filename;
             }
             set
             {
-                if (_Filename != value)
+                if (_Model.Filename != value)
                 {
-                    _Filename = value;
+                    _Model.Filename = value;
                     OnPropertyChanged("Filename");
                 }
             }
         }
 
-        private System.Windows.Media.FontFamily _FontFamily = new System.Windows.Media.FontFamily("Consolas");
-        public System.Windows.Media.FontFamily FontFamily
+        private string _Header = "untitled";
+        public  string Header
         {
             get
             {
-                return _FontFamily;
+                return _Header;
             }
-            set
+            private set
             {
-                if (_FontFamily != value)
+                if (_Header != value)
                 {
-                    _FontFamily = value;
-                    OnPropertyChanged("FontFamily");
+                    _Header = value;
+                    OnPropertyChanged("Header");
                 }
             }
         }
 
-        private double _FontSize = 11;
-        public double Fontsize
+        private CodeTextEditor _Content;
+        public CodeTextEditor Content
         {
             get
             {
-                return _FontSize;
+                return _Content;
             }
-            set
+            private set
             {
-                if (_FontSize != value)
+                if (_Content != value)
                 {
-                    _FontSize = value;
-                    OnPropertyChanged("Fontsize");
+                    _Content = value;
+                    OnPropertyChanged("Content");
                 }
             }
         }
-
-        private IHighlightingDefinition _SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-        public IHighlightingDefinition SyntaxHighlighting
-        {
-            get
-            {
-                return _SyntaxHighlighting;
-            }
-            set
-            {
-                if (_SyntaxHighlighting != value)
-                {
-                    _SyntaxHighlighting = value;
-                    OnPropertyChanged("SyntaxHighlighting");
-                }
-            }
-        }
-
-        public ViewModels.EditorViewModel Editor { get; set; }
 
         private bool _IsSelected = false;
         public bool IsSelected
@@ -110,36 +103,39 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _IsSelected = value;
                     OnPropertyChanged("IsSelected");
-
-                    if (Editor != null)
-                    {
-                        Editor.SelectionChanged();
-                    }
                 }
             }
         }
 
-        private CSharpCompletion _Completion = new CSharpCompletion(new Completion.ScriptProvider());
-        public CSharpCompletion Completion
+        public PageViewModel(BaseViewModel parent, string name, string filename) : base(parent)
         {
-            get
-            {
-                return _Completion;
-            }
+            _Model = new Models.Page();
+            Name = name;
+            Filename = filename;
+
+            BuildEditor();
         }
 
-        public PageViewModel(string name)
+        private void BuildEditor()
         {
-            _Name = name;
-        }
+            _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
+            CodeTextEditor editor = new CodeTextEditor();
+            editor.FontFamily = new FontFamily("Consolas");
+            editor.FontSize = 11;
+            editor.Completion = _Completion;
+            //editor.OpenFile(Filename);
+            editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+            editor.Margin = new Thickness(0, 6, 0, 6);
+
+            ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
+                ConvertTabsToSpaces = true,
+                IndentationSize = 4,
+            };
+            editor.Options = options;
+
+            Content = editor;
         }
     }
 }

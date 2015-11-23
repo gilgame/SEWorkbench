@@ -19,6 +19,8 @@
     <Style TargetType="{x:Type TabControl}">
         <Style.Resources>
             <Style TargetType="{x:Type TabItem}">
+                <Setter Property="Header" Value="{Binding Header}"/>
+                <Setter Property="Content" Value="{Binding Content}"/>
                 <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                 <Setter Property="Margin" Value="0,0,0,1" />
                 <Setter Property="Template">

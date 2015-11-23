@@ -31,10 +31,53 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private ObservableCollection<PageViewModel> _TabItems = new ObservableCollection<PageViewModel>();
+        public ObservableCollection<PageViewModel> TabItems
+        {
+            get
+            {
+                return _TabItems;
+            }
+        }
+
+        private ProjectViewModel _Project;
+        public ProjectViewModel Project
+        {
+            get
+            {
+                return _Project;
+            }
+            private set
+            {
+                _Project = value;
+                OnPropertyChanged("Project");
+            }
+        }
+
+        private ProjectItemViewModel _Blueprint;
+        public ProjectItemViewModel Blueprint
+        {
+            get
+            {
+                return _Blueprint;
+            }
+            private set
+            {
+                _Blueprint = value;
+                OnPropertyChanged("Blueprint");
+            }
+        }
+
         public ProjectManagerViewModel(BaseViewModel parent) : base(parent)
         {
             BuildMenu();
+
+            _Project = new ProjectViewModel();
+
+            _TabItems.Add(new PageViewModel(this, "Test1", null));
         }
+
+        #region BuildMenu
 
         private void BuildMenu()
         {
@@ -105,5 +148,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 new MenuItemViewModel[] { file, edit, project, window, help }
             );
         }
+
+        #endregion
     }
 }
