@@ -115,6 +115,7 @@
     <Compile Include="Converters\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Models\GridItem.cs" />
+    <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\ProjectItem.cs" />
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />
@@ -122,10 +123,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Serialization\Convert.cs" />
+    <Compile Include="Services\MenuItemStyleSelector.cs" />
     <Compile Include="Services\MessageBox.cs" />
     <Compile Include="Services\NewFile.cs" />
     <Compile Include="Services\ObservableSortedList.cs" />
     <Compile Include="Services\TreeViewItemExtensions.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\AddBlueprintsCommand.cs" />
     <Compile Include="ViewModels\Commands\AddExistingFileCommand.cs" />
     <Compile Include="ViewModels\Commands\AddFileCommand.cs" />
@@ -138,8 +141,10 @@
     <Compile Include="ViewModels\Comparers\ProjectItemComparer.cs" />
     <Compile Include="ViewModels\EditorViewModel.cs" />
     <Compile Include="ViewModels\GridItemViewModel.cs" />
+    <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\ProjectItemViewModel.cs" />
+    <Compile Include="ViewModels\ProjectManagerViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="Views\EventArgs\BlueprintSelectedEventArgs.cs" />
     <Compile Include="Views\BlueprintView.xaml.cs">

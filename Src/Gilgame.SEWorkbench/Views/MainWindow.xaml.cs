@@ -18,11 +18,19 @@ namespace Gilgame.SEWorkbench.Views
 
         private Regex _LineColRegex = new Regex(@"\(([0-9]+),([0-9]+)\)");
 
+        private ProjectManagerViewModel _ProjectManager = new ProjectManagerViewModel(null);
+
         public MainWindow()
         {
             InitializeComponent();
+            SetDataContext();
 
             tvProjectExplorer.BlueprintSelected += ProjectExplorer_BlueprintSelected;
+        }
+
+        private void SetDataContext()
+        {
+            DataContext = _ProjectManager;
         }
 
         protected override void OnInitialized(EventArgs e)
