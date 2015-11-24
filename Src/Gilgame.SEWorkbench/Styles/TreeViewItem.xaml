@@ -13,6 +13,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
+
                     <Grid x:Name="itemGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="19" Width="Auto"/>
@@ -68,8 +69,6 @@
                             <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <!--<Setter Property="Background" TargetName="itemGrid" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>-->
                             <Setter TargetName="rcHighlighter" Property="Fill" Value="#FFE6EEFF" />
                             <Setter TargetName="rcHighlighter" Property="Stroke" Value="#FF7D9DE3" />
                         </Trigger>

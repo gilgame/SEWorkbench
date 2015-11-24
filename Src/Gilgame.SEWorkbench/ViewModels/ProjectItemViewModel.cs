@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Gilgame.SEWorkbench.Services;
+using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -28,12 +29,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private ProjectItem _ProjectItem;
+        private ProjectItem _Model;
         public ProjectItem Model
         {
             get
             {
-                return _ProjectItem;
+                return _Model;
             }
         }
 
@@ -41,21 +42,21 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             get
             {
-                return _ProjectItem.Name;
+                return _Model.Name;
             }
         }
         public ProjectItemType Type
         {
             get
             {
-                return _ProjectItem.Type;
+                return _Model.Type;
             }
         }
         public string Path
         {
             get
             {
-                return _ProjectItem.Path;
+                return _Model.Path;
             }
         }
 
@@ -63,7 +64,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             get
             {
-                return _ProjectItem.Blueprint;
+                return _Model.Blueprint;
             }
         }
 
@@ -137,7 +138,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _IsSelected = value;
                     OnPropertyChanged("IsSelected");
-                    _ProjectItem.Project.SelectionChanged();
+                    _Model.Project.RaiseSelectionChanged();
                 }
             }
         }
@@ -153,16 +154,16 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public ProjectItemViewModel(ProjectItem item) : this(item, null)
         {
-            // pass it on
+            _FileRequestedCommand = new Commands.FileRequestedCommand(this);
         }
 
         public ProjectItemViewModel(ProjectItem item, ProjectItemViewModel parent)
         {
-            _ProjectItem = item;
+            _Model = item;
             _Parent = parent;
 
             _Children = new Services.ObservableSortedList<ProjectItemViewModel>(
-                (from child in _ProjectItem.Children select new ProjectItemViewModel(child, this)).ToList<ProjectItemViewModel>(),
+                (from child in _Model.Children select new ProjectItemViewModel(child, this)).ToList<ProjectItemViewModel>(),
                 new Comparers.ProjectItemComparer<ProjectItemViewModel>()
             );
 
@@ -229,5 +230,23 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             return root;
         }
+
+        #region File Requested Command
+
+        private readonly ICommand _FileRequestedCommand;
+        public ICommand FileRequestedCommand
+        {
+            get
+            {
+                return _FileRequestedCommand;
+            }
+        }
+
+        public void RaiseFileRequested()
+        {
+            _Model.Project.RaiseFileRequested();
+        }
+
+        #endregion
     }
 }

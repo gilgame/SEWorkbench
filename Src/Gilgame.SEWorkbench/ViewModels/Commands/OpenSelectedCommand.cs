@@ -3,13 +3,13 @@ using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels.Commands
 {
-    public class RenameCommand : ICommand
+    public class OpenSelectedCommand : ICommand
     {
-        private readonly ProjectViewModel _Project;
+        private readonly ProjectManagerViewModel _ProjectManager;
 
-        public RenameCommand(ProjectViewModel project)
+        public OpenSelectedCommand(ProjectManagerViewModel manager)
         {
-            _Project = project;
+            _ProjectManager = manager;
         }
 
         public bool CanExecute(object parameter)
@@ -25,9 +25,9 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            if (_Project != null)
+            if (_ProjectManager != null)
             {
-                _Project.PerformRename();
+                _ProjectManager.PerformOpenSelected();
             }
         }
     }

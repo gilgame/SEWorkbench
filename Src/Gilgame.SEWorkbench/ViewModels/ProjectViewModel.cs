@@ -55,6 +55,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event EventHandler FileRequested;
+
         public ProjectViewModel(BaseViewModel parent) : base(parent)
         {
 
@@ -242,7 +244,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             ProjectItemViewModel selected = SelectedItem;
             if (selected == null)
             {
-                selected = _RootItem;
+                return null;
+            }
+            if (selected.Type == ProjectItemType.Root)
+            {
+                return null;
             }
             if (selected.Type != ProjectItemType.Blueprints)
             {
@@ -252,34 +258,39 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return null;
             }
-            return selected;
+            else
+            {
+                return selected;
+            }
         }
 
-        public ProjectItemViewModel GetParentBlueprint(ProjectItemViewModel child)
+        public ProjectItemViewModel GetParentBlueprint(ProjectItemViewModel item)
         {
-            if (child == null || child.Parent == null)
+            if (item == null)
             {
                 return null;
             }
-
-            if (child.Parent.Type == ProjectItemType.Blueprints)
+            if (item.Type == ProjectItemType.Root)
             {
-                return child.Parent;
+                return null;
             }
-
-            return GetParentFolder(child.Parent);
+            if (item.Type == ProjectItemType.Blueprints)
+            {
+                return item;
+            }
+            if (item.Parent == null)
+            {
+                return null;
+            }
+            else
+            {
+                return GetParentBlueprint(item.Parent);
+            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
+        public event EventHandler SelectionChanged;
 
-        public void SelectionChanged()
+        public void RaiseSelectionChanged()
         {
             OnPropertyChanged("SelectedItemType");
 
@@ -293,10 +304,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 selected = GetParentFolder(selected);
             }
-            if (selected == null)
-            {
-                return;
-            }
+
+            SelectionChanged(this, EventArgs.Empty);
         }
 
         #region New Project Command
@@ -821,5 +830,13 @@ namespace Gilgame.SEWorkbench.ViewModels
         }
 
         #endregion
+
+        public void RaiseFileRequested()
+        {
+            if (FileRequested != null)
+            {
+                FileRequested(this, EventArgs.Empty);
+            }
+        }
     }
 }

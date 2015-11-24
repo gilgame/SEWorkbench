@@ -23,6 +23,8 @@
     <Window.InputBindings>
         <KeyBinding Modifiers="Control+Shift" Key="O" Command="{Binding Project.OpenProjectCommand}" />
         <KeyBinding Modifiers="Control+Shift" Key="N" Command="{Binding Project.NewProjectCommand}" />
+        
+        <KeyBinding Key="F7" Command="{Binding OpenSelectedCommand}" />
     </Window.InputBindings>
     
     <Grid Background="#FF2B3B58">

@@ -46,8 +46,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private ProjectItemViewModel _Blueprint;
-        public ProjectItemViewModel Blueprint
+        private BlueprintViewModel _Blueprint;
+        public BlueprintViewModel Blueprint
         {
             get
             {
@@ -76,14 +76,36 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public ProjectManagerViewModel(BaseViewModel parent) : base(parent)
         {
+            Blueprint = new BlueprintViewModel(this);
+
             // create project object first
             Project = new ProjectViewModel(this);
+            Project.FileRequested += Project_FileRequested;
+            Project.SelectionChanged += Project_SelectionChanged;
+
+
             Editor = new EditorViewModel(this);
+
+            _OpenSelectedCommand = new Commands.OpenSelectedCommand(this);
 
             BuildMenu();
         }
 
-        #region BuildMenu
+        private void Project_SelectionChanged(object sender, EventArgs e)
+        {
+            ProjectItemViewModel item = Project.GetSelectedBlueprint();
+            if (item != null)
+            {
+                Blueprint.SetBlueprint(item.Grid);
+            }
+        }
+
+        private void Project_FileRequested(object sender, EventArgs e)
+        {
+            PerformOpenSelected();
+        }
+
+        #region Build Menu
 
         private void BuildMenu()
         {
@@ -153,6 +175,28 @@ namespace Gilgame.SEWorkbench.ViewModels
             _RootMenuItem = new ObservableCollection<MenuItemViewModel>(
                 new MenuItemViewModel[] { file, edit, project, window, help }
             );
+        }
+
+        #endregion
+
+        #region Open Selected
+
+        private readonly ICommand _OpenSelectedCommand;
+        public ICommand OpenSelectedCommand
+        {
+            get
+            {
+                return _OpenSelectedCommand;
+            }
+        }
+
+        public void PerformOpenSelected()
+        {
+            ProjectItemViewModel item = _Project.GetSelectedFile();
+            if (item != null)
+            {
+                _Editor.OpenItem(item);
+            }
         }
 
         #endregion

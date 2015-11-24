@@ -32,7 +32,7 @@
                 </Grid>
 
                 <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" DockPanel.Dock="Bottom"
-                          ItemsSource="{Binding Grid}">
+                          ItemsSource="{Binding First}">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">

@@ -3,13 +3,13 @@ using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels.Commands
 {
-    public class RenameCommand : ICommand
+    public class FileRequestedCommand : ICommand
     {
-        private readonly ProjectViewModel _Project;
+        private readonly ProjectItemViewModel _ProjectItem;
 
-        public RenameCommand(ProjectViewModel project)
+        public FileRequestedCommand(ProjectItemViewModel item)
         {
-            _Project = project;
+            _ProjectItem = item;
         }
 
         public bool CanExecute(object parameter)
@@ -25,10 +25,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            if (_Project != null)
-            {
-                _Project.PerformRename();
-            }
+            _ProjectItem.RaiseFileRequested();
         }
     }
 }
