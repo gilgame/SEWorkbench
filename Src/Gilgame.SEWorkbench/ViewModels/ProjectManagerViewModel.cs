@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -31,15 +32,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private ObservableCollection<PageViewModel> _TabItems = new ObservableCollection<PageViewModel>();
-        public ObservableCollection<PageViewModel> TabItems
-        {
-            get
-            {
-                return _TabItems;
-            }
-        }
-
         private ProjectViewModel _Project;
         public ProjectViewModel Project
         {
@@ -68,13 +60,27 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private EditorViewModel _Editor;
+        public EditorViewModel Editor
+        {
+            get
+            {
+                return _Editor;
+            }
+            private set
+            {
+                _Editor = value;
+                OnPropertyChanged("Editor");
+            }
+        }
+
         public ProjectManagerViewModel(BaseViewModel parent) : base(parent)
         {
+            // create project object first
+            Project = new ProjectViewModel(this);
+            Editor = new EditorViewModel(this);
+
             BuildMenu();
-
-            _Project = new ProjectViewModel();
-
-            _TabItems.Add(new PageViewModel(this, "Test1", null));
         }
 
         #region BuildMenu
@@ -92,13 +98,13 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 MenuItemViewModel mopen = new MenuItemViewModel(file, "Open");
                 {
-                    mopen.AddChild(new MenuItemViewModel(mopen, "Project...") { InputGestureText = "Ctrl+Shift+O" });
+                    mopen.AddChild(new MenuItemViewModel(mopen, "Project...", _Project.OpenProjectCommand) { InputGestureText = "Ctrl+Shift+O" });
                 }
                 file.AddChild(mopen);
 
                 file.AddSeparator();
 
-                file.AddChild(new MenuItemViewModel(file, "Close"));
+                file.AddChild(new MenuItemViewModel(file, "Close", _Project.CloseProjectCommand));
 
                 file.AddSeparator();
 

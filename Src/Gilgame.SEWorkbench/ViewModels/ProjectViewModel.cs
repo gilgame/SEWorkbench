@@ -1,15 +1,15 @@
 ﻿using System;
-using Gilgame.SEWorkbench.Models;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Windows.Input;
+
+using Gilgame.SEWorkbench.Models;
 using Gilgame.SEWorkbench.Services;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
-    public class ProjectViewModel : INotifyPropertyChanged
+    public class ProjectViewModel : BaseViewModel
     {
         private IEnumerator<ProjectItemViewModel> _MatchingItemEnumerator;
         private IEnumerator<ProjectItemViewModel> _SelectedItemEnumerator;
@@ -55,14 +55,24 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public ProjectViewModel()
+        public ProjectViewModel(BaseViewModel parent) : base(parent)
         {
+
+            _First = new Services.ObservableSortedList<ProjectItemViewModel>(
+                new ProjectItemViewModel[] { },
+                new Comparers.ProjectItemComparer<ProjectItemViewModel>()
+            );
+
             _SearchCommand = new Commands.SearchCommand(this);
 
             _AddCommand = new Commands.AddFileCommand(this);
             _AddBlueprintsCommand = new Commands.AddBlueprintsCommand(this);
             _AddExistingCommand = new Commands.AddExistingFileCommand(this);
             _AddFolderCommand = new Commands.AddFolderCommand(this);
+
+            _OpenProjectCommand = new Commands.OpenProjectCommand(this);
+            _NewProjectCommand = new Commands.NewProjectCommand(this);
+            _CloseProjectCommand = new Commands.CloseProjectCommand(this);
 
             _ViewCodeCommand = new Commands.ViewCodeCommand(this);
 
@@ -73,14 +83,19 @@ namespace Gilgame.SEWorkbench.ViewModels
         private ProjectItemViewModel _RootItem;
         public void SetRootItem(ProjectItem root)
         {
+            if (root == null)
+            {
+                _RootItem = null;
+                _First.Clear();
+                return;
+            }
+
             SetProject(root, this);
 
             _RootItem = new ProjectItemViewModel(root);
 
-            _First = new Services.ObservableSortedList<ProjectItemViewModel>(
-                new ProjectItemViewModel[] { _RootItem },
-                new Comparers.ProjectItemComparer<ProjectItemViewModel>()
-            );
+            _First.Clear();
+            _First.Add(_RootItem);
         }
 
         private void SetProject(ProjectItem parent, ProjectViewModel project)
@@ -108,32 +123,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
 
             File.WriteAllText(filename, serialized);
-        }
-
-        public void OpenProject()
-        {
-            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string initial = String.Format("{0}{1}{2}", documents, Path.DirectorySeparatorChar, "SEWorkbench");
-
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
-            {
-                DefaultExt = ".seproj",
-                Filter = "SE Workbench Project File (.seproj)|*.seproj",
-                Multiselect = false,
-                InitialDirectory = initial,
-            };
-
-            Nullable<bool> result = dialog.ShowDialog();
-            if (result == true)
-            {
-                string fullpath = dialog.FileName;
-                string serialized = File.ReadAllText(fullpath);
-
-                Project project = (Project)Serialization.Convert.ToObject(serialized);
-                SetRootItem(project.RootItem);
-
-                LoadBlueprints();
-            }
         }
 
         public ProjectItemViewModel GetSelectedFile()
@@ -175,41 +164,6 @@ namespace Gilgame.SEWorkbench.ViewModels
                     LoadBlueprints(child);
                 }
             }
-        }
-
-        public static ProjectViewModel NewProject()
-        {
-            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string initial = String.Format("{0}{1}{2}", documents, Path.DirectorySeparatorChar, "SEWorkbench");
-
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
-            {
-                DefaultExt = ".seproj",
-                Filter = "SE Workbench Project File (.seproj)|*.seproj",
-                InitialDirectory = initial,
-            };
-
-            Nullable<bool> result = dialog.ShowDialog();
-            if (result == true)
-            {
-                string fullpath = dialog.FileName;
-                string name = Path.GetFileNameWithoutExtension(fullpath);
-
-                ProjectViewModel project = new ViewModels.ProjectViewModel();
-
-                ProjectItem root = new ProjectItem()
-                {
-                    Name = name,
-                    Type = Models.ProjectItemType.Root,
-                    Path = fullpath,
-                    Project = project,
-                };
-                project.SetRootItem(root);
-
-                return project;
-            }
-
-            return null;
         }
 
         public ProjectItemViewModel SelectedItem
@@ -344,6 +298,110 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return;
             }
         }
+
+        #region New Project Command
+
+        private readonly ICommand _NewProjectCommand;
+        public ICommand NewProjectCommand
+        {
+            get
+            {
+                return _NewProjectCommand;
+            }
+        }
+
+        public void PerformNewProject()
+        {
+            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string initial = String.Format("{0}{1}{2}", documents, Path.DirectorySeparatorChar, "SEWorkbench");
+
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
+            {
+                DefaultExt = ".seproj",
+                Filter = "SE Workbench Project File (.seproj)|*.seproj",
+                InitialDirectory = initial,
+            };
+
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                string fullpath = dialog.FileName;
+                string name = Path.GetFileNameWithoutExtension(fullpath);
+
+                ProjectViewModel project = new ViewModels.ProjectViewModel(null);
+
+                ProjectItem root = new ProjectItem()
+                {
+                    Name = name,
+                    Type = Models.ProjectItemType.Root,
+                    Path = fullpath,
+                    Project = project,
+                };
+
+                SetRootItem(root);
+            }
+        }
+
+        #endregion
+
+        #region Open Project Command
+
+        private readonly ICommand _OpenProjectCommand;
+        public ICommand OpenProjectCommand
+        {
+            get
+            {
+                return _OpenProjectCommand;
+            }
+        }
+
+        public void PerformOpenProject()
+        {
+            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string initial = String.Format("{0}{1}{2}", documents, Path.DirectorySeparatorChar, "SEWorkbench");
+
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
+            {
+                DefaultExt = ".seproj",
+                Filter = "SE Workbench Project File (.seproj)|*.seproj",
+                Multiselect = false,
+                InitialDirectory = initial,
+            };
+
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                string fullpath = dialog.FileName;
+                string serialized = File.ReadAllText(fullpath);
+
+                Project project = (Project)Serialization.Convert.ToObject(serialized);
+                SetRootItem(project.RootItem);
+
+                LoadBlueprints();
+            }
+        }
+
+        #endregion
+
+        #region Close Project Command
+
+        private readonly ICommand _CloseProjectCommand;
+        public ICommand CloseProjectCommand
+        {
+            get
+            {
+                return _CloseProjectCommand;
+            }
+        }
+
+        public void PerformCloseProject()
+        {
+            // TODO check for unsaved files
+
+            SetRootItem(null);
+        }
+
+        #endregion
 
         #region Search Command
 

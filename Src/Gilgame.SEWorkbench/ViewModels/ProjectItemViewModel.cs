@@ -165,6 +165,11 @@ namespace Gilgame.SEWorkbench.ViewModels
                 (from child in _ProjectItem.Children select new ProjectItemViewModel(child, this)).ToList<ProjectItemViewModel>(),
                 new Comparers.ProjectItemComparer<ProjectItemViewModel>()
             );
+
+            _Grid = new Services.ObservableSortedList<GridItemViewModel>(
+                new GridItemViewModel[] { },
+                new Comparers.GridItemComparer<GridItemViewModel>()
+            );
         }
 
         public void AddChild(ProjectItem item)
@@ -206,10 +211,8 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             GridItemViewModel vm = CreateGridViewModel(grid);
 
-            _Grid = new Services.ObservableSortedList<GridItemViewModel>(
-                new GridItemViewModel[] { vm },
-                new Comparers.GridItemComparer<GridItemViewModel>()
-            );
+            _Grid.Clear();
+            _Grid.Add(vm);
         }
 
         private GridItemViewModel CreateGridViewModel(Interop.Grid grid)

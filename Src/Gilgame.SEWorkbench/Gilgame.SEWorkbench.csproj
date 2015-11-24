@@ -134,7 +134,10 @@
     <Compile Include="ViewModels\Commands\AddExistingFileCommand.cs" />
     <Compile Include="ViewModels\Commands\AddFileCommand.cs" />
     <Compile Include="ViewModels\Commands\AddFolderCommand.cs" />
+    <Compile Include="ViewModels\Commands\CloseProjectCommand.cs" />
     <Compile Include="ViewModels\Commands\DeleteCommand.cs" />
+    <Compile Include="ViewModels\Commands\NewProjectCommand.cs" />
+    <Compile Include="ViewModels\Commands\OpenProjectCommand.cs" />
     <Compile Include="ViewModels\Commands\RenameCommand.cs" />
     <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
