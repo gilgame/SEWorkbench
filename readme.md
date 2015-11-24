@@ -14,10 +14,6 @@ As this project is currently in an early alpha development stage, not all featur
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-2.png)
 
-Caveats
-=================================
-Currently, the project requires that Space Engineers is installed on the computer. As I'm not sure if SteamSDK.dll and steam_api.dll can be distributed with this project, steam_api.dll must be copied over to the working directory of the exe. The Visual Studio project will attempt to do this itself as long as Space Engineers is installed.
-
 Attribution
 =================================
 This project makes use of works derived from:
