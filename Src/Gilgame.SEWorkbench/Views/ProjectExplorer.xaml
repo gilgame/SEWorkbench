@@ -28,9 +28,6 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.Background>
-            <ImageBrush/>
-        </Grid.Background>
         <Border BorderThickness="1" CornerRadius="3,3,0,0" BorderBrush="#2B3B58" Margin="0">
             <DockPanel Background="#FF2B3B58">
                 <Label Content="Project Explorer" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
