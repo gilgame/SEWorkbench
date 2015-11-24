@@ -117,6 +117,7 @@
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Models\GridItem.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\OutputItem.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\ProjectItem.cs" />
     <Compile Include="Models\ProjectItemType.cs" />
@@ -146,10 +147,13 @@
     <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
     <Compile Include="ViewModels\Comparers\GridItemComparer.cs" />
+    <Compile Include="ViewModels\Comparers\OutputItemComparer.cs" />
     <Compile Include="ViewModels\Comparers\ProjectItemComparer.cs" />
     <Compile Include="ViewModels\EditorViewModel.cs" />
     <Compile Include="ViewModels\GridItemViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
+    <Compile Include="ViewModels\OutputItemViewModel.cs" />
+    <Compile Include="ViewModels\OutputViewModel.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\ProjectItemViewModel.cs" />
     <Compile Include="ViewModels\ProjectManagerViewModel.cs" />
@@ -166,6 +170,9 @@
     </Compile>
     <Compile Include="Views\NewItemDialog.xaml.cs">
       <DependentUpon>NewItemDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProjectExplorer.xaml.cs">
       <DependentUpon>ProjectExplorer.xaml</DependentUpon>
@@ -187,6 +194,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewItemDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OutputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
