@@ -40,15 +40,12 @@ namespace Gilgame.SEWorkbench.Services
             }
         }
 
-        public ObservableSortedList()
-            : this(4)
+        public ObservableSortedList() : this(4)
         {
-            // pass it on
         }
 
         public ObservableSortedList(IComparer<T> comparer) : this(4, comparer)
         {
-            // pass it on
         }
 
         public ObservableSortedList(int capacity = 4, IComparer<T> comparer = null)

@@ -1,12 +1,11 @@
-﻿using Gilgame.SEWorkbench.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Linq;
+
+using Gilgame.SEWorkbench.Models;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
-    public class GridItemViewModel : INotifyPropertyChanged
+    public class GridItemViewModel : BaseViewModel
     {
         private Services.ObservableSortedList<GridItemViewModel> _Children;
         public Services.ObservableSortedList<GridItemViewModel> Children
@@ -34,15 +33,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private GridItemViewModel _Parent;
-        public GridItemViewModel Parent
-        {
-            get
-            {
-                return _Parent;
-            }
-        }
-
         private bool _IsExpanded = false;
         public bool IsExpanded
         {
@@ -58,9 +48,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                     OnPropertyChanged("IsExpanded");
                 }
 
-                if (_IsExpanded && _Parent != null)
+                if (_IsExpanded && Parent != null)
                 {
-                    _Parent.IsExpanded = true;
+                    ((GridItemViewModel)Parent).IsExpanded = true;
                 }
             }
         }
@@ -80,13 +70,13 @@ namespace Gilgame.SEWorkbench.ViewModels
                     OnPropertyChanged("IsVisible");
                 }
 
-                if (_IsVisible && _Parent != null)
+                if (_IsVisible && Parent != null)
                 {
-                    _Parent.IsVisible = true;
+                    ((GridItemViewModel)Parent).IsVisible = true;
                 }
-                if (!_IsVisible && _Parent != null)
+                if (!_IsVisible && Parent != null)
                 {
-                    _Parent.IsVisible = false;
+                    ((GridItemViewModel)Parent).IsVisible = false;
                 }
             }
         }
@@ -108,24 +98,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
-
         public GridItemViewModel(GridItem item) : this(item, null)
         {
-            // pass it on
         }
 
-        public GridItemViewModel(GridItem item, GridItemViewModel parent)
+        public GridItemViewModel(GridItem item, GridItemViewModel parent) : base(parent)
         {
             _Model = item;
-            _Parent = parent;
 
             _Children = new Services.ObservableSortedList<GridItemViewModel>(
                 (from child in _Model.Children select new GridItemViewModel(child, this)).ToList<GridItemViewModel>(),

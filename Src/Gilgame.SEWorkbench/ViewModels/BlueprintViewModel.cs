@@ -1,5 +1,6 @@
-﻿using Gilgame.SEWorkbench.Services;
-using System;
+﻿using System;
+
+using Gilgame.SEWorkbench.Services;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {

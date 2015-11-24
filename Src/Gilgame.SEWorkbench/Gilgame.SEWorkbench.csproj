@@ -108,6 +108,7 @@
     <Compile Include="Completion\ScriptProvider.cs" />
     <Compile Include="Converters\BlueprintsCanBeAddedConverter.cs" />
     <Compile Include="Converters\CanBeRenamedConverter.cs" />
+    <Compile Include="Converters\EditorTabHeaderConverter.cs" />
     <Compile Include="Converters\FileCanBeAddedConverter.cs" />
     <Compile Include="Converters\FileSelectedConverter.cs" />
     <Compile Include="Converters\FolderCanBeAddedConverter.cs" />
@@ -153,7 +154,6 @@
     <Compile Include="ViewModels\ProjectItemViewModel.cs" />
     <Compile Include="ViewModels\ProjectManagerViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
-    <Compile Include="Views\EventArgs\BlueprintSelectedEventArgs.cs" />
     <Compile Include="Views\BlueprintView.xaml.cs">
       <DependentUpon>BlueprintView.xaml</DependentUpon>
     </Compile>
@@ -288,11 +288,6 @@
     <Resource Include="Icons\Blueprints.png" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <None Include="Lib\steam_api.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>(if exist "$(TargetDir)*old.pdb" del "$(TargetDir)*old.pdb") &amp; (if exist "$(TargetDir)*.pdb" ren "$(TargetDir)*.pdb" *.old.pdb)</PreBuildEvent>

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Gilgame.SEWorkbench.ViewModels;
-
 namespace Gilgame.SEWorkbench.ViewModels.Comparers
 {
     public class GridItemComparer<T> : IComparer<T>

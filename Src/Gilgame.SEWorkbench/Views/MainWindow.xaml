@@ -10,7 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/TabControl.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
             <LinearGradientBrush x:Key="MainMenuBackground" EndPoint="0,1">

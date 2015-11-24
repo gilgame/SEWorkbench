@@ -123,31 +123,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             _Children.Add(item);
         }
 
-        public void AddChild(string header)
-        {
-            AddChild(header, null, null, null);
-        }
-
-        public void AddChild(string header, ICommand command)
-        {
-            AddChild(header, null, null, command);
-        }
-
-        public void AddChild(string header, string name, ICommand command)
-        {
-            AddChild(header, name, null, command);
-        }
-
-        public void AddChild(string header, string name, string gesture, ICommand command)
-        {
-            MenuItemViewModel item = new MenuItemViewModel(this, header, command)
-            {
-                Name = name,
-                InputGestureText = gesture,
-            };
-            _Children.Add(item);
-        }
-
         public void AddSeparator()
         {
             _Children.Add(null);

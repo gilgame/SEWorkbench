@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Linq;
-using Gilgame.SEWorkbench.Models;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using Gilgame.SEWorkbench.Services;
+using System.Linq;
 using System.Windows.Input;
+
+using Gilgame.SEWorkbench.Models;
+using Gilgame.SEWorkbench.Services;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
-    public class ProjectItemViewModel : INotifyPropertyChanged
+    public class ProjectItemViewModel : BaseViewModel
     {
         private Services.ObservableSortedList<ProjectItemViewModel> _Children;
         public Services.ObservableSortedList<ProjectItemViewModel> Children
@@ -17,15 +16,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             get
             {
                 return _Children;
-            }
-        }
-
-        private ProjectItemViewModel _Parent;
-        public ProjectItemViewModel Parent
-        {
-            get
-            {
-                return _Parent;
             }
         }
 
@@ -45,6 +35,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return _Model.Name;
             }
         }
+
         public ProjectItemType Type
         {
             get
@@ -52,6 +43,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return _Model.Type;
             }
         }
+
         public string Path
         {
             get
@@ -92,9 +84,10 @@ namespace Gilgame.SEWorkbench.ViewModels
                     OnPropertyChanged("IsExpanded");
                 }
 
-                if (_IsExpanded && _Parent != null)
+                if (_IsExpanded && Parent != null)
                 {
-                    _Parent.IsExpanded = true;
+                    ProjectItemViewModel parent = (ProjectItemViewModel)Parent;
+                    parent.IsExpanded = true;
                 }
             }
         }
@@ -114,13 +107,14 @@ namespace Gilgame.SEWorkbench.ViewModels
                     OnPropertyChanged("IsVisible");
                 }
 
-                if (_IsVisible && _Parent != null)
+                ProjectItemViewModel parent = (ProjectItemViewModel)Parent;
+                if (_IsVisible && parent != null)
                 {
-                    _Parent.IsVisible = true;
+                    parent.IsVisible = true;
                 }
-                if (!_IsVisible && _Parent != null)
+                if (!_IsVisible && parent != null)
                 {
-                    _Parent.IsVisible = false;
+                    parent.IsVisible = false;
                 }
             }
         }
@@ -143,24 +137,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
-
         public ProjectItemViewModel(ProjectItem item) : this(item, null)
         {
             _FileRequestedCommand = new Commands.FileRequestedCommand(this);
         }
 
-        public ProjectItemViewModel(ProjectItem item, ProjectItemViewModel parent)
+        public ProjectItemViewModel(ProjectItem item, ProjectItemViewModel parent) : base(parent)
         {
             _Model = item;
-            _Parent = parent;
 
             _Children = new Services.ObservableSortedList<ProjectItemViewModel>(
                 (from child in _Model.Children select new ProjectItemViewModel(child, this)).ToList<ProjectItemViewModel>(),
@@ -190,7 +174,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void Remove()
         {
-            _Parent.RemoveChild(this);
+            ProjectItemViewModel parent = (ProjectItemViewModel)Parent;
+            parent.RemoveChild(this);
         }
 
         private void RemoveChild(ProjectItemViewModel child)

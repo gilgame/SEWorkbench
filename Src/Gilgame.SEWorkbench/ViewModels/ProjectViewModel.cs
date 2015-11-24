@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
 
@@ -55,7 +54,49 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public ProjectItemViewModel SelectedItem
+        {
+            get
+            {
+                return FindSelectedItem();
+            }
+        }
+
+        public Models.ProjectItemType SelectedItemType
+        {
+            get
+            {
+                return (SelectedItem == null) ? Models.ProjectItemType.None : SelectedItem.Type;
+            }
+        }
+
+        public event EventHandler SelectionChanged;
+        public void RaiseSelectionChanged()
+        {
+            OnPropertyChanged("SelectedItemType");
+
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                selected = _RootItem;
+            }
+
+            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
+            {
+                selected = GetParentFolder(selected);
+            }
+
+            SelectionChanged(this, EventArgs.Empty);
+        }
+
         public event EventHandler FileRequested;
+        public void RaiseFileRequested()
+        {
+            if (FileRequested != null)
+            {
+                FileRequested(this, EventArgs.Empty);
+            }
+        }
 
         public ProjectViewModel(BaseViewModel parent) : base(parent)
         {
@@ -168,22 +209,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public ProjectItemViewModel SelectedItem
-        {
-            get
-            {
-                return FindSelectedItem();
-            }
-        }
-
-        public Models.ProjectItemType SelectedItemType
-        {
-            get
-            {
-                return (SelectedItem == null) ? Models.ProjectItemType.None : SelectedItem.Type;
-            }
-        }
-
         private ProjectItemViewModel FindSelectedItem()
         {
             VerifySelectedItemEnumerator();
@@ -231,12 +256,13 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return null;
             }
 
-            if (child.Parent.Type == ProjectItemType.Root || child.Parent.Type == ProjectItemType.Blueprints || child.Parent.Type == ProjectItemType.Folder)
+            ProjectItemViewModel parent = (ProjectItemViewModel)child.Parent;
+            if (parent.Type == ProjectItemType.Root || parent.Type == ProjectItemType.Blueprints || parent.Type == ProjectItemType.Folder)
             {
-                return child.Parent;
+                return parent;
             }
 
-            return GetParentFolder(child.Parent);
+            return GetParentFolder(parent);
         }
 
         public ProjectItemViewModel GetSelectedBlueprint()
@@ -284,29 +310,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             else
             {
-                return GetParentBlueprint(item.Parent);
+                ProjectItemViewModel parent = (ProjectItemViewModel)item.Parent;
+                return GetParentBlueprint(parent);
             }
         }
 
-        public event EventHandler SelectionChanged;
-
-        public void RaiseSelectionChanged()
-        {
-            OnPropertyChanged("SelectedItemType");
-
-            ProjectItemViewModel selected = SelectedItem;
-            if (selected == null)
-            {
-                selected = _RootItem;
-            }
-
-            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
-            {
-                selected = GetParentFolder(selected);
-            }
-
-            SelectionChanged(this, EventArgs.Empty);
-        }
+        #region Commands
 
         #region New Project Command
 
@@ -438,7 +447,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             if (item.Parent != null)
             {
-                item.Parent.IsExpanded = true;
+                ProjectItemViewModel parent = (ProjectItemViewModel)item.Parent;
+                parent.IsExpanded = true;
             }
 
             // TODO switch search to filter (hide unmatched items), probably handled by the UI instead
@@ -831,12 +841,6 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #endregion
 
-        public void RaiseFileRequested()
-        {
-            if (FileRequested != null)
-            {
-                FileRequested(this, EventArgs.Empty);
-            }
-        }
+        #endregion
     }
 }

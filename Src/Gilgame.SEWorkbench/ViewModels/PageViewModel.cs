@@ -1,15 +1,16 @@
 ﻿using System;
-
-using ICSharpCode.CodeCompletion;
-using System.Windows.Media;
-using ICSharpCode.AvalonEdit.Highlighting;
 using System.Windows;
+using System.Windows.Media;
+
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.CodeCompletion;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
     public class PageViewModel : BaseViewModel
     {
-        private ICSharpCode.CodeCompletion.CSharpCompletion _Completion;
+        private CSharpCompletion _Completion;
+        private CodeTextEditor _Editor = new CodeTextEditor();
 
         private Models.Page _Model;
         public Models.Page Model
@@ -107,10 +108,28 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private bool _IsModified = false;
+        public bool IsModified
+        {
+            get
+            {
+                return _IsModified;
+            }
+            set
+            {
+                if (value != _IsModified)
+                {
+                    _IsModified = value;
+                    OnPropertyChanged("IsModified");
+                }
+            }
+        }
+
         public PageViewModel(BaseViewModel parent, string name, string filename) : base(parent)
         {
             _Model = new Models.Page();
             Name = name;
+            Header = name;
             Filename = filename;
 
             BuildEditor();
@@ -120,22 +139,35 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
 
-            CodeTextEditor editor = new CodeTextEditor();
-            editor.FontFamily = new FontFamily("Consolas");
-            editor.FontSize = 11;
-            editor.Completion = _Completion;
-            //editor.OpenFile(Filename);
-            editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-            editor.Margin = new Thickness(0, 6, 0, 6);
-
+            // TODO make text editor settings gui
+            _Editor.FontFamily = new FontFamily("Consolas");
+            _Editor.FontSize = 11;
+            _Editor.Completion = _Completion;
+            _Editor.OpenFile(Filename);
+            _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+            _Editor.Margin = new Thickness(0, 6, 0, 6);
+            
             ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
             {
                 ConvertTabsToSpaces = true,
                 IndentationSize = 4,
             };
-            editor.Options = options;
+            _Editor.Options = options;
 
-            Content = editor;
+            _Editor.TextChanged += Editor_TextChanged;
+
+            Content = _Editor;
+        }
+
+        private void Editor_TextChanged(object sender, EventArgs e)
+        {
+            IsModified = true;
+        }
+
+        public void Save()
+        {
+            _Editor.SaveFile();
+            IsModified = false;
         }
     }
 }

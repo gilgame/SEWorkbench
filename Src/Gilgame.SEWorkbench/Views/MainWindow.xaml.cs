@@ -1,12 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-using ICSharpCode.AvalonEdit.Highlighting;
-using ICSharpCode.CodeCompletion;
 
 using Gilgame.SEWorkbench.ViewModels;
 

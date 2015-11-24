@@ -35,6 +35,18 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged("HasChildren");
+            
+            if (e.NewItems != null)
+            {
+                if (e.NewItems.Count > 0)
+                {
+                    if (e.NewItems[0] is PageViewModel)
+                    {
+                        PageViewModel page = (PageViewModel)e.NewItems[0];
+                        page.IsSelected = true;
+                    }
+                }
+            }
         }
 
         public void OpenItem(ProjectItemViewModel item)
