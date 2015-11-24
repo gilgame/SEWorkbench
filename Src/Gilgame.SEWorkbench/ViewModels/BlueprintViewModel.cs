@@ -19,7 +19,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             _First = new Services.ObservableSortedList<GridItemViewModel>(
                 new GridItemViewModel[] { },
-                new Comparers.ProjectItemComparer<GridItemViewModel>()
+                new Comparers.GridItemComparer()
             );
         }
 

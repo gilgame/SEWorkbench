@@ -103,7 +103,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             _First = new Services.ObservableSortedList<ProjectItemViewModel>(
                 new ProjectItemViewModel[] { },
-                new Comparers.ProjectItemComparer<ProjectItemViewModel>()
+                new Comparers.ProjectItemComparer()
             );
 
             _SearchCommand = new Commands.SearchCommand(this);

@@ -74,17 +74,30 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private OutputViewModel _Output;
+        public OutputViewModel Output
+        {
+            get
+            {
+                return _Output;
+            }
+            private set
+            {
+                _Output = value;
+                OnPropertyChanged("Output");
+            }
+        }
+
         public ProjectManagerViewModel(BaseViewModel parent) : base(parent)
         {
-            Blueprint = new BlueprintViewModel(this);
-
             // create project object first
             Project = new ProjectViewModel(this);
             Project.FileRequested += Project_FileRequested;
             Project.SelectionChanged += Project_SelectionChanged;
 
-
+            Blueprint = new BlueprintViewModel(this);
             Editor = new EditorViewModel(this);
+            Output = new OutputViewModel(this);
 
             _OpenSelectedCommand = new Commands.OpenSelectedCommand(this);
 

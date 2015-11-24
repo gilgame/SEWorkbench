@@ -148,12 +148,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             _Children = new Services.ObservableSortedList<ProjectItemViewModel>(
                 (from child in _Model.Children select new ProjectItemViewModel(child, this)).ToList<ProjectItemViewModel>(),
-                new Comparers.ProjectItemComparer<ProjectItemViewModel>()
+                new Comparers.ProjectItemComparer()
             );
 
             _Grid = new Services.ObservableSortedList<GridItemViewModel>(
                 new GridItemViewModel[] { },
-                new Comparers.GridItemComparer<GridItemViewModel>()
+                new Comparers.GridItemComparer()
             );
         }
 
