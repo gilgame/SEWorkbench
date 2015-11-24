@@ -3,41 +3,31 @@ using System.Collections.Generic;
 
 namespace Gilgame.SEWorkbench.ViewModels.Comparers
 {
-    public class GridItemComparer<T> : IComparer<T>
+    public class GridItemComparer : IComparer<GridItemViewModel>
     {
-        int IComparer<T>.Compare(T a, T b)
+        public int Compare(GridItemViewModel left, GridItemViewModel right)
         {
-            if (a is GridItemViewModel)
+            if (left == null)
             {
-                GridItemViewModel left = (GridItemViewModel)(object)a;
-                GridItemViewModel right = (GridItemViewModel)(object)b;
-
-                if (left == null)
+                if (right == null)
                 {
-                    if (right == null)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return -1;
-                    }
+                    return 0;
                 }
                 else
                 {
-                    if (right == null)
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        return left.Name.CompareTo(right.Name);
-                    }
+                    return -1;
                 }
             }
             else
             {
-                return 0;
+                if (right == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return left.Name.CompareTo(right.Name);
+                }
             }
         }
     }
