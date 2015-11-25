@@ -119,6 +119,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             Editor = new EditorViewModel(this);
             Output = new OutputViewModel(this);
 
+            _NewProjectCommand = new Commands.NewProjectCommand(this);
+            _OpenProjectCommand = new Commands.OpenProjectCommand(this);
+            _CloseProjectCommand = new Commands.CloseProjectCommand(this);
+
             _SaveFileCommand = new Commands.SaveFileCommand(this);
             _SaveAllCommand = new Commands.SaveAllCommand(this);
 
@@ -127,6 +131,14 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             _CloseFileCommand = new Commands.CloseFileCommand(this);
             _CloseAllCommand = new Commands.CloseAllCommand(this);
+
+            _UndoCommand = new Commands.UndoCommand(this);
+            _RedoCommand = new Commands.RedoCommand(this);
+            _CutCommand = new Commands.CutCommand(this);
+            _CopyCommand = new Commands.CopyCommand(this);
+            _PasteCommand = new Commands.PasteCommand(this);
+            _DeleteCommand = new Commands.DeleteCommand(this);
+            _SelectAllCommand = new Commands.SelectAllCommand(this);
 
             BuildMenu();
         }
@@ -153,20 +165,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 MenuItemViewModel mnew = new MenuItemViewModel(file, "New");
                 {
-                    mnew.AddChild(new MenuItemViewModel(mnew, "Project...") { InputGestureText = "Ctrl+Shift+N" });
-                    mnew.AddChild(new MenuItemViewModel(mnew, "File...", _Project.AddCommand) { InputGestureText = "Ctrl+N" });
+                    mnew.AddChild(new MenuItemViewModel(mnew, "Project...", NewProjectCommand) { InputGestureText = "Ctrl+Shift+N" });
+                    mnew.AddChild(new MenuItemViewModel(mnew, "File...", Project.AddCommand) { InputGestureText = "Ctrl+N" });
                 }
                 file.AddChild(mnew);
 
                 MenuItemViewModel mopen = new MenuItemViewModel(file, "Open");
                 {
-                    mopen.AddChild(new MenuItemViewModel(mopen, "Project...", _Project.OpenProjectCommand) { InputGestureText = "Ctrl+Shift+O" });
+                    mopen.AddChild(new MenuItemViewModel(mopen, "Project...", OpenProjectCommand) { InputGestureText = "Ctrl+Shift+O" });
                 }
                 file.AddChild(mopen);
 
                 file.AddSeparator();
 
-                file.AddChild(new MenuItemViewModel(file, "Close", _Project.CloseProjectCommand));
+                file.AddChild(new MenuItemViewModel(file, "Close", CloseProjectCommand));
 
                 file.AddSeparator();
 
@@ -180,16 +192,16 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             MenuItemViewModel edit = new MenuItemViewModel(this, "Edit");
             {
-                edit.AddChild(new MenuItemViewModel(edit, "Undo") { InputGestureText = "Ctrl+Z" });
-                edit.AddChild(new MenuItemViewModel(edit, "Redo") { InputGestureText = "Ctrl+Y" });
+                edit.AddChild(new MenuItemViewModel(edit, "Undo", UndoCommand) { InputGestureText = "Ctrl+Z" });
+                edit.AddChild(new MenuItemViewModel(edit, "Redo", RedoCommand) { InputGestureText = "Ctrl+Y" });
 
                 edit.AddSeparator();
 
-                edit.AddChild(new MenuItemViewModel(edit, "Cut") { InputGestureText = "Ctrl+X" });
-                edit.AddChild(new MenuItemViewModel(edit, "Copy") { InputGestureText = "Ctrl+C" });
-                edit.AddChild(new MenuItemViewModel(edit, "Paste") { InputGestureText = "Ctrl+V" });
-                edit.AddChild(new MenuItemViewModel(edit, "Delete") { InputGestureText = "Del" });
-                edit.AddChild(new MenuItemViewModel(edit, "Select All") { InputGestureText = "Ctrl+A" });
+                edit.AddChild(new MenuItemViewModel(edit, "Cut", CutCommand) { InputGestureText = "Ctrl+X" });
+                edit.AddChild(new MenuItemViewModel(edit, "Copy", CopyCommand) { InputGestureText = "Ctrl+C" });
+                edit.AddChild(new MenuItemViewModel(edit, "Paste", PasteCommand) { InputGestureText = "Ctrl+V" });
+                edit.AddChild(new MenuItemViewModel(edit, "Delete") { InputGestureText = "Del", IsEnabled = false });
+                edit.AddChild(new MenuItemViewModel(edit, "Select All", SelectAllCommand) { InputGestureText = "Ctrl+A" });
 
                 edit.AddSeparator();
 
@@ -203,8 +215,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             MenuItemViewModel window = new MenuItemViewModel(this, "Window");
             {
-                window.AddChild(new MenuItemViewModel(window, "Close", _CloseFileCommand));
-                window.AddChild(new MenuItemViewModel(window, "Close All", _CloseAllCommand));
+                window.AddChild(new MenuItemViewModel(window, "Close", CloseFileCommand));
+                window.AddChild(new MenuItemViewModel(window, "Close All", CloseAllCommand) { IsEnabled = false });
                 window.AddSeparator();
                 // TODO dynamic menu to switch tabs
             }
@@ -221,7 +233,9 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #endregion
 
-        #region Open Selected
+        #region Commands
+
+        #region Open Selected Command
 
         private readonly ICommand _OpenSelectedCommand;
         public ICommand OpenSelectedCommand
@@ -424,10 +438,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
             }
 
-            foreach(PageViewModel page in Editor.Items)
-            {
-                Editor.Items.Remove(page);
-            }
+            Editor.Items.Clear();
         }
 
         #endregion
@@ -445,7 +456,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformUndo()
         {
-            // TODO implement
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                page.Content.Undo();
+            }
         }
 
         #endregion
@@ -463,7 +478,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformRedo()
         {
-            // TODO implement
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                page.Content.Redo();
+            }
         }
 
         #endregion
@@ -481,7 +500,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformCut()
         {
-            // TODO implement
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                page.Content.Cut();
+            }
         }
 
         #endregion
@@ -499,7 +522,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformCopy()
         {
-            // TODO implement
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                page.Content.Copy();
+            }
         }
 
         #endregion
@@ -517,7 +544,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformPaste()
         {
-            // TODO implement
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                page.Content.Paste();
+            }
         }
 
         #endregion
@@ -535,7 +566,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformDelete()
         {
-            // TODO implement
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                // TODO implement
+            }
         }
 
         #endregion
@@ -553,8 +588,110 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformSelectAll()
         {
-            // TODO implement
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                page.Content.SelectAll();
+            }
         }
+
+        #endregion
+
+        #region New Project Command
+
+        private readonly ICommand _NewProjectCommand;
+        public ICommand NewProjectCommand
+        {
+            get
+            {
+                return _NewProjectCommand;
+            }
+        }
+
+        public void PerformNewProject()
+        {
+            if (IsModified)
+            {
+                MessageBoxResult result = Services.MessageBox.ShowQuestion("One or more files have been modified. Would you like to save them now?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    PerformSaveAll();
+                }
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            Editor.Items.Clear();
+            Project.PerformNewProject();
+        }
+
+        #endregion
+
+        #region Open Project Command
+
+        private readonly ICommand _OpenProjectCommand;
+        public ICommand OpenProjectCommand
+        {
+            get
+            {
+                return _OpenProjectCommand;
+            }
+        }
+
+        public void PerformOpenProject()
+        {
+            if (IsModified)
+            {
+                MessageBoxResult result = Services.MessageBox.ShowQuestion("One or more files have been modified. Would you like to save them now?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    PerformSaveAll();
+                }
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            Editor.Items.Clear();
+            Project.PerformOpenProject();
+        }
+
+        #endregion
+
+        #region Close Project Command
+
+        private readonly ICommand _CloseProjectCommand;
+        public ICommand CloseProjectCommand
+        {
+            get
+            {
+                return _CloseProjectCommand;
+            }
+        }
+
+        public void PerformCloseProject()
+        {
+            if (IsModified)
+            {
+                MessageBoxResult result = Services.MessageBox.ShowQuestion("One or more files have been modified. Would you like to save them now?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    PerformSaveAll();
+                }
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            Project.PerformCloseProject();
+            Editor.Items.Clear();
+        }
+
+        #endregion
 
         #endregion
     }

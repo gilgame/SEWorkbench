@@ -5,11 +5,11 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 {
     public class OpenProjectCommand : ICommand
     {
-        private readonly ProjectViewModel _Project;
+        private readonly object _ViewModel;
 
-        public OpenProjectCommand(ProjectViewModel project)
+        public OpenProjectCommand(object viewmodel)
         {
-            _Project = project;
+            _ViewModel = viewmodel;
         }
 
         public bool CanExecute(object parameter)
@@ -25,9 +25,15 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            if (_Project != null)
+            if (_ViewModel is ProjectViewModel)
             {
-                _Project.PerformOpenProject();
+                ProjectViewModel vm = (ProjectViewModel)_ViewModel;
+                vm.PerformOpenProject();
+            }
+            if (_ViewModel is ProjectManagerViewModel)
+            {
+                ProjectManagerViewModel vm = (ProjectManagerViewModel)_ViewModel;
+                vm.PerformOpenProject();
             }
         }
     }

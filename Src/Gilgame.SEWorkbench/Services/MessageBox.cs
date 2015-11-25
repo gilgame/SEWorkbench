@@ -30,7 +30,7 @@ namespace Gilgame.SEWorkbench.Services
             return System.Windows.MessageBox.Show(
                 question,
                 "Space Engineers Workbench",
-                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxButton.YesNoCancel,
                 System.Windows.MessageBoxImage.Question
             );
         }

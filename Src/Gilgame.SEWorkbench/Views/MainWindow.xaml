@@ -24,8 +24,10 @@
         <KeyBinding Modifiers="Control" Key="S" Command="{Binding SaveFileCommand}" />
         <KeyBinding Modifiers="Control+Shift" Key="S" Command="{Binding SaveAllCommand}" />
 
-        <KeyBinding Modifiers="Control+Shift" Key="O" Command="{Binding Project.OpenProjectCommand}" />
-        <KeyBinding Modifiers="Control+Shift" Key="N" Command="{Binding Project.NewProjectCommand}" />
+        <KeyBinding Modifiers="Control+Shift" Key="O" Command="{Binding OpenProjectCommand}" />
+        <KeyBinding Modifiers="Control+Shift" Key="N" Command="{Binding NewProjectCommand}" />
+        
+        <KeyBinding Modifiers="Control" Key="N" Command="{Binding Project.AddCommand}" />
 
         <KeyBinding Key="F5" Command="{Binding RunScriptCommand}" />
         <KeyBinding Key="F7" Command="{Binding OpenSelectedCommand}" />

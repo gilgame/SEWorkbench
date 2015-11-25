@@ -142,6 +142,7 @@
     <Compile Include="ViewModels\Commands\CloseProjectCommand.cs" />
     <Compile Include="ViewModels\Commands\CopyCommand.cs" />
     <Compile Include="ViewModels\Commands\CutCommand.cs" />
+    <Compile Include="ViewModels\Commands\DeleteCommand.cs" />
     <Compile Include="ViewModels\Commands\DeleteItemCommand.cs" />
     <Compile Include="ViewModels\Commands\FileRequestedCommand.cs" />
     <Compile Include="ViewModels\Commands\NewProjectCommand.cs" />
