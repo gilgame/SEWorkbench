@@ -5,11 +5,11 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 {
     public class SearchCommand :ICommand
     {
-        private readonly ProjectViewModel _Project;
+        private readonly object _ViewModel;
 
-        public SearchCommand(ProjectViewModel project)
+        public SearchCommand(object viewmodel)
         {
-            _Project = project;
+            _ViewModel = viewmodel;
         }
 
         public bool CanExecute(object parameter)
@@ -25,7 +25,16 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            _Project.PerformSearch();
+            if (_ViewModel is ProjectViewModel)
+            {
+                ProjectViewModel vm = (ProjectViewModel)_ViewModel;
+                vm.PerformSearch();
+            }
+            if (_ViewModel is BlueprintViewModel)
+            {
+                BlueprintViewModel vm = (BlueprintViewModel)_ViewModel;
+                vm.PerformSearch();
+            }
         }
     }
 }

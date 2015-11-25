@@ -50,7 +50,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 if (_IsExpanded && Parent != null)
                 {
-                    ((GridItemViewModel)Parent).IsExpanded = true;
+                    GridItemViewModel parent = (GridItemViewModel)Parent;
+                    parent.IsExpanded = true;
                 }
             }
         }
@@ -96,6 +97,15 @@ namespace Gilgame.SEWorkbench.ViewModels
                     OnPropertyChanged("IsSelected");
                 }
             }
+        }
+
+        public bool NameContainsText(string text)
+        {
+            if (String.IsNullOrEmpty(text) || String.IsNullOrEmpty(Name))
+            {
+                return false;
+            }
+            return Name.IndexOf(text, StringComparison.InvariantCultureIgnoreCase) > -1;
         }
 
         public GridItemViewModel(GridItem item) : this(item, null)

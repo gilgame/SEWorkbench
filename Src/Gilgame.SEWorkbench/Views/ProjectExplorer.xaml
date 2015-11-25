@@ -43,7 +43,7 @@
                     </StackPanel>
 
                     <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
-                             KeyDown="SearchTextBox_KeyDown" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchTextBox_TextChanged" />
                 </Grid>
 
                 <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" 

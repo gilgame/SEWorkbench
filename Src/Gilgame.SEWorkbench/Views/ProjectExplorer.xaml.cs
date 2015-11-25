@@ -11,7 +11,7 @@ namespace Gilgame.SEWorkbench.Views
             InitializeComponent();
         }
 
-        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (DataContext is ViewModels.ProjectViewModel)
             {

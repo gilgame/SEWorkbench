@@ -209,7 +209,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 GridItemViewModel node = new GridItemViewModel(new GridItem() { Name = pair.Key });
                 foreach(Interop.TerminalBlock block in pair.Value)
                 {
-                    node.AddChild(new GridItemViewModel(new GridItem() { Name = block.Name }));
+                    node.AddChild(new GridItemViewModel(new GridItem() { Name = block.Name }, node));
                 }
                 root.AddChild(node);
             }
