@@ -21,6 +21,22 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public int Column
+        {
+            get
+            {
+                return _Model.Column;
+            }
+        }
+
+        public string Error
+        {
+            get
+            {
+                return _Model.Error;
+            }
+        }
+
         public string Message
         {
             get

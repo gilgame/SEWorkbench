@@ -6,6 +6,10 @@ namespace Gilgame.SEWorkbench.Models
     {
         public int Line { get; set; }
 
+        public int Column { get; set; }
+
+        public string Error { get; set; }
+
         public string Message { get; set; }
     }
 }
