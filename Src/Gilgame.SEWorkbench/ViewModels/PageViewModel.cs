@@ -4,12 +4,12 @@ using System.Windows.Media;
 
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.CodeCompletion;
+using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
     public class PageViewModel : BaseViewModel
     {
-        private CSharpCompletion _Completion;
         private CodeTextEditor _Editor = new CodeTextEditor();
 
         private Models.Page _Model;
@@ -133,6 +133,17 @@ namespace Gilgame.SEWorkbench.ViewModels
             Filename = filename;
 
             BuildEditor();
+
+            _CloseFileCommand = new Commands.CloseFileCommand(this);
+        }
+
+        public event FileEventHandler FileCloseRequested;
+        private void RaiseFileCloseRequested()
+        {
+            if (FileCloseRequested != null)
+            {
+                FileCloseRequested(this, new FileEventArgs(_Model.Filename));
+            }
         }
 
         private void BuildEditor()
@@ -167,5 +178,23 @@ namespace Gilgame.SEWorkbench.ViewModels
             _Editor.SaveFile();
             IsModified = false;
         }
+
+        #region Close File Command
+
+        private ICommand _CloseFileCommand;
+        public ICommand CloseFileCommand
+        {
+            get
+            {
+                return _CloseFileCommand;
+            }
+        }
+
+        public void PerformCloseFile()
+        {
+            RaiseFileCloseRequested();
+        }
+
+        #endregion
     }
 }

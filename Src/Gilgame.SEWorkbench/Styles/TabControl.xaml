@@ -56,6 +56,13 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+                <Setter Property="ContextMenu">
+                    <Setter.Value>
+                        <ContextMenu>
+                            <MenuItem Header="Close" Command="{Binding .CloseFileCommand}" />
+                        </ContextMenu>
+                    </Setter.Value>
+                </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsSelected" Value="True">
                         <Setter Property="Foreground" Value="{StaticResource SelectedTabForegroundBrush}" />

@@ -5,11 +5,11 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 {
     public class CloseFileCommand : ICommand
     {
-        private readonly ProjectManagerViewModel _Manager;
+        private readonly object _ViewModel;
 
-        public CloseFileCommand(ProjectManagerViewModel project)
+        public CloseFileCommand(object viewmodel)
         {
-            _Manager = project;
+            _ViewModel = viewmodel;
         }
 
         public bool CanExecute(object parameter)
@@ -25,9 +25,15 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            if (_Manager != null)
+            if (_ViewModel is ProjectManagerViewModel)
             {
-                _Manager.PerformCloseFile();
+                ProjectManagerViewModel vm = (ProjectManagerViewModel)_ViewModel;
+                vm.PerformCloseFile();
+            }
+            if (_ViewModel is PageViewModel)
+            {
+                PageViewModel vm = (PageViewModel)_ViewModel;
+                vm.PerformCloseFile();
             }
         }
     }

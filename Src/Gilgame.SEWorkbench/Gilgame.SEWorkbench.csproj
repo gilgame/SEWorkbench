@@ -116,6 +116,7 @@
     <Compile Include="Converters\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Models\GridItem.cs" />
+    <Compile Include="Models\GridItemType.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\OutputItem.cs" />
     <Compile Include="Models\Page.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="ViewModels\Commands\CloseAllCommand.cs" />
     <Compile Include="ViewModels\Commands\CloseFileCommand.cs" />
     <Compile Include="ViewModels\Commands\CloseProjectCommand.cs" />
+    <Compile Include="ViewModels\Commands\CloseViewCommand.cs" />
     <Compile Include="ViewModels\Commands\CopyCommand.cs" />
     <Compile Include="ViewModels\Commands\CutCommand.cs" />
     <Compile Include="ViewModels\Commands\DeleteCommand.cs" />

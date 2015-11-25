@@ -12,7 +12,13 @@ namespace Gilgame.SEWorkbench.Views
         public MainWindow()
         {
             InitializeComponent();
+            RegisterEvents();
             SetDataContext();
+        }
+
+        private void RegisterEvents()
+        {
+            _ProjectManager.CloseViewRequested += ProjectManager_CloseViewRequested;
         }
 
         private void SetDataContext()
@@ -32,6 +38,11 @@ namespace Gilgame.SEWorkbench.Views
             }
 
             base.OnClosing(e);
+        }
+
+        private void ProjectManager_CloseViewRequested(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

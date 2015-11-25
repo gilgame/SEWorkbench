@@ -141,7 +141,18 @@ namespace Gilgame.SEWorkbench.ViewModels
             _DeleteCommand = new Commands.DeleteCommand(this);
             _SelectAllCommand = new Commands.SelectAllCommand(this);
 
+            _CloseViewCommand = new Commands.CloseViewCommand(this);
+
             BuildMenu();
+        }
+
+        public event EventHandler CloseViewRequested;
+        private void RaiseCloseViewRequested()
+        {
+            if (CloseViewRequested != null)
+            {
+                CloseViewRequested(this, EventArgs.Empty);
+            }
         }
 
         public bool HandleClosing()
@@ -178,6 +189,11 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void Project_FileRequested(object sender, EventArgs e)
         {
             PerformOpenSelected();
+        }
+
+        private void Page_CloseFileRequested(object sender, FileEventArgs e)
+        {
+            PerformCloseFile(e.Path);
         }
 
         #region Build Menu
@@ -283,7 +299,10 @@ namespace Gilgame.SEWorkbench.ViewModels
                     }
                 }
 
-                _Editor.OpenItem(item);
+                PageViewModel newpage = new PageViewModel(this, item.Name, item.Path);
+                newpage.FileCloseRequested += Page_CloseFileRequested;
+
+                Editor.Items.Add(newpage);
             }
         }
 
@@ -437,6 +456,30 @@ namespace Gilgame.SEWorkbench.ViewModels
                         return;
                     }
                 }
+                page.FileCloseRequested -= Page_CloseFileRequested;
+
+                Editor.Items.Remove(page);
+            }
+        }
+
+        public void PerformCloseFile(string path)
+        {
+            PageViewModel page = Editor.Items.Where(i => i.Filename == path).Single();
+            if (page != null)
+            {
+                if (page.IsModified)
+                {
+                    MessageBoxResult result = Services.MessageBox.ShowQuestion("this file has been modified. Would you like to save it now?");
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        page.Save();
+                    }
+                    if (result == MessageBoxResult.Cancel)
+                    {
+                        return;
+                    }
+                }
+                page.FileCloseRequested -= Page_CloseFileRequested;
 
                 Editor.Items.Remove(page);
             }
@@ -721,6 +764,24 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             Project.PerformCloseProject();
             Editor.Items.Clear();
+        }
+
+        #endregion
+
+        #region Close View Command
+
+        private readonly ICommand _CloseViewCommand;
+        public ICommand CloseViewCommand
+        {
+            get
+            {
+                return _CloseViewCommand;
+            }
+        }
+
+        public void PerformCloseView()
+        {
+            RaiseCloseViewRequested();
         }
 
         #endregion

@@ -34,6 +34,8 @@
 
         <KeyBinding Key="F5" Command="{Binding RunScriptCommand}" />
         <KeyBinding Key="F7" Command="{Binding OpenSelectedCommand}" />
+        
+        <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding CloseViewCommand}" />
     </Window.InputBindings>
 
     <Grid Background="#FF2B3B58">
@@ -102,7 +104,7 @@
                     <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}" />
                     <MenuItem Header="Save _All" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAllCommand}" />
                     <Separator />
-                    <MenuItem Header="E_xit" InputGestureText="Alt+F4" />
+                    <MenuItem Header="E_xit" InputGestureText="Alt+F4" Command="{Binding CloseViewCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Edit">
                     <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoCommand}" />
@@ -120,7 +122,8 @@
                     <MenuItem Header="_Run Script" InputGestureText="F5" Command="{Binding RunScriptCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Window">
-                    <MenuItem Header="_Close All" Command="{Binding CloseAllCommand}" />
+                    <MenuItem Header="_Close" Command="{Binding CloseFileCommand}" />
+                    <MenuItem Header="Close _All" Command="{Binding CloseAllCommand}" />
                     <Separator />
                 </MenuItem>
                 <MenuItem Header="_Help">
