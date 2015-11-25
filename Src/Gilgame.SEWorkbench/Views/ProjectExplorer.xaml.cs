@@ -20,5 +20,15 @@ namespace Gilgame.SEWorkbench.Views
                 project.SearchCommand.Execute(null);
             }
         }
+
+        private void ProjectExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is ViewModels.ProjectViewModel)
+            {
+                ViewModels.ProjectViewModel project = (ViewModels.ProjectViewModel)DataContext;
+
+                project.RaiseFileRequested();
+            }
+        }
     }
 }

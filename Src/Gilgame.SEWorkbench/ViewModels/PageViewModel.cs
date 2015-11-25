@@ -137,12 +137,10 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void BuildEditor()
         {
-            _Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
-
             // TODO make text editor settings gui
             _Editor.FontFamily = new FontFamily("Consolas");
             _Editor.FontSize = 11;
-            _Editor.Completion = _Completion;
+            _Editor.Completion = EditorViewModel.Completion;
             _Editor.OpenFile(Filename);
             _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
             _Editor.Margin = new Thickness(0, 6, 0, 6);

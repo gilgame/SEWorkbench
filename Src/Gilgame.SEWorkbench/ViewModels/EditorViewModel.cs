@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.CodeCompletion;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -41,6 +42,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return null;
             }
         }
+
+        public static readonly CSharpCompletion Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
 
         public EditorViewModel(BaseViewModel parent) : base(parent)
         {

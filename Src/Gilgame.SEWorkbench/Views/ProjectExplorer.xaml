@@ -47,17 +47,14 @@
                 </Grid>
 
                 <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" 
-                          DockPanel.Dock="Bottom" ItemsSource="{Binding First}" HorizontalContentAlignment="Stretch">
+                          DockPanel.Dock="Bottom" ItemsSource="{Binding First}" HorizontalContentAlignment="Stretch"
+                          MouseDoubleClick="ProjectExplorer_MouseDoubleClick">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger  EventName="PreviewMouseRightButtonDown">
                                         <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
-                                    </i:EventTrigger>
-                                    <i:EventTrigger EventName="MouseDoubleClick">
-                                        <!-- why the fuck cant i get this to work -->
-                                        <i:InvokeCommandAction Command="{Binding FileRequestedCommand}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <Image Width="17" Height="17" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
