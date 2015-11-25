@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Gilgame.SEWorkbench.Views.OutputView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="OutputView" Height="300" Width="300">
+        Title="OutputView" Height="300" Width="700">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -10,13 +10,21 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Background="#FF2B3B58">
-        <Border BorderThickness="1" CornerRadius="3,3,0,0" BorderBrush="#2B3B58" Margin="0">
+        <Border BorderThickness="1" CornerRadius="3,3,0,0" BorderBrush="#2B3B58" Margin="5">
             <DockPanel Background="#FF2B3B58">
-                <Label Content="Project Explorer" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
+                <Label Content="Error List" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
                        DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
 
-                <ListView Background="White" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1"
+                <ListView Background="White" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" ItemsSource="{Binding Items}"
                           DockPanel.Dock="Bottom" HorizontalContentAlignment="Stretch" SelectionMode="Single">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Line" DisplayMemberBinding="{Binding Line}" Width="50" />
+                            <GridViewColumn Header="Col" DisplayMemberBinding="{Binding Column}" Width="50" />
+                            <GridViewColumn Header="Error" DisplayMemberBinding="{Binding Error}" Width="90" />
+                            <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="450" />
+                        </GridView>
+                    </ListView.View>
                 </ListView>
             </DockPanel>
         </Border>
