@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 using Sandbox.Common.ObjectBuilders;
@@ -63,20 +62,13 @@ namespace Gilgame.SEWorkbench.Interop
                                 grid.AddBlock(type, new TerminalBlock() { Name = customname });
                             }
                         }
+                        return; // first grid only
                     }
-
-                    // loaded.ShipBlueprints
                 }
-
-                
-
-                //Save(@"C:\Users\Tim\Desktop\result\bp.sbc", loaded);
             }
-
-            return;
         }
 
-        private static void Save(string path, MyObjectBuilder_Base blueprint)
+        public static void Save(string path, MyObjectBuilder_Base blueprint)
         {
             MyObjectBuilderSerializer.SerializeXML(path, false, blueprint);
         }
