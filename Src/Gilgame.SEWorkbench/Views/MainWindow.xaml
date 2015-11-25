@@ -1,4 +1,7 @@
-﻿<Window xmlns:Interop="clr-namespace:Gilgame.SEWorkbench.Interop;assembly=Gilgame.SEWorkbench.Interop"  xmlns:CodeCompletion="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"  xmlns:Views="clr-namespace:Gilgame.SEWorkbench.Views"  x:Class="Gilgame.SEWorkbench.Views.MainWindow"
+﻿<Window xmlns:Interop="clr-namespace:Gilgame.SEWorkbench.Interop;assembly=Gilgame.SEWorkbench.Interop"
+        xmlns:CodeCompletion="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"
+        xmlns:Views="clr-namespace:Gilgame.SEWorkbench.Views"
+        x:Class="Gilgame.SEWorkbench.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Gilgame.SEWorkbench.ViewModels"

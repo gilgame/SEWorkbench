@@ -23,5 +23,15 @@ namespace Gilgame.SEWorkbench.Views
             tcFileEditor.DataContext = _ProjectManager.Editor;
             tvProjectExplorer.DataContext = _ProjectManager.Project;
         }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            if (!_ProjectManager.HandleClosing())
+            {
+                e.Cancel = true;
+            }
+
+            base.OnClosing(e);
+        }
     }
 }

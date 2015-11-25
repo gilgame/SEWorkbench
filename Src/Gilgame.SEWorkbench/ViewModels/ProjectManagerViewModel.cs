@@ -143,6 +143,23 @@ namespace Gilgame.SEWorkbench.ViewModels
             BuildMenu();
         }
 
+        public bool HandleClosing()
+        {
+            if (IsModified)
+            {
+                MessageBoxResult result = Services.MessageBox.ShowQuestion("One or more files have been modified. Would you like to save them now?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    PerformSaveAll();
+                }
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void Project_SelectionChanged(object sender, EventArgs e)
         {
             ProjectItemViewModel item = Project.GetSelectedBlueprint();
