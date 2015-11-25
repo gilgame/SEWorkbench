@@ -144,6 +144,9 @@
     <Compile Include="ViewModels\Commands\OpenProjectCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenSelectedCommand.cs" />
     <Compile Include="ViewModels\Commands\RenameCommand.cs" />
+    <Compile Include="ViewModels\Commands\RunScriptCommand.cs" />
+    <Compile Include="ViewModels\Commands\SaveAllCommand.cs" />
+    <Compile Include="ViewModels\Commands\SaveFileCommand.cs" />
     <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
     <Compile Include="ViewModels\Comparers\GridItemComparer.cs" />
