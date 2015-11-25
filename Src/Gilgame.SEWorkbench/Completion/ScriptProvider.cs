@@ -16,6 +16,9 @@ namespace Gilgame.SEWorkbench.Completion
                 "using System.Linq;",
                 "using System.Text;",
                 "using Sandbox.ModAPI.Ingame;",
+                "using Sandbox.ModAPI.Interfaces;",
+                "using VRageMath;",
+                "using VRage.Game;",
             };
 
             return String.Join(Environment.NewLine, usings.ToArray());
