@@ -66,14 +66,5 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
             }
         }
-
-        public void OpenItem(ProjectItemViewModel item)
-        {
-            if (item != null)
-            {
-                PageViewModel page = new PageViewModel(this, item.Name, item.Path);
-                Items.Add(page);
-            }
-        }
     }
 }
