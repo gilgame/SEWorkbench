@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 using Sandbox.Game.Gui;
-using Sandbox.ModAPI;
-using Sandbox.ModAPI.Ingame;
 using VRage.Compiler;
+using VRage.FileSystem;
 
 namespace Gilgame.SEWorkbench.Interop
 {
     public class InGameScript
     {
-        private Assembly _Assembly;
-        private IMyGridProgram _Instance;
+        private static bool _Initialized = false;
 
         private List<String> _CompileErrors = new List<string>();
         public List<String> CompileErrors
@@ -23,58 +22,51 @@ namespace Gilgame.SEWorkbench.Interop
             }
         }
 
-        public string LastError { get; private set; }
-
         public InGameScript(string program)
         {
-            Assembly temp = null;
-
-            MyGuiScreenEditor.CompileProgram(program, _CompileErrors, ref temp);
-
-            if (temp != null)
+            if (!_Initialized)
             {
-                try
-                {
-                    _Assembly = IlInjector.InjectCodeToAssembly("IngameScript_safe", temp, typeof(IlInjector).GetMethod("CountInstructions", BindingFlags.Public | BindingFlags.Static), typeof(IlInjector).GetMethod("CountMethodCalls", BindingFlags.Public | BindingFlags.Static));
-
-                    var type = _Assembly.GetType("Program");
-                    if (type != null)
-                    {
-                        IlInjector.RestartCountingInstructions(50000);
-                        IlInjector.RestartCountingMethods(10000);
-
-                        try
-                        {
-                            _Instance = Activator.CreateInstance(type) as IMyGridProgram;
-                            if (_Instance != null)
-                            {
-                                // success?
-                            }
-                        }
-                        catch (TargetInvocationException ex)
-                        {
-                            if (ex.InnerException != null)
-                            {
-                                string response = ex.InnerException.Message;
-                                if (LastError != response)
-                                {
-                                    LastError = response;
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string response = ex.Message;
-                    if (LastError != response)
-                    {
-                        LastError = response;
-                    }
-                }
+                Init();
             }
 
-            // InGameScript
+            Assembly temp = null;
+            MyGuiScreenEditor.CompileProgram(program, _CompileErrors, ref temp);
+        }
+
+        public static void Init()
+        {
+            InitIlChecker();
+            InitIlCompiler();
+
+            _Initialized = true;
+        }
+
+        private static void InitIlChecker()
+        {
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Ingame.IMyCubeBlock));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.Common.ObjectBuilders.Definitions.EnvironmentItemsEntry));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.ObjectBuilders.MyObjectBuilder_Base));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.Common.ObjectBuilders.MyObjectBuilder_AirVent));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRageMath.Vector3));
+        }
+
+        private static void InitIlCompiler()
+        {
+            Func<string, string> getPath = (x) => Path.Combine(MyFileSystem.ExePath, x);
+            IlCompiler.Options = new System.CodeDom.Compiler.CompilerParameters(
+                new string[] {
+                    "System.dll",
+                    "System.Xml.dll",
+                    "System.Core.dll",
+                    getPath("Sandbox.Game.dll"),
+                    getPath("Sandbox.Common.dll"),
+                    getPath("Sandbox.Graphics.dll"),
+                    getPath("VRage.dll"),
+                    getPath("VRage.Library.dll"),
+                    getPath("VRage.Math.dll"),
+                    getPath("VRage.Game.dll")
+                }
+            );
         }
     }
 }
