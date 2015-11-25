@@ -27,6 +27,21 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public PageViewModel SelectedItem
+        {
+            get
+            {
+                foreach(PageViewModel page in Items)
+                {
+                    if (page.IsSelected)
+                    {
+                        return page;
+                    }
+                }
+                return null;
+            }
+        }
+
         public EditorViewModel(BaseViewModel parent) : base(parent)
         {
             _Items.CollectionChanged += OnCollectionChanged;
