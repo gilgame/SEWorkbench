@@ -3,11 +3,11 @@ using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels.Commands
 {
-    public class DeleteCommand : ICommand
+    public class DeleteItemCommand : ICommand
     {
         private readonly ProjectViewModel _Project;
 
-        public DeleteCommand(ProjectViewModel project)
+        public DeleteItemCommand(ProjectViewModel project)
         {
             _Project = project;
         }

@@ -120,7 +120,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             _ViewCodeCommand = new Commands.ViewCodeCommand(this);
 
             _RenameCommand = new Commands.RenameCommand(this);
-            _DeleteCommand = new Commands.DeleteCommand(this);
+            _DeleteCommand = new Commands.DeleteItemCommand(this);
         }
 
         private ProjectItemViewModel _RootItem;
