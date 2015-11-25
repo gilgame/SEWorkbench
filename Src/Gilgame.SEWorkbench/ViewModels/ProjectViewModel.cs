@@ -628,6 +628,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformAddFolder()
         {
+            if (_RootItem == null)
+            {
+                return;
+            }
+
             ProjectItemViewModel selected = SelectedItem;
             if (selected == null)
             {
