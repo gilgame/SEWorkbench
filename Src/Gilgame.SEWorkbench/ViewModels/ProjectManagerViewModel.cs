@@ -161,74 +161,74 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void BuildMenu()
         {
-            MenuItemViewModel file = new MenuItemViewModel(this, "File");
-            {
-                MenuItemViewModel mnew = new MenuItemViewModel(file, "New");
-                {
-                    mnew.AddChild(new MenuItemViewModel(mnew, "Project...", NewProjectCommand) { InputGestureText = "Ctrl+Shift+N" });
-                    mnew.AddChild(new MenuItemViewModel(mnew, "File...", Project.AddCommand) { InputGestureText = "Ctrl+N" });
-                }
-                file.AddChild(mnew);
+            //MenuItemViewModel file = new MenuItemViewModel(this, "File");
+            //{
+            //    MenuItemViewModel mnew = new MenuItemViewModel(file, "New");
+            //    {
+            //        mnew.AddChild(new MenuItemViewModel(mnew, "Project...", NewProjectCommand) { InputGestureText = "Ctrl+Shift+N" });
+            //        mnew.AddChild(new MenuItemViewModel(mnew, "File...", Project.AddCommand) { InputGestureText = "Ctrl+N" });
+            //    }
+            //    file.AddChild(mnew);
 
-                MenuItemViewModel mopen = new MenuItemViewModel(file, "Open");
-                {
-                    mopen.AddChild(new MenuItemViewModel(mopen, "Project...", OpenProjectCommand) { InputGestureText = "Ctrl+Shift+O" });
-                }
-                file.AddChild(mopen);
+            //    MenuItemViewModel mopen = new MenuItemViewModel(file, "Open");
+            //    {
+            //        mopen.AddChild(new MenuItemViewModel(mopen, "Project...", OpenProjectCommand) { InputGestureText = "Ctrl+Shift+O" });
+            //    }
+            //    file.AddChild(mopen);
 
-                file.AddSeparator();
+            //    file.AddSeparator();
 
-                file.AddChild(new MenuItemViewModel(file, "Close", CloseProjectCommand));
+            //    file.AddChild(new MenuItemViewModel(file, "Close", CloseProjectCommand));
 
-                file.AddSeparator();
+            //    file.AddSeparator();
 
-                file.AddChild(new MenuItemViewModel(file, "Save", SaveFileCommand) { InputGestureText = "Ctrl+S" });
-                file.AddChild(new MenuItemViewModel(file, "Save All", SaveAllCommand) { InputGestureText = "Ctrl+Shift+S" });
+            //    file.AddChild(new MenuItemViewModel(file, "Save", SaveFileCommand) { InputGestureText = "Ctrl+S" });
+            //    file.AddChild(new MenuItemViewModel(file, "Save All", SaveAllCommand) { InputGestureText = "Ctrl+Shift+S" });
 
-                file.AddSeparator();
+            //    file.AddSeparator();
 
-                file.AddChild(new MenuItemViewModel(file, "Exit") { InputGestureText = "Alt+F4", IsEnabled = false });
-            }
+            //    file.AddChild(new MenuItemViewModel(file, "Exit") { InputGestureText = "Alt+F4", IsEnabled = false });
+            //}
 
-            MenuItemViewModel edit = new MenuItemViewModel(this, "Edit");
-            {
-                edit.AddChild(new MenuItemViewModel(edit, "Undo", UndoCommand) { InputGestureText = "Ctrl+Z" });
-                edit.AddChild(new MenuItemViewModel(edit, "Redo", RedoCommand) { InputGestureText = "Ctrl+Y" });
+            //MenuItemViewModel edit = new MenuItemViewModel(this, "Edit");
+            //{
+            //    edit.AddChild(new MenuItemViewModel(edit, "Undo", UndoCommand) { InputGestureText = "Ctrl+Z" });
+            //    edit.AddChild(new MenuItemViewModel(edit, "Redo", RedoCommand) { InputGestureText = "Ctrl+Y" });
 
-                edit.AddSeparator();
+            //    edit.AddSeparator();
 
-                edit.AddChild(new MenuItemViewModel(edit, "Cut", CutCommand) { InputGestureText = "Ctrl+X" });
-                edit.AddChild(new MenuItemViewModel(edit, "Copy", CopyCommand) { InputGestureText = "Ctrl+C" });
-                edit.AddChild(new MenuItemViewModel(edit, "Paste", PasteCommand) { InputGestureText = "Ctrl+V" });
-                edit.AddChild(new MenuItemViewModel(edit, "Delete") { InputGestureText = "Del", IsEnabled = false });
-                edit.AddChild(new MenuItemViewModel(edit, "Select All", SelectAllCommand) { InputGestureText = "Ctrl+A" });
+            //    edit.AddChild(new MenuItemViewModel(edit, "Cut", CutCommand) { InputGestureText = "Ctrl+X" });
+            //    edit.AddChild(new MenuItemViewModel(edit, "Copy", CopyCommand) { InputGestureText = "Ctrl+C" });
+            //    edit.AddChild(new MenuItemViewModel(edit, "Paste", PasteCommand) { InputGestureText = "Ctrl+V" });
+            //    edit.AddChild(new MenuItemViewModel(edit, "Delete") { InputGestureText = "Del", IsEnabled = false });
+            //    edit.AddChild(new MenuItemViewModel(edit, "Select All", SelectAllCommand) { InputGestureText = "Ctrl+A" });
 
-                edit.AddSeparator();
+            //    edit.AddSeparator();
 
-                edit.AddChild(new MenuItemViewModel(edit, "Settings") { IsEnabled = false });
-            }
+            //    edit.AddChild(new MenuItemViewModel(edit, "Settings") { IsEnabled = false });
+            //}
 
-            MenuItemViewModel project = new MenuItemViewModel(this, "Project");
-            {
-                project.AddChild(new MenuItemViewModel(project, "Run Script", RunScriptCommand) { InputGestureText = "F5" });
-            }
+            //MenuItemViewModel project = new MenuItemViewModel(this, "Project");
+            //{
+            //    project.AddChild(new MenuItemViewModel(project, "Run Script", RunScriptCommand) { InputGestureText = "F5" });
+            //}
 
-            MenuItemViewModel window = new MenuItemViewModel(this, "Window");
-            {
-                window.AddChild(new MenuItemViewModel(window, "Close", CloseFileCommand));
-                window.AddChild(new MenuItemViewModel(window, "Close All", CloseAllCommand) { IsEnabled = false });
-                window.AddSeparator();
-                // TODO dynamic menu to switch tabs
-            }
+            //MenuItemViewModel window = new MenuItemViewModel(this, "Window");
+            //{
+            //    window.AddChild(new MenuItemViewModel(window, "Close", CloseFileCommand));
+            //    window.AddChild(new MenuItemViewModel(window, "Close All", CloseAllCommand) { IsEnabled = false });
+            //    window.AddSeparator();
+            //    // TODO dynamic menu to switch tabs
+            //}
 
-            MenuItemViewModel help = new MenuItemViewModel(this, "Help");
-            {
-                help.AddChild(new MenuItemViewModel(help, "About") { IsEnabled = false });
-            }
+            //MenuItemViewModel help = new MenuItemViewModel(this, "Help");
+            //{
+            //    help.AddChild(new MenuItemViewModel(help, "About") { IsEnabled = false });
+            //}
 
-            _RootMenuItem = new ObservableCollection<MenuItemViewModel>(
-                new MenuItemViewModel[] { file, edit, project, window, help }
-            );
+            //_RootMenuItem = new ObservableCollection<MenuItemViewModel>(
+            //    new MenuItemViewModel[] { file, edit, project, window, help }
+            //);
         }
 
         #endregion

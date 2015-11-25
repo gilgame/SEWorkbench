@@ -52,7 +52,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Menu ItemsSource="{Binding RootMenuItem}" VerticalAlignment="Top" Background="Transparent" FontSize="11" Grid.Row="0" Margin="0,1,0,0">
+            <!--<Menu ItemsSource="{Binding RootMenuItem}" VerticalAlignment="Top" Background="Transparent" FontSize="11" Grid.Row="0" Margin="0,1,0,0">
                 <Menu.Resources>
                     <svc:MenuItemStyleSelector x:Key="mSelector" />
 
@@ -82,6 +82,47 @@
                         <TextBlock Text="{Binding Header}"/>
                     </HierarchicalDataTemplate>
                 </Menu.Resources>
+            </Menu>-->
+
+            <Menu ItemsSource="{Binding RootMenuItem}" VerticalAlignment="Top" Background="Transparent" FontSize="11" Grid.Row="0" Margin="0,1,0,0">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New">
+                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" Command="{Binding NewProjectCommand}" />
+                        <MenuItem Header="_File..." InputGestureText="Ctrl+N" Command="{Binding Project.AddCommand}" />
+                    </MenuItem>
+                    <MenuItem Header="_Open">
+                        <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" Command="{Binding OpenProjectCommand}" />
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="_Close" Command="{Binding CloseProjectCommand}" />
+                    <Separator />
+                    <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}" />
+                    <MenuItem Header="Save _All" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAllCommand}" />
+                    <Separator />
+                    <MenuItem Header="E_xit" InputGestureText="Alt+F4" />
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoCommand}" />
+                    <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Command="{Binding RedoCommand}" />
+                    <Separator />
+                    <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" Command="{Binding CutCommand}" />
+                    <MenuItem Header="_Copy" InputGestureText="Ctrl+C" Command="{Binding CopyCommand}" />
+                    <MenuItem Header="_Paste" InputGestureText="Ctrl+P" Command="{Binding PasteCommand}" />
+                    <MenuItem Header="_Delete" InputGestureText="Del" Command="{Binding DeleteCommand}" IsEnabled="False" />
+                    <MenuItem Header="Select _All" InputGestureText="Ctrl+A" Command="{Binding SelectAllCommand}" />
+                    <Separator />
+                    <MenuItem Header="P_references" IsEnabled="False" />
+                </MenuItem>
+                <MenuItem Header="_Project">
+                    <MenuItem Header="_Run Script" InputGestureText="F5" Command="{Binding RunScriptCommand}" />
+                </MenuItem>
+                <MenuItem Header="_Window">
+                    <MenuItem Header="_Close All" Command="{Binding CloseAllCommand}" />
+                    <Separator />
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" IsEnabled="False" />
+                </MenuItem>
             </Menu>
 
             <StackPanel Margin="4,2,4,2" Orientation="Horizontal" Grid.Row="1">
