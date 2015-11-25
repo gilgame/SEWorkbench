@@ -469,6 +469,10 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private IEnumerable<ProjectItemViewModel> FindMatches(string text, ProjectItemViewModel item)
         {
+            if (item == null)
+            {
+                yield return null;
+            }
             if (item.NameContainsText(text))
             {
                 yield return item;
