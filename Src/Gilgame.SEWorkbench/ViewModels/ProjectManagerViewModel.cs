@@ -1,11 +1,16 @@
-﻿using System;
+﻿using Gilgame.SEWorkbench.Services;
+using System;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
     public class ProjectManagerViewModel : BaseViewModel
     {
+        private Regex _LineColRegex = new Regex(@"\(([0-9]+),([0-9]+)\)");
+        private Regex _ErrorRegex = new Regex(@"^(.*?)\(([0-9]+),([0-9]+)\)\s:\serror\s(.*?):\s(.*?)$");
+
         private string _ProjectName = "SomeProject.seproj";
         public string ProjectName
         {
@@ -99,6 +104,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             Editor = new EditorViewModel(this);
             Output = new OutputViewModel(this);
 
+            _SaveFileCommand = new Commands.SaveFileCommand(this);
+            _SaveAllCommand = new Commands.SaveAllCommand(this);
+
+            _RunScriptCommand = new Commands.RunScriptCommand(this);
             _OpenSelectedCommand = new Commands.OpenSelectedCommand(this);
 
             BuildMenu();
@@ -176,6 +185,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             MenuItemViewModel window = new MenuItemViewModel(this, "Window");
             {
+                window.AddChild(new MenuItemViewModel(window, "Close"));
                 window.AddChild(new MenuItemViewModel(window, "Close All"));
                 window.AddSeparator();
             }
@@ -209,6 +219,126 @@ namespace Gilgame.SEWorkbench.ViewModels
             if (item != null)
             {
                 _Editor.OpenItem(item);
+            }
+        }
+
+        #endregion
+
+        #region Run Script Command
+
+        private readonly ICommand _RunScriptCommand;
+        public ICommand RunScriptCommand
+        {
+            get
+            {
+                return _RunScriptCommand;
+            }
+        }
+
+        public void PerformRunScript()
+        {
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                Interop.InGameScript script = new Interop.InGameScript(page.Content.Text);
+
+                Output.Clear();
+                
+                if (script.CompileErrors.Count > 0)
+                {
+                    foreach(string error in script.CompileErrors)
+                    {
+                        string message = error;
+
+                        Match full = _ErrorRegex.Match(error);
+                        if (full.Groups.Count > 1)
+                        {
+                            int line = Convert.ToInt32(full.Groups[2].Value) - 9;
+                            int col = Convert.ToInt32(full.Groups[3].Value);
+
+                            string errno = full.Groups[4].Value;
+
+                            string errmsg = full.Groups[5].Value;
+
+                            Models.OutputItem item = new Models.OutputItem()
+                            {
+                                Line = line,
+                                Column = col,
+                                Error = errno,
+                                Message = errmsg
+                            };
+                            Output.AddItem(item);
+                        }
+                        else
+                        {
+                            Match match = _LineColRegex.Match(error);
+                            if (match.Groups.Count > 1)
+                            {
+                                int line = Convert.ToInt32(match.Groups[2].Value) - 9;
+                                int col = Convert.ToInt32(match.Groups[3].Value);
+
+                                message = message.Replace(match.Groups[0].Value, "");
+
+                                Output.AddItem(new Models.OutputItem() { Line = line, Column = col, Message = message });
+                            }
+                            else
+                            {
+                                Output.AddItem(new Models.OutputItem() { Message = message });
+                            }
+                        }
+                    }
+
+                    Views.OutputView view = new Views.OutputView();
+                    view.DataContext = Output;
+                    view.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.ShowMessage("The program compiled without any errors.");
+                }
+            }
+        }
+
+        #endregion
+
+        #region Save File Command
+
+        private readonly ICommand _SaveFileCommand;
+        public ICommand SaveFileCommand
+        {
+            get
+            {
+                return _SaveFileCommand;
+            }
+        }
+
+        public void PerformSaveFile()
+        {
+            PageViewModel page = Editor.SelectedItem;
+            if (page != null)
+            {
+                page.Save();
+            }
+        }
+
+        #endregion
+
+        #region Save All Command
+
+        private readonly ICommand _SaveAllCommand;
+        public ICommand SaveAllCommand
+        {
+            get
+            {
+                return _SaveAllCommand;
+            }
+        }
+
+        public void PerformSaveAll()
+        {
+            foreach (PageViewModel page in Editor.Items)
+            {
+                page.Save();
             }
         }
 
