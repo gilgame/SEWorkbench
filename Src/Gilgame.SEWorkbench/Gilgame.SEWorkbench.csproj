@@ -162,6 +162,7 @@
     <Compile Include="ViewModels\Comparers\OutputItemComparer.cs" />
     <Compile Include="ViewModels\Comparers\ProjectItemComparer.cs" />
     <Compile Include="ViewModels\EditorViewModel.cs" />
+    <Compile Include="ViewModels\EventArgs\FileEventArgs.cs" />
     <Compile Include="ViewModels\GridItemViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\OutputItemViewModel.cs" />

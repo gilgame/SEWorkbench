@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -28,14 +28,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private ObservableCollection<MenuItemViewModel> _RootMenuItem;
-        public ObservableCollection<MenuItemViewModel> RootMenuItem
-        {
-            get
-            {
-                return _RootMenuItem;
-            }
-        }
+        //private ObservableCollection<MenuItemViewModel> _RootMenuItem;
+        //public ObservableCollection<MenuItemViewModel> RootMenuItem
+        //{
+        //    get
+        //    {
+        //        return _RootMenuItem;
+        //    }
+        //}
 
         private ProjectViewModel _Project;
         public ProjectViewModel Project
@@ -114,6 +114,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             Project = new ProjectViewModel(this);
             Project.FileRequested += Project_FileRequested;
             Project.SelectionChanged += Project_SelectionChanged;
+            Project.FileDeleted += Project_FileDeleted;
 
             Blueprint = new BlueprintViewModel(this);
             Editor = new EditorViewModel(this);
@@ -167,6 +168,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 Blueprint.SetBlueprint(item.Grid);
             }
+        }
+
+        private void Project_FileDeleted(object sender, FileEventArgs e)
+        {
+            Editor.Items.Remove(Editor.Items.Where(i => i.Filename == e.Path).Single());
         }
 
         private void Project_FileRequested(object sender, EventArgs e)
@@ -268,6 +274,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             ProjectItemViewModel item = _Project.GetSelectedFile();
             if (item != null)
             {
+                foreach(PageViewModel page in Editor.Items)
+                {
+                    if (page.Filename == item.Path)
+                    {
+                        page.IsSelected = true;
+                        return;
+                    }
+                }
+
                 _Editor.OpenItem(item);
             }
         }

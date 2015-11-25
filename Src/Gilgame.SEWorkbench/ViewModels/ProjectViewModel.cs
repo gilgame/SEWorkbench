@@ -98,6 +98,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event FileEventHandler FileDeleted;
+        public void RaiseFileDeleted(string path)
+        {
+            if (FileDeleted != null)
+            {
+                FileDeleted(this, new FileEventArgs(path));
+            }
+        }
+
         public ProjectViewModel(BaseViewModel parent) : base(parent)
         {
 
@@ -832,6 +841,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                         case ProjectItemType.File:
                             File.Delete(selected.Path);
+                            RaiseFileDeleted(selected.Path);
                             break;
 
                         default:
