@@ -78,6 +78,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 VerifyMatchingItemEnumerator();
             }
+            if (_MatchingItemEnumerator == null)
+            {
+                return;
+            }
 
             var item = _MatchingItemEnumerator.Current;
             if (item == null)

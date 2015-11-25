@@ -438,6 +438,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 VerifyMatchingItemEnumerator();
             }
+            if (_MatchingItemEnumerator == null)
+            {
+                return;
+            }
 
             var item = _MatchingItemEnumerator.Current;
             if (item == null)
@@ -458,6 +462,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void VerifyMatchingItemEnumerator()
         {
+            if (First == null || First.Count < 1)
+            {
+                return;
+            }
+
             var matches = FindMatches(_SearchText, _RootItem);
 
             _MatchingItemEnumerator = matches.GetEnumerator();
