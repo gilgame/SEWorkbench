@@ -23,14 +23,14 @@
     <Window.InputBindings>
         <KeyBinding Modifiers="Control" Key="S" Command="{Binding SaveFileCommand}" />
         <KeyBinding Modifiers="Control+Shift" Key="S" Command="{Binding SaveAllCommand}" />
-        
+
         <KeyBinding Modifiers="Control+Shift" Key="O" Command="{Binding Project.OpenProjectCommand}" />
         <KeyBinding Modifiers="Control+Shift" Key="N" Command="{Binding Project.NewProjectCommand}" />
 
         <KeyBinding Key="F5" Command="{Binding RunScriptCommand}" />
         <KeyBinding Key="F7" Command="{Binding OpenSelectedCommand}" />
     </Window.InputBindings>
-    
+
     <Grid Background="#FF2B3B58">
         <Grid.RowDefinitions>
             <RowDefinition Height="49" />
@@ -50,7 +50,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Menu ItemsSource="{Binding RootMenuItem}" VerticalAlignment="Top" Background="Transparent" FontSize="11" Grid.Row="0">
+            <Menu ItemsSource="{Binding RootMenuItem}" VerticalAlignment="Top" Background="Transparent" FontSize="11" Grid.Row="0" Margin="0,1,0,0">
                 <Menu.Resources>
                     <svc:MenuItemStyleSelector x:Key="mSelector" />
 
@@ -58,12 +58,18 @@
                         <Setter Property="Command" Value="{Binding Command}"/>
                         <Setter Property="Header" Value="{Binding Header}"/>
                         <Setter Property="InputGestureText" Value="{Binding InputGestureText}" />
+                        <Setter Property="Padding" Value="8,2,8,2" />
                     </Style>
                     <Style TargetType="{x:Type MenuItem}" x:Key="mSeparatorStyle">
+                        <Setter Property="Height" Value="1"/>
+                        <Setter Property="Margin" Value="0,1,0,2"/>
+                        <Setter Property="Focusable" Value="false"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type MenuItem}">
-                                    <Separator HorizontalAlignment="Stretch" IsEnabled="False" />
+                                    <Grid SnapsToDevicePixels="True">
+                                        <Rectangle Fill="#FFD7D7D7" Height="1" Margin="32,0,0,0" />
+                                    </Grid>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -83,7 +89,7 @@
                 <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
                     <Image Source="/Gilgame.SEWorkbench;component/Icons/OpenFile.png" />
                 </Button>
-                
+
                 <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
                     <Image Source="/Gilgame.SEWorkbench;component/Icons/CutHS.png" />
                 </Button>
@@ -98,9 +104,9 @@
                 </Button>
             </StackPanel>
         </Grid>
-        
+
         <Views:ProjectExplorer x:Name="tvProjectExplorer" Margin="5,5,0,5" Grid.Column="0" Grid.Row="1" />
-        
+
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="1" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
@@ -109,7 +115,7 @@
 
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="3" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
-        
+
         <Views:BlueprintView x:Name="tvBlueprint" Margin="0,5,5,5" Grid.Column="4" Grid.Row="1" />
 
     </Grid>
