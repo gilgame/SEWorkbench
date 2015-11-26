@@ -2,6 +2,7 @@
 using System.Linq;
 
 using Gilgame.SEWorkbench.Models;
+using Sandbox.Common.ObjectBuilders.Definitions;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -24,12 +25,46 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public long EntityID
+        {
+            get
+            {
+                return _Model.EntityID;
+            }
+        }
+
+        public string Program
+        {
+            get
+            {
+                return _Model.Program;
+            }
+        }
+
         private GridItem _Model;
         public GridItem Model
         {
             get
             {
                 return _Model;
+            }
+        }
+
+        private MyObjectBuilder_ShipBlueprintDefinition _Definition;
+        public MyObjectBuilder_ShipBlueprintDefinition Definition
+        {
+            get
+            {
+                return _Definition;
+            }
+        }
+
+        private string _Path;
+        public string Path
+        {
+            get
+            {
+                return _Path;
             }
         }
 
@@ -108,8 +143,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             return Name.IndexOf(text, StringComparison.InvariantCultureIgnoreCase) > -1;
         }
 
-        public GridItemViewModel(GridItem item) : this(item, null)
+        public GridItemViewModel(GridItem item, MyObjectBuilder_ShipBlueprintDefinition definition, string path) : this(item, null)
         {
+            _Definition = definition;
+            _Path = path;
         }
 
         public GridItemViewModel(GridItem item, GridItemViewModel parent) : base(parent)
@@ -117,7 +154,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             _Model = item;
 
             _Children = new Services.ObservableSortedList<GridItemViewModel>(
-                (from child in _Model.Children select new GridItemViewModel(child, this)).ToList<GridItemViewModel>(),
+                (from child in _Model.Children select new GridItemViewModel(item, null)).ToList<GridItemViewModel>(),
                 new Comparers.GridItemComparer()
             );
         }

@@ -28,7 +28,7 @@ namespace Gilgame.SEWorkbench.Interop
         public static void Import(string filename, out string name, out Interop.Grid grid)
         {
             name = string.Empty;
-            grid = new Interop.Grid();
+            grid = null;
 
             MyObjectBuilder_Definitions loaded = null;
             if (File.Exists(filename))
@@ -45,7 +45,12 @@ namespace Gilgame.SEWorkbench.Interop
                 {
                     name = blueprints.Id.SubtypeId;
 
-                    grid.Name = name;
+                    grid = new Grid(blueprints)
+                    {
+                        Name = name,
+                        Path = filename,
+                    };
+
                     foreach (MyObjectBuilder_CubeGrid cubegrid in blueprints.CubeGrids)
                     {
                         foreach (MyObjectBuilder_CubeBlock block in cubegrid.CubeBlocks)
@@ -54,21 +59,29 @@ namespace Gilgame.SEWorkbench.Interop
                             {
                                 MyObjectBuilder_TerminalBlock terminalblock = (MyObjectBuilder_TerminalBlock)block;
 
-                                string type = GetBlockType(block.TypeId.ToString());
+                                long entityid = terminalblock.EntityId;
+                                string type = GetBlockType(terminalblock.TypeId.ToString());
 
-                                // TODO Use MyTexts.GetString(MyStringId id) to get default blocks names from MyTexts.resx ?
+                                // TODO Use MyTexts.GetString(MyStringId id) to get default blocks names from MyTexts.resx (for localization)
                                 string customname = String.IsNullOrEmpty(terminalblock.CustomName) ? type : terminalblock.CustomName;
 
-                                grid.AddBlock(type, new TerminalBlock() { Name = customname });
+                                if (block is MyObjectBuilder_MyProgrammableBlock)
+                                {
+                                    MyObjectBuilder_MyProgrammableBlock prog = (MyObjectBuilder_MyProgrammableBlock)block;
+                                    grid.AddBlock(type, new TerminalBlock() { Name = customname, EntityID = entityid, Program = prog.Program });
+                                }
+                                else
+                                {
+                                    grid.AddBlock(type, new TerminalBlock() { Name = customname, EntityID = entityid });
+                                }
                             }
                         }
-                        return; // first grid only
                     }
                 }
             }
         }
 
-        public static void Save(string path, MyObjectBuilder_Base blueprint)
+        public static void Save(string path, MyObjectBuilder_ShipBlueprintDefinition blueprint)
         {
             MyObjectBuilderSerializer.SerializeXML(path, false, blueprint);
         }

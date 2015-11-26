@@ -1,8 +1,8 @@
 ﻿using System;
-
-using Gilgame.SEWorkbench.Services;
 using System.Windows.Input;
 using System.Collections.Generic;
+
+using Gilgame.SEWorkbench.Services;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {

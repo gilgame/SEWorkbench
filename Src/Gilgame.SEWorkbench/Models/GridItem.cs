@@ -11,6 +11,12 @@ namespace Gilgame.SEWorkbench.Models
         [XmlElement("Name")]
         public string Name { get; set; }
 
+        [XmlElement("EntityID")]
+        public long EntityID { get; set; }
+
+        [XmlElement("Program")]
+        public string Program { get; set; }
+
         private ObservableCollection<GridItem> _Children = new ObservableCollection<GridItem>();
 
         [XmlElement("Items")]
