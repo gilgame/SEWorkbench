@@ -675,8 +675,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 string name = dialog.ItemName;
 
-                // wtf
-                string path = String.Format("{0}{1}{2}", Path.GetDirectoryName(selected.Path), Path.DirectorySeparatorChar, name);
+                string path = Path.Combine(selected.Path, name);
 
                 if (!Directory.Exists(path))
                 {
