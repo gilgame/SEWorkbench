@@ -341,6 +341,10 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string initial = String.Format("{0}{1}{2}", documents, Path.DirectorySeparatorChar, "SEWorkbench");
+            if (!Directory.Exists(initial))
+            {
+                Directory.CreateDirectory(initial);
+            }
 
             Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
             {
