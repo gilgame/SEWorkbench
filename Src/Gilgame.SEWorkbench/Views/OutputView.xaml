@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Gilgame.SEWorkbench.Views.OutputView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="OutputView" Height="300" Width="700">
+        Title="SE Workbench - Output" Height="300" Width="700">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
