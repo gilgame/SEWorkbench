@@ -74,6 +74,9 @@ namespace Gilgame.SEWorkbench
                 File.Copy(Path.Combine(sepath, "VRage.Library.dll"), Path.Combine(saveto, "VRage.Library.dll"));
                 File.Copy(Path.Combine(sepath, "VRage.Math.dll"), Path.Combine(saveto, "VRage.Math.dll"));
                 File.Copy(Path.Combine(sepath, "VRage.Native.dll"), Path.Combine(saveto, "VRage.Native.dll"));
+
+                System.Windows.Forms.Application.Restart();
+                return;
             }
             catch (Exception ex)
             {
