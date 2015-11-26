@@ -63,15 +63,19 @@
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>..\..\Lib\ICSharpCode.NRefactory.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory.CSharp">
       <HintPath>..\..\Lib\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory.Xml">
       <HintPath>..\..\Lib\ICSharpCode.NRefactory.Xml.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>..\..\Lib\Mono.Cecil.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
