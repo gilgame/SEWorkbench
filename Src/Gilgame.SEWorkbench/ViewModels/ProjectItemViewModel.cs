@@ -203,13 +203,13 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private GridItemViewModel CreateGridViewModel(Interop.Grid grid)
         {
-            GridItemViewModel root = new GridItemViewModel(new GridItem() { Name = grid.Name }, grid.Definition, grid.Path);
+            GridItemViewModel root = new GridItemViewModel(new GridItem() { Name = grid.Name, Type = GridItemType.Root }, grid.Definition, grid.Path);
             foreach(KeyValuePair<string, List<Interop.TerminalBlock>> pair in grid.Blocks)
             {
-                GridItemViewModel node = new GridItemViewModel(new GridItem() { Name = pair.Key }, root);
+                GridItemViewModel node = new GridItemViewModel(new GridItem() { Name = pair.Key, Type = GridItemType.Group }, root);
                 foreach(Interop.TerminalBlock block in pair.Value)
                 {
-                    node.AddChild(new GridItemViewModel(new GridItem() { Name = block.Name }, node));
+                    node.AddChild(new GridItemViewModel(new GridItem() { Name = block.Name, Type = GridItemType.Block }, node));
                 }
                 root.AddChild(node);
             }

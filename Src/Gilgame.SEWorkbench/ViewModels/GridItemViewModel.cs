@@ -17,6 +17,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private GridItem _Model;
+        public GridItem Model
+        {
+            get
+            {
+                return _Model;
+            }
+        }
+
         public string Name
         {
             get
@@ -41,12 +50,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private GridItem _Model;
-        public GridItem Model
+        public GridItemType Type
         {
             get
             {
-                return _Model;
+                return _Model.Type;
             }
         }
 

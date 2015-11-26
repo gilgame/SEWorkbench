@@ -17,6 +17,9 @@ namespace Gilgame.SEWorkbench.Models
         [XmlElement("Program")]
         public string Program { get; set; }
 
+        [XmlElement("Type")]
+        public GridItemType Type { get; set; }
+
         private ObservableCollection<GridItem> _Children = new ObservableCollection<GridItem>();
 
         [XmlElement("Items")]

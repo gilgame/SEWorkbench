@@ -4,7 +4,8 @@ namespace Gilgame.SEWorkbench.Models
 {
     public enum GridItemType
     {
-        Category,
+        Root,
+        Group,
         Block
     }
 }
