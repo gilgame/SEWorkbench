@@ -6,7 +6,7 @@ namespace Gilgame.SEWorkbench.Views
     public partial class ProgramView : Window
     {
         private string _Title = "SE Workbench";
-        public string Title
+        public string TitleText
         {
             get
             {
