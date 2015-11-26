@@ -1,4 +1,4 @@
-﻿void main()
+﻿void Main(string argument)
 {
 	
 }

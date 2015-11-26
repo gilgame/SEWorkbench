@@ -33,7 +33,7 @@ namespace Gilgame.SEWorkbench.Services
         {
             StringBuilder result = new StringBuilder();
 
-            result.AppendLine("void main()");
+            result.AppendLine("void Main(string argument)");
             result.AppendLine("{");
             result.AppendLine("    ");
             result.AppendLine("}");
