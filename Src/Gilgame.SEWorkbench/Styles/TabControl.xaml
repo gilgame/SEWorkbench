@@ -19,6 +19,59 @@
     
     <conv:EditorTabHeaderConverter x:Key="NameToModified" />
 
+    <Style x:Key="CloseButton" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard x:Name="MouseOverBeginStoryboard">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Focus" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ColorAnimation Duration="0" Storyboard.TargetName="Focus" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="LightGray" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="MouseOverBeginStoryboard" />
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard x:Name="IsPressedBeginStoryboard">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Focus" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ColorAnimation Duration="0" Storyboard.TargetName="Focus" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" To="DarkGray" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="IsPressedBeginStoryboard" />
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                    <Grid Width="14" Height="14" Background="Transparent">
+                        <Rectangle x:Name="Focus"  Fill="#FFCFD6E5" Visibility="Collapsed" />
+                        <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type TabControl}">
         <Style.Resources>
             <Style TargetType="{x:Type TabItem}">
@@ -37,8 +90,15 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TabItem}">
                             <Border Name="TabBorder" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0" Background="Transparent" Margin="2,0,0,0">
-                                <ContentPresenter ContentSource="Header" Margin="10,2,10,2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                </ContentPresenter>
+                                <DockPanel>
+                                    <ContentPresenter ContentSource="Header" Margin="10,2,10,2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <Button Style="{StaticResource CloseButton}" Command="{Binding CloseFileCommand}"
+                                            DockPanel.Dock="Right" Width="14" Height="14" Cursor="Arrow" Margin="0,0,3,1">
+                                        <Button.Content>
+                                            <Path Data="M0,0 L6,6 M6, 0 L0,6" SnapsToDevicePixels="True" Stroke="Black" StrokeThickness="1" />
+                                        </Button.Content>
+                                    </Button>
+                                </DockPanel>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="false">

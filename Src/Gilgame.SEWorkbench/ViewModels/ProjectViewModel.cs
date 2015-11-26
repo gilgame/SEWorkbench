@@ -676,6 +676,10 @@ namespace Gilgame.SEWorkbench.ViewModels
                 string name = dialog.ItemName;
 
                 string path = Path.Combine(selected.Path, name);
+                if (selected.Path == _RootItem.Path)
+                {
+                    path = Path.Combine(Path.GetDirectoryName(selected.Path), name);
+                }
 
                 if (!Directory.Exists(path))
                 {
