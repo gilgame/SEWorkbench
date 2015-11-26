@@ -364,8 +364,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                     Path = fullpath,
                     Project = project,
                 };
-
                 SetRootItem(root);
+
+                SaveProject();
             }
         }
 
