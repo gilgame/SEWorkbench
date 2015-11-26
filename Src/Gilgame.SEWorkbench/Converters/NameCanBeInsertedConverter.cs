@@ -4,20 +4,17 @@ using System.Windows.Data;
 
 namespace Gilgame.SEWorkbench.Converters
 {
-    public class BlueprintsCanBeAddedConverter : IValueConverter
+    public class NameCanBeInsertedConverter : IValueConverter
     {
         public double Length { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Models.ProjectItemType type = GetValue(value);
+            Models.GridItemType type = GetValue(value);
             switch (type)
             {
-                case Models.ProjectItemType.Root:
-                case Models.ProjectItemType.Blueprints:
-                case Models.ProjectItemType.Folder:
-                case Models.ProjectItemType.File:
-                case Models.ProjectItemType.None:
+                case Models.GridItemType.Program:
+                case Models.GridItemType.Block:
                     return true;
 
                 default:
@@ -30,9 +27,9 @@ namespace Gilgame.SEWorkbench.Converters
             throw new System.NotImplementedException();
         }
 
-        private Models.ProjectItemType GetValue(object o)
+        private Models.GridItemType GetValue(object o)
         {
-            Models.ProjectItemType type = (Models.ProjectItemType)Enum.Parse(typeof(Models.ProjectItemType), o.ToString());
+            Models.GridItemType type = (Models.GridItemType)Enum.Parse(typeof(Models.GridItemType), o.ToString());
             return type;
         }
     }

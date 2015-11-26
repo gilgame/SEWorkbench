@@ -50,6 +50,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             _Items.CollectionChanged += OnCollectionChanged;
         }
 
+        public void InsertText(string text)
+        {
+            if (SelectedItem != null)
+            {
+                SelectedItem.Content.Document.Insert(SelectedItem.Content.TextArea.Caret.Offset, text);
+                SelectedItem.Content.Focus();
+            }
+        }
+
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged("HasChildren");

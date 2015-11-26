@@ -48,6 +48,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return _Model.Program;
             }
+            set
+            {
+                _Model.Program = value;
+            }
         }
 
         public GridItemType Type
@@ -58,12 +62,16 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private MyObjectBuilder_ShipBlueprintDefinition _Definition;
-        public MyObjectBuilder_ShipBlueprintDefinition Definition
+        private MyObjectBuilder_Definitions _Definitions;
+        public MyObjectBuilder_Definitions Definitions
         {
             get
             {
-                return _Definition;
+                return _Definitions;
+            }
+            set
+            {
+                _Definitions = value;
             }
         }
 
@@ -151,9 +159,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             return Name.IndexOf(text, StringComparison.InvariantCultureIgnoreCase) > -1;
         }
 
-        public GridItemViewModel(GridItem item, MyObjectBuilder_ShipBlueprintDefinition definition, string path) : this(item, null)
+        public GridItemViewModel(GridItem item, MyObjectBuilder_Definitions definition, string path) : this(item, null)
         {
-            _Definition = definition;
+            _Definitions = definition;
             _Path = path;
         }
 

@@ -45,7 +45,7 @@ namespace Gilgame.SEWorkbench.Interop
                 {
                     name = blueprints.Id.SubtypeId;
 
-                    grid = new Grid(blueprints)
+                    grid = new Grid(loaded)
                     {
                         Name = name,
                         Path = filename,
@@ -68,11 +68,11 @@ namespace Gilgame.SEWorkbench.Interop
                                 if (block is MyObjectBuilder_MyProgrammableBlock)
                                 {
                                     MyObjectBuilder_MyProgrammableBlock prog = (MyObjectBuilder_MyProgrammableBlock)block;
-                                    grid.AddBlock(type, new TerminalBlock() { Name = customname, EntityID = entityid, Program = prog.Program });
+                                    grid.AddBlock(type, new TerminalBlock() { Name = customname, EntityID = entityid, IsProgram = true, Program = prog.Program });
                                 }
                                 else
                                 {
-                                    grid.AddBlock(type, new TerminalBlock() { Name = customname, EntityID = entityid });
+                                    grid.AddBlock(type, new TerminalBlock() { Name = customname, EntityID = entityid, IsProgram = false });
                                 }
                             }
                         }
@@ -81,9 +81,33 @@ namespace Gilgame.SEWorkbench.Interop
             }
         }
 
-        public static void Save(string path, MyObjectBuilder_ShipBlueprintDefinition blueprint)
+        public static MyObjectBuilder_Definitions SaveProgram(string path, MyObjectBuilder_Definitions definitions, long entityid, string program)
         {
-            MyObjectBuilderSerializer.SerializeXML(path, false, blueprint);
+            foreach (MyObjectBuilder_ShipBlueprintDefinition blueprints in definitions.ShipBlueprints)
+            {
+                foreach (MyObjectBuilder_CubeGrid cubegrid in blueprints.CubeGrids)
+                {
+                    foreach (MyObjectBuilder_CubeBlock block in cubegrid.CubeBlocks)
+                    {
+                        if (block is MyObjectBuilder_MyProgrammableBlock)
+                        {
+                            if (block.EntityId == entityid)
+                            {
+                                MyObjectBuilder_MyProgrammableBlock prog = (MyObjectBuilder_MyProgrammableBlock)block;
+                                prog.Program = program;
+                            }
+                        }
+                    }
+                }
+            }
+            Save(path, definitions);
+
+            return definitions;
+        }
+
+        private static void Save(string path, MyObjectBuilder_Definitions definitions)
+        {
+            MyObjectBuilderSerializer.SerializeXML(path, false, definitions);
         }
 
 

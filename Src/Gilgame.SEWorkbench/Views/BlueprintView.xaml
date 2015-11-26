@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:conv="clr-namespace:Gilgame.SEWorkbench.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="175">
     <UserControl.Resources>
@@ -13,6 +14,9 @@
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/HeaderLabel.xaml"/>
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/TreeViewItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <conv:ProgramCanBeEditedConverter x:Key="CanBeEditedToBool" />
+            <conv:NameCanBeInsertedConverter x:Key="CanBeInsertedToBool" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -23,17 +27,22 @@
                        DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
                 <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
                     <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
-                        <!--<Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
-                            <Image />
-                        </Button>-->
+                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
+                                Command="{Binding InsertNameCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeInsertedToBool}}">
+                            <Image Source="/Gilgame.SEWorkbench;component/Icons/InsertName.png" Stretch="UniformToFill" />
+                        </Button>
+                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
+                                Command="{Binding EditProgramCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeEditedToBool}}">
+                            <Image Source="/Gilgame.SEWorkbench;component/Icons/EditProgram.png" Stretch="UniformToFill" />
+                        </Button>
                     </StackPanel>
 
                     <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchTextBox_TextChanged"/>
                 </Grid>
 
-                <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" DockPanel.Dock="Bottom"
-                          ItemsSource="{Binding First}">
+                <TreeView Name="tvBlueprint" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" DockPanel.Dock="Bottom"
+                          ItemsSource="{Binding First}" MouseDoubleClick="BlueprintView_MouseDoubleClick">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
@@ -46,6 +55,13 @@
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Insert" Command="{Binding InsertNameCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeInsertedToBool}}" />
+                            <Separator />
+                            <MenuItem Header="Edit" Command="{Binding EditProgramCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeEditedToBool}}" />
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
                 </TreeView>
             </DockPanel>
         </Border>

@@ -117,6 +117,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             Project.FileDeleted += Project_FileDeleted;
 
             Blueprint = new BlueprintViewModel(this);
+            Blueprint.InsertRequested += Blueprint_InsertRequested;
+
             Editor = new EditorViewModel(this);
             Output = new OutputViewModel(this);
 
@@ -194,6 +196,11 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void Page_CloseFileRequested(object sender, FileEventArgs e)
         {
             PerformCloseFile(e.Path);
+        }
+
+        private void Blueprint_InsertRequested(object sender, InsertEventArgs e)
+        {
+            Editor.InsertText(e.Text);
         }
 
         #region Build Menu

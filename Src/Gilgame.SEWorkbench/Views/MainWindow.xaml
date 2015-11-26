@@ -113,7 +113,7 @@
                     <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" Command="{Binding CutCommand}" />
                     <MenuItem Header="_Copy" InputGestureText="Ctrl+C" Command="{Binding CopyCommand}" />
                     <MenuItem Header="_Paste" InputGestureText="Ctrl+P" Command="{Binding PasteCommand}" />
-                    <MenuItem Header="_Delete" InputGestureText="Del" Command="{Binding DeleteCommand}" IsEnabled="False" />
+                    <MenuItem Header="_Delete" InputGestureText="Del" Command="{Binding DeleteCommand}" />
                     <MenuItem Header="Select _All" InputGestureText="Ctrl+A" Command="{Binding SelectAllCommand}" />
                     <Separator />
                     <MenuItem Header="P_references" IsEnabled="False" />
@@ -139,16 +139,16 @@
                     <Image Source="/Gilgame.SEWorkbench;component/Icons/OpenFile.png" />
                 </Button>
 
-                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding CutCommand}">
                     <Image Source="/Gilgame.SEWorkbench;component/Icons/CutHS.png" />
                 </Button>
-                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding CopyCommand}">
                     <Image Source="/Gilgame.SEWorkbench;component/Icons/CopyHS.png" />
                 </Button>
-                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding PasteCommand}">
                     <Image Source="/Gilgame.SEWorkbench;component/Icons/PasteHS.png" />
                 </Button>
-                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21">
+                <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding DeleteCommand}">
                     <Image Source="/Gilgame.SEWorkbench;component/Icons/DeleteHS.png" />
                 </Button>
             </StackPanel>

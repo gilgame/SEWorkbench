@@ -106,7 +106,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Completion\ScriptProvider.cs" />
-    <Compile Include="Converters\BlueprintsCanBeAddedConverter.cs" />
+    <Compile Include="Converters\BlueprintCanBeAddedConverter.cs" />
     <Compile Include="Converters\CanBeRenamedConverter.cs" />
     <Compile Include="Converters\EditorTabHeaderConverter.cs" />
     <Compile Include="Converters\FileCanBeAddedConverter.cs" />
@@ -115,6 +115,8 @@
     <Compile Include="Converters\ItemTypeImageConverter.cs" />
     <Compile Include="Converters\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
+    <Compile Include="Converters\NameCanBeInsertedConverter.cs" />
+    <Compile Include="Converters\ProgramCanBeEditedConverter.cs" />
     <Compile Include="Models\GridItem.cs" />
     <Compile Include="Models\GridItemType.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -146,7 +148,9 @@
     <Compile Include="ViewModels\Commands\CutCommand.cs" />
     <Compile Include="ViewModels\Commands\DeleteCommand.cs" />
     <Compile Include="ViewModels\Commands\DeleteItemCommand.cs" />
+    <Compile Include="ViewModels\Commands\EditProgramCommand.cs" />
     <Compile Include="ViewModels\Commands\FileRequestedCommand.cs" />
+    <Compile Include="ViewModels\Commands\InsertNameCommand.cs" />
     <Compile Include="ViewModels\Commands\NewProjectCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenProjectCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenSelectedCommand.cs" />
@@ -166,6 +170,7 @@
     <Compile Include="ViewModels\EditorViewModel.cs" />
     <Compile Include="ViewModels\EventArgs\FileEventArgs.cs" />
     <Compile Include="ViewModels\GridItemViewModel.cs" />
+    <Compile Include="ViewModels\EventArgs\InsertEventArgs.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\OutputItemViewModel.cs" />
     <Compile Include="ViewModels\OutputViewModel.cs" />
@@ -188,6 +193,9 @@
     </Compile>
     <Compile Include="Views\OutputView.xaml.cs">
       <DependentUpon>OutputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProgramView.xaml.cs">
+      <DependentUpon>ProgramView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProjectExplorer.xaml.cs">
       <DependentUpon>ProjectExplorer.xaml</DependentUpon>
@@ -213,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OutputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProgramView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -313,7 +325,10 @@
   <ItemGroup>
     <Resource Include="Icons\Blueprints.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\EditProgram.png" />
+    <Resource Include="Icons\InsertName.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>(if exist "$(TargetDir)*old.pdb" del "$(TargetDir)*old.pdb") &amp; (if exist "$(TargetDir)*.pdb" ren "$(TargetDir)*.pdb" *.old.pdb)</PreBuildEvent>

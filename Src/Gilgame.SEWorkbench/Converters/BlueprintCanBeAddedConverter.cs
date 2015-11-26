@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace Gilgame.SEWorkbench.Converters
 {
-    public class FolderCanBeAddedConverter : IValueConverter
+    public class BlueprintCanBeAddedConverter : IValueConverter
     {
         public double Length { get; set; }
 

@@ -203,13 +203,58 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private GridItemViewModel CreateGridViewModel(Interop.Grid grid)
         {
-            GridItemViewModel root = new GridItemViewModel(new GridItem() { Name = grid.Name, Type = GridItemType.Root }, grid.Definition, grid.Path);
+            GridItemViewModel root = new GridItemViewModel(
+                new GridItem()
+                {
+                    Name = grid.Name,
+                    Type = GridItemType.Root
+                },
+                grid.Definitions,
+                grid.Path
+            );
+
             foreach(KeyValuePair<string, List<Interop.TerminalBlock>> pair in grid.Blocks)
             {
-                GridItemViewModel node = new GridItemViewModel(new GridItem() { Name = pair.Key, Type = GridItemType.Group }, root);
+                GridItemViewModel node = new GridItemViewModel(
+                    new GridItem()
+                    {
+                        Name = pair.Key,
+                        Type = GridItemType.Group
+                    },
+                    root
+                );
+
                 foreach(Interop.TerminalBlock block in pair.Value)
                 {
-                    node.AddChild(new GridItemViewModel(new GridItem() { Name = block.Name, Type = GridItemType.Block }, node));
+                    if (block.IsProgram)
+                    {
+                        node.AddChild(
+                            new GridItemViewModel(
+                                new GridItem()
+                                {
+                                    Name = block.Name,
+                                    EntityID = block.EntityID,
+                                    Type = GridItemType.Program,
+                                    Program = block.Program
+                                },
+                                node
+                            )
+                        );
+                    }
+                    else
+                    {
+                        node.AddChild(
+                            new GridItemViewModel(
+                                new GridItem()
+                                {
+                                    Name = block.Name,
+                                    EntityID = block.EntityID,
+                                    Type = GridItemType.Block
+                                },
+                                node
+                            )
+                        );
+                    }
                 }
                 root.AddChild(node);
             }

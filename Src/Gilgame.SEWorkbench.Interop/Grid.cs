@@ -10,18 +10,18 @@ namespace Gilgame.SEWorkbench.Interop
 
         public string Path { get; set; }
 
-        private MyObjectBuilder_ShipBlueprintDefinition _Definition;
-        public MyObjectBuilder_ShipBlueprintDefinition Definition
+        private MyObjectBuilder_Definitions _Definitions;
+        public MyObjectBuilder_Definitions Definitions
         {
             get
             {
-                return _Definition;
+                return _Definitions;
             }
         }
 
-        public Grid(MyObjectBuilder_ShipBlueprintDefinition definition)
+        public Grid(MyObjectBuilder_Definitions definitions)
         {
-            _Definition = definition;
+            _Definitions = definitions;
         }
 
         private Dictionary<string, List<Interop.TerminalBlock>> _Blocks = new Dictionary<string, List<TerminalBlock>>();

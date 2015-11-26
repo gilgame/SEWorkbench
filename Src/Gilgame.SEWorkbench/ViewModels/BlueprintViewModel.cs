@@ -9,6 +9,7 @@ namespace Gilgame.SEWorkbench.ViewModels
     public class BlueprintViewModel : BaseViewModel
     {
         private IEnumerator<GridItemViewModel> _MatchingItemEnumerator;
+        private IEnumerator<GridItemViewModel> _SelectedItemEnumerator;
 
         private ObservableSortedList<GridItemViewModel> _First;
         public ObservableSortedList<GridItemViewModel> First
@@ -38,6 +39,37 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public GridItemViewModel SelectedItem
+        {
+            get
+            {
+                return FindSelectedItem();
+            }
+        }
+
+        public Models.GridItemType SelectedItemType
+        {
+            get
+            {
+                return (SelectedItem == null) ? Models.GridItemType.None : SelectedItem.Type;
+            }
+        }
+
+        public GridItemViewModel RootItem
+        {
+            get
+            {
+                if (First != null && First.Count > 0)
+                {
+                    return First[0];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public BlueprintViewModel(BaseViewModel parent) : base(parent)
         {
             _First = new Services.ObservableSortedList<GridItemViewModel>(
@@ -46,6 +78,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             );
 
             _SearchCommand = new Commands.SearchCommand(this);
+            _InsertNameCommand = new Commands.InsertNameCommand(this);
+            _EditProgramCommand = new Commands.EditProgramCommand(this);
+        }
+
+        public event InsertEventHandler InsertRequested;
+        public void RaiseInsertRequested()
+        {
+            if (SelectedItemType == Models.GridItemType.Block)
+            {
+                if (InsertRequested != null)
+                {
+                    InsertRequested(this, new InsertEventArgs(SelectedItem.Name));
+                }
+            }
         }
 
         public void SetBlueprint(ObservableSortedList<GridItemViewModel> grid)
@@ -60,6 +106,52 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
             }
         }
+
+        #region FindSelectedItem
+
+        private GridItemViewModel FindSelectedItem()
+        {
+            VerifySelectedItemEnumerator();
+
+            return _SelectedItemEnumerator.Current;
+        }
+
+        private void VerifySelectedItemEnumerator()
+        {
+            GridItemViewModel root = RootItem;
+
+            var matches = FindSelected(root);
+
+            _SelectedItemEnumerator = matches.GetEnumerator();
+            if (!_SelectedItemEnumerator.MoveNext())
+            {
+                // none selected
+            }
+        }
+
+        private IEnumerable<GridItemViewModel> FindSelected(GridItemViewModel item)
+        {
+            if (item == null)
+            {
+                yield return null;
+            }
+
+            if (item.IsSelected)
+            {
+                yield return item;
+            }
+
+            foreach (GridItemViewModel child in item.Children)
+            {
+                foreach (GridItemViewModel match in FindSelected(child))
+                {
+                    // TODO fix collection modified exception
+                    yield return match;
+                }
+            }
+        }
+
+        #endregion
 
         #region Search Command
 
@@ -134,6 +226,64 @@ namespace Gilgame.SEWorkbench.ViewModels
                     yield return match;
                 }
             }
+        }
+
+        #endregion
+
+        #region Edit Program Command
+
+        private readonly ICommand _EditProgramCommand;
+        public ICommand EditProgramCommand
+        {
+            get
+            {
+                return _EditProgramCommand;
+            }
+        }
+
+        public void PerformEditProgram()
+        {
+            if (SelectedItemType != Models.GridItemType.Program)
+            {
+                return;
+            }
+
+            GridItemViewModel selected = SelectedItem;
+
+            Views.ProgramView dialog = new Views.ProgramView()
+            {
+                Program = selected.Program,
+                Blueprint = RootItem.Name,
+                Block = selected.Name,
+            };
+
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                string program = dialog.Program;
+
+                RootItem.Definitions = Interop.Blueprint.SaveProgram(RootItem.Path, RootItem.Definitions, selected.EntityID, program);
+
+                selected.Program = program;
+            }
+        }
+
+        #endregion
+
+        #region Insert Name Command
+
+        private readonly ICommand _InsertNameCommand;
+        public ICommand InsertNameCommand
+        {
+            get
+            {
+                return _InsertNameCommand;
+            }
+        }
+
+        public void PerformInsertName()
+        {
+            RaiseInsertRequested();
         }
 
         #endregion

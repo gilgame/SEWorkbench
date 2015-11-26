@@ -20,5 +20,15 @@ namespace Gilgame.SEWorkbench.Views
                 blueprint.SearchCommand.Execute(null);
             }
         }
+
+        private void BlueprintView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is ViewModels.BlueprintViewModel)
+            {
+                ViewModels.BlueprintViewModel blueprint = (ViewModels.BlueprintViewModel)DataContext;
+
+                blueprint.RaiseInsertRequested();
+            }
+        }
     }
 }

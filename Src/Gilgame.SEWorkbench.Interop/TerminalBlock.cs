@@ -8,6 +8,8 @@ namespace Gilgame.SEWorkbench.Interop
 
         public long EntityID { get; set; }
 
+        public bool IsProgram { get; set; }
+
         public string Program { get; set; }
     }
 }
