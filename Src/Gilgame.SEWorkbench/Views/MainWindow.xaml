@@ -34,6 +34,7 @@
 
         <KeyBinding Key="F5" Command="{Binding RunScriptCommand}" />
         <KeyBinding Key="F7" Command="{Binding OpenSelectedCommand}" />
+        <KeyBinding Key="F9" Command="{Binding Blueprint.EditProgramCommand}" />
         
         <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding CloseViewCommand}" />
     </Window.InputBindings>

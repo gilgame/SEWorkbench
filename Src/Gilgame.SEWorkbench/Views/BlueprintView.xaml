@@ -59,7 +59,7 @@
                         <ContextMenu>
                             <MenuItem Header="Insert" Command="{Binding InsertNameCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeInsertedToBool}}" />
                             <Separator />
-                            <MenuItem Header="Edit" Command="{Binding EditProgramCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeEditedToBool}}" />
+                            <MenuItem Header="Edit" Command="{Binding EditProgramCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeEditedToBool}}" InputGestureText="F9"/>
                         </ContextMenu>
                     </TreeView.ContextMenu>
                 </TreeView>
