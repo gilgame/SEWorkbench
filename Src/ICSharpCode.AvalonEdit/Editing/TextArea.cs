@@ -20,6 +20,7 @@ using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.AvalonEdit.Indentation.CSharp;
 
 namespace ICSharpCode.AvalonEdit.Editing
 {
@@ -925,7 +926,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 		/// </summary>
 		public static readonly DependencyProperty IndentationStrategyProperty =
 			DependencyProperty.Register("IndentationStrategy", typeof(IIndentationStrategy), typeof(TextArea),
-			                            new FrameworkPropertyMetadata(new DefaultIndentationStrategy()));
+			                            new FrameworkPropertyMetadata(new CSharpIndentationStrategy()));
 		
 		/// <summary>
 		/// Gets/Sets the indentation strategy used when inserting new lines.
