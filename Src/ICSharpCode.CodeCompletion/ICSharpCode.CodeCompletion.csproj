@@ -86,10 +86,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VRage.Game">
+    <Reference Include="VRage.Game, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin64\VRage.Game.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="VRage.Math, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin\VRage.Math.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>

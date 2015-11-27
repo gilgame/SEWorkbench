@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.NRefactory.CSharp;
 using ICSharpCode.NRefactory.CSharp.Completion;
+using ICSharpCode.NRefactory.Documentation;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.NRefactory.TypeSystem;
-using ICSharpCode.NRefactory.Documentation;
-using ICSharpCode.NRefactory.TypeSystem;
-using System.IO;
 
 namespace ICSharpCode.CodeCompletion
 {
@@ -31,7 +31,9 @@ namespace ICSharpCode.CodeCompletion
 //					typeof(System.Drawing.Bitmap).Assembly, // System.Drawing.dll
 //					typeof(Form).Assembly, // System.Windows.Forms.dll
 //					typeof(ICSharpCode.NRefactory.TypeSystem.IProjectContent).Assembly,
-                    typeof(Sandbox.ModAPI.Ingame.IMyTerminalBlock).Assembly, //Sandbox.Common.dll
+                    typeof(Sandbox.ModAPI.MyAPIGateway).Assembly, //Sandbox.Common.dll
+                    typeof(VRage.Game.ObjectBuilders.MyObjectBuilder_EntityStat).Assembly, //VRage.Game
+                    typeof(VRageMath.MathHelper).Assembly, // VRage.Math
                 };
 
             var unresolvedAssemblies = new IUnresolvedAssembly[assemblies.Count];
