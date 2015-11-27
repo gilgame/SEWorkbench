@@ -15,6 +15,18 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public Guid Identifier
+        {
+            get
+            {
+                return _Model.Identifier;
+            }
+            set
+            {
+                _Model.Identifier = value;
+            }
+        }
+
         private Models.MenuItem _Model;
         public Models.MenuItem Model
         {
@@ -126,6 +138,42 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void AddSeparator()
         {
             _Children.Add(null);
+        }
+
+        public void RemoveChildByIdentifier(Guid identifier)
+        {
+            foreach (MenuItemViewModel child in Children)
+            {
+                if (child == null)
+                {
+                    continue;
+                }
+
+                if (child.Identifier == identifier)
+                {
+                    Children.Remove(child);
+                    break;
+                }
+                RemoveChildByIdentifier(identifier, child);
+            }
+        }
+
+        private void RemoveChildByIdentifier(Guid identifier, MenuItemViewModel root)
+        {
+            foreach (MenuItemViewModel child in root.Children)
+            {
+                if (child == null)
+                {
+                    continue;
+                }
+
+                if (child.Identifier == identifier)
+                {
+                    Children.Remove(child);
+                    break;
+                }
+                RemoveChildByIdentifier(identifier, child);
+            }
         }
 
         public MenuItemViewModel GetItemByName(string name)

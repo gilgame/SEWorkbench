@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -28,14 +30,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        //private ObservableCollection<MenuItemViewModel> _RootMenuItem;
-        //public ObservableCollection<MenuItemViewModel> RootMenuItem
-        //{
-        //    get
-        //    {
-        //        return _RootMenuItem;
-        //    }
-        //}
+        private ObservableCollection<MenuItemViewModel> _WindowMenuItems = new ObservableCollection<MenuItemViewModel>();
+        public ObservableCollection<MenuItemViewModel> WindowMenuItems
+        {
+            get
+            {
+                return _WindowMenuItems;
+            }
+        }
 
         private ProjectViewModel _Project;
         public ProjectViewModel Project
@@ -120,6 +122,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             Blueprint.InsertRequested += Blueprint_InsertRequested;
 
             Editor = new EditorViewModel(this);
+            Editor.Items.CollectionChanged += Editor_CollectionChanged;
+
             Output = new OutputViewModel(this);
 
             _NewProjectCommand = new Commands.NewProjectCommand(this);
@@ -144,8 +148,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             _SelectAllCommand = new Commands.SelectAllCommand(this);
 
             _CloseViewCommand = new Commands.CloseViewCommand(this);
-
-            BuildMenu();
         }
 
         public event EventHandler CloseViewRequested;
@@ -203,81 +205,79 @@ namespace Gilgame.SEWorkbench.ViewModels
             Editor.InsertText(e.Text);
         }
 
-        #region Build Menu
-
-        private void BuildMenu()
+        private void Editor_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //MenuItemViewModel file = new MenuItemViewModel(this, "File");
-            //{
-            //    MenuItemViewModel mnew = new MenuItemViewModel(file, "New");
-            //    {
-            //        mnew.AddChild(new MenuItemViewModel(mnew, "Project...", NewProjectCommand) { InputGestureText = "Ctrl+Shift+N" });
-            //        mnew.AddChild(new MenuItemViewModel(mnew, "File...", Project.AddCommand) { InputGestureText = "Ctrl+N" });
-            //    }
-            //    file.AddChild(mnew);
+            if (e.NewItems != null && e.NewItems.Count > 0)
+            {
+                foreach (object o in e.NewItems)
+                {
+                    if (o is PageViewModel)
+                    {
+                        PageViewModel page = (PageViewModel)o;
 
-            //    MenuItemViewModel mopen = new MenuItemViewModel(file, "Open");
-            //    {
-            //        mopen.AddChild(new MenuItemViewModel(mopen, "Project...", OpenProjectCommand) { InputGestureText = "Ctrl+Shift+O" });
-            //    }
-            //    file.AddChild(mopen);
-
-            //    file.AddSeparator();
-
-            //    file.AddChild(new MenuItemViewModel(file, "Close", CloseProjectCommand));
-
-            //    file.AddSeparator();
-
-            //    file.AddChild(new MenuItemViewModel(file, "Save", SaveFileCommand) { InputGestureText = "Ctrl+S" });
-            //    file.AddChild(new MenuItemViewModel(file, "Save All", SaveAllCommand) { InputGestureText = "Ctrl+Shift+S" });
-
-            //    file.AddSeparator();
-
-            //    file.AddChild(new MenuItemViewModel(file, "Exit") { InputGestureText = "Alt+F4", IsEnabled = false });
-            //}
-
-            //MenuItemViewModel edit = new MenuItemViewModel(this, "Edit");
-            //{
-            //    edit.AddChild(new MenuItemViewModel(edit, "Undo", UndoCommand) { InputGestureText = "Ctrl+Z" });
-            //    edit.AddChild(new MenuItemViewModel(edit, "Redo", RedoCommand) { InputGestureText = "Ctrl+Y" });
-
-            //    edit.AddSeparator();
-
-            //    edit.AddChild(new MenuItemViewModel(edit, "Cut", CutCommand) { InputGestureText = "Ctrl+X" });
-            //    edit.AddChild(new MenuItemViewModel(edit, "Copy", CopyCommand) { InputGestureText = "Ctrl+C" });
-            //    edit.AddChild(new MenuItemViewModel(edit, "Paste", PasteCommand) { InputGestureText = "Ctrl+V" });
-            //    edit.AddChild(new MenuItemViewModel(edit, "Delete") { InputGestureText = "Del", IsEnabled = false });
-            //    edit.AddChild(new MenuItemViewModel(edit, "Select All", SelectAllCommand) { InputGestureText = "Ctrl+A" });
-
-            //    edit.AddSeparator();
-
-            //    edit.AddChild(new MenuItemViewModel(edit, "Settings") { IsEnabled = false });
-            //}
-
-            //MenuItemViewModel project = new MenuItemViewModel(this, "Project");
-            //{
-            //    project.AddChild(new MenuItemViewModel(project, "Run Script", RunScriptCommand) { InputGestureText = "F5" });
-            //}
-
-            //MenuItemViewModel window = new MenuItemViewModel(this, "Window");
-            //{
-            //    window.AddChild(new MenuItemViewModel(window, "Close", CloseFileCommand));
-            //    window.AddChild(new MenuItemViewModel(window, "Close All", CloseAllCommand) { IsEnabled = false });
-            //    window.AddSeparator();
-            //    // TODO dynamic menu to switch tabs
-            //}
-
-            //MenuItemViewModel help = new MenuItemViewModel(this, "Help");
-            //{
-            //    help.AddChild(new MenuItemViewModel(help, "About") { IsEnabled = false });
-            //}
-
-            //_RootMenuItem = new ObservableCollection<MenuItemViewModel>(
-            //    new MenuItemViewModel[] { file, edit, project, window, help }
-            //);
+                        WindowMenuItems.Add(new MenuItemViewModel(this, page.Name, page.SelectFileCommand) { Identifier = page.Identifier });
+                    }
+                }
+            }
+            if (e.OldItems != null && e.OldItems.Count > 0)
+            {
+                foreach (object o in e.OldItems)
+                {
+                    if (o is PageViewModel)
+                    {
+                        PageViewModel page = (PageViewModel)o;
+                        foreach (MenuItemViewModel item in WindowMenuItems)
+                        {
+                            if (item.Identifier == page.Identifier)
+                            {
+                                WindowMenuItems.Remove(item);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        #endregion
+        //private void Editor_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.NewItems != null && e.NewItems.Count > 0)
+        //    {
+        //        foreach (object o in e.NewItems)
+        //        {
+        //            if (o is PageViewModel)
+        //            {
+        //                PageViewModel page = (PageViewModel)o;
+
+        //                foreach (MenuItemViewModel root in _RootMenuItems)
+        //                {
+        //                    if (root.Header == "Window")
+        //                    {
+        //                        root.AddChild(new MenuItemViewModel(this, page.Name, page.SelectFileCommand) { Identifier = page.Identifier });
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    if (e.OldItems != null && e.OldItems.Count > 0)
+        //    {
+        //        foreach (object o in e.OldItems)
+        //        {
+        //            if (o is PageViewModel)
+        //            {
+        //                PageViewModel page = (PageViewModel)o;
+
+        //                foreach (MenuItemViewModel root in _RootMenuItems)
+        //                {
+        //                    if (root.Header == "Window")
+        //                    {
+        //                        root.RemoveChildByIdentifier(page.Identifier);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         #region Commands
 

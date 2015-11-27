@@ -12,6 +12,18 @@ namespace Gilgame.SEWorkbench.ViewModels
     {
         private CodeTextEditor _Editor = new CodeTextEditor();
 
+        public Guid Identifier
+        {
+            get
+            {
+                return _Model.Identifier;
+            }
+            private set
+            {
+                _Model.Identifier = value;
+            }
+        }
+
         private Models.Page _Model;
         public Models.Page Model
         {
@@ -131,10 +143,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             Name = name;
             Header = name;
             Filename = filename;
+            Identifier = Guid.NewGuid();
 
             BuildEditor();
 
             _CloseFileCommand = new Commands.CloseFileCommand(this);
+            _SelectFileCommand = new Commands.SelectFileCommand(this);
         }
 
         public event FileEventHandler FileCloseRequested;
@@ -193,6 +207,24 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformCloseFile()
         {
             RaiseFileCloseRequested();
+        }
+
+        #endregion
+
+        #region Select File Command
+
+        private ICommand _SelectFileCommand;
+        public ICommand SelectFileCommand
+        {
+            get
+            {
+                return _SelectFileCommand;
+            }
+        }
+
+        public void PerformSelectFile()
+        {
+            IsSelected = true;
         }
 
         #endregion

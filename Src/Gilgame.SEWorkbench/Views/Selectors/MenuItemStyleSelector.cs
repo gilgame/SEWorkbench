@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Gilgame.SEWorkbench.Services
+namespace Gilgame.SEWorkbench.Selectors
 {
     public class MenuItemStyleSelector : StyleSelector
     {

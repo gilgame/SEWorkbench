@@ -146,7 +146,7 @@
     </None>
     <Compile Include="Program.cs" />
     <Compile Include="Serialization\Convert.cs" />
-    <Compile Include="Services\MenuItemStyleSelector.cs" />
+    <Compile Include="Views\Selectors\MenuItemStyleSelector.cs" />
     <Compile Include="Services\MessageBox.cs" />
     <Compile Include="Services\NewFile.cs" />
     <Compile Include="Services\ObservableSortedList.cs" />
@@ -180,6 +180,7 @@
     <Compile Include="ViewModels\Commands\SaveFileCommand.cs" />
     <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\SelectAllCommand.cs" />
+    <Compile Include="ViewModels\Commands\SelectFileCommand.cs" />
     <Compile Include="ViewModels\Commands\UndoCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
     <Compile Include="ViewModels\Comparers\GridItemComparer.cs" />
@@ -354,6 +355,7 @@
     <Resource Include="Icons\EditProgram.png" />
     <Resource Include="Icons\InsertName.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>(if exist "$(TargetDir)*old.pdb" del "$(TargetDir)*old.pdb") &amp; (if exist "$(TargetDir)*.pdb" ren "$(TargetDir)*.pdb" *.old.pdb)</PreBuildEvent>
