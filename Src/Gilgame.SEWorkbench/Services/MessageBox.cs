@@ -15,14 +15,17 @@ namespace Gilgame.SEWorkbench.Services
             );
         }
 
-        public static System.Windows.MessageBoxResult ShowError(string error)
+        public static System.Windows.MessageBoxResult ShowError(string error, Exception ex)
         {
-            return System.Windows.MessageBox.Show(
+            string message = String.Format(
+                "{0} ({1}){2}{2}{3}",
                 error,
-                "Space Engineers Workbench",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Error
+                ex.Message,
+                Environment.NewLine,
+                ex.StackTrace
             );
+            
+            return System.Windows.MessageBox.Show(message);
         }
 
         public static System.Windows.MessageBoxResult ShowQuestion(string question)

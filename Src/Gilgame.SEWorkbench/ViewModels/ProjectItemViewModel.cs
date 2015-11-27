@@ -34,6 +34,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return _Model.Name;
             }
+            set
+            {
+                _Model.Name = value;
+                OnPropertyChanged("Name");
+            }
         }
 
         public ProjectItemType Type
@@ -49,6 +54,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             get
             {
                 return _Model.Path;
+            }
+            set
+            {
+                _Model.Path = value;
+                OnPropertyChanged("Path");
             }
         }
 

@@ -146,6 +146,10 @@
     </None>
     <Compile Include="Program.cs" />
     <Compile Include="Serialization\Convert.cs" />
+    <Compile Include="Services\Strings.cs" />
+    <Compile Include="Views\NewProjectDialog.xaml.cs">
+      <DependentUpon>NewProjectDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Selectors\MenuItemStyleSelector.cs" />
     <Compile Include="Services\MessageBox.cs" />
     <Compile Include="Services\NewFile.cs" />
@@ -240,6 +244,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewItemDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewProjectDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

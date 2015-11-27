@@ -5,11 +5,13 @@ using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.Views
 {
-    public partial class NewItemDialog : Window
+    public partial class NewProjectDialog : Window
     {
-        public string ItemName { get; set; }
+        public string ProjectName { get; set; }
 
-        public NewItemDialog()
+        public string ProjectLocation { get; set; }
+
+        public NewProjectDialog()
         {
             InitializeComponent();
 

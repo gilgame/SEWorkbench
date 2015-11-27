@@ -16,6 +16,7 @@ namespace Gilgame.SEWorkbench
                 CopySandbox();
             }
 
+            Interop.Blueprint.RunInit();
             StartApp();
         }
 
@@ -81,7 +82,7 @@ namespace Gilgame.SEWorkbench
             catch (Exception ex)
             {
                 // TODO log error
-                MessageBox.ShowError(ex.Message);
+                MessageBox.ShowError("Failed to copy the required libraries", ex);
                 return;
             }
         }
