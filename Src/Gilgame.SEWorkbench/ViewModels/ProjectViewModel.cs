@@ -739,6 +739,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 DefaultExt = ".csx",
                 Filter = "Script File (.csx)|*.csx",
                 InitialDirectory = initial,
+                Multiselect = true,
             };
 
             Nullable<bool> result = dialog.ShowDialog();
@@ -754,19 +755,21 @@ namespace Gilgame.SEWorkbench.ViewModels
                             Path.GetFileName(source)
                         );
 
-                        System.Windows.MessageBoxResult overwrite = MessageBox.ShowQuestion(message);
-                        if (overwrite == System.Windows.MessageBoxResult.No)
-                        {
-                            continue;
-                        }
-                        if (overwrite == System.Windows.MessageBoxResult.Cancel)
-                        {
-                            break;
-                        }
-
                         try
                         {
-                            File.Copy(source, destination);
+                            if (Path.GetDirectoryName(source) != Path.GetDirectoryName(destination))
+                            {
+                                System.Windows.MessageBoxResult overwrite = MessageBox.ShowQuestion(message);
+                                if (overwrite == System.Windows.MessageBoxResult.No)
+                                {
+                                    continue;
+                                }
+                                if (overwrite == System.Windows.MessageBoxResult.Cancel)
+                                {
+                                    break;
+                                }
+                                File.Copy(source, destination);
+                            }
 
                             string name = Path.GetFileNameWithoutExtension(destination);
                             ProjectItem item = new ProjectItem()
