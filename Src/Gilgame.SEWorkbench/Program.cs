@@ -3,6 +3,8 @@ using System.IO;
 using System.Reflection;
 
 using Gilgame.SEWorkbench.Services;
+using Sandbox.Common.ObjectBuilders.Definitions;
+using VRage.ObjectBuilders;
 
 namespace Gilgame.SEWorkbench
 {
@@ -11,12 +13,19 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
+            Views.SplashScreenView splash = new Views.SplashScreenView();
+            splash.Show();
+
             if (!SandboxCopied())
             {
                 CopySandbox();
             }
 
             Interop.Blueprint.RunInit();
+
+            LoadSerializers();
+
+            splash.Close();
             StartApp();
         }
 
@@ -107,6 +116,16 @@ namespace Gilgame.SEWorkbench
             }
             
             return null;
+        }
+
+        private static void LoadSerializers()
+        {
+            // make a call to get serializers loaded so blueprints load faster
+
+            MyObjectBuilder_Definitions loaded = null;
+
+            try { MyObjectBuilderSerializer.DeserializeXML(String.Empty, out loaded); }
+            catch { }
         }
     }
 }
