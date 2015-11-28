@@ -6,6 +6,7 @@ namespace Gilgame.SEWorkbench.Models
     {
         Root,
         Blueprints,
+        Collection,
         Folder,
         File,
         None
