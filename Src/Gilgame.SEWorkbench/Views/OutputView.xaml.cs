@@ -1,27 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Gilgame.SEWorkbench.ViewModels;
+using System;
+using System.Data;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Gilgame.SEWorkbench.Views
 {
-    /// <summary>
-    /// Interaction logic for OutputView.xaml
-    /// </summary>
     public partial class OutputView : Window
     {
+        private bool _CloseWindow = false;
+        public bool CloseWindow
+        {
+            get
+            {
+                return _CloseWindow;
+            }
+            set
+            {
+                _CloseWindow = value;
+            }
+        }
+
+        public event ErrorMessageEventHandler ErrorMessageSelected;
+        private void RaiseErrorMessageSelected(OutputItemViewModel output)
+        {
+            if (output != null && ErrorMessageSelected != null)
+            {
+                ErrorMessageSelected(this, new ErrorMessageEventArgs(output));
+            }
+        }
+
         public OutputView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            if (!_CloseWindow)
+            {
+                e.Cancel = true;
+
+                Visibility = System.Windows.Visibility.Hidden;
+            }
+
+            base.OnClosing(e);
+        }
+
+        private void CopyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if(lvErrors.SelectedItem != null)
+            {
+                OutputItemViewModel item = lvErrors.SelectedItem as OutputItemViewModel;
+                Clipboard.SetText(item.Message);
+            }
+        }
+
+        private void ErrorsListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if(lvErrors.SelectedItem != null)
+            {
+                OutputItemViewModel item = lvErrors.SelectedItem as OutputItemViewModel;
+                RaiseErrorMessageSelected(item);
+            }
         }
     }
 }

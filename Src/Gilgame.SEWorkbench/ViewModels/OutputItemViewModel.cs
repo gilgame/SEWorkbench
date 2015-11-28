@@ -45,6 +45,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public string Filename
+        {
+            get
+            {
+                return _Model.Filename;
+            }
+        }
+
         public OutputItemViewModel(Models.OutputItem item, BaseViewModel parent) : base(parent)
         {
             _Model = item;

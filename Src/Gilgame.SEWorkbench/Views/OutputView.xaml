@@ -15,14 +15,19 @@
                 <Label Content="Error List" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
                        DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
 
-                <ListView Background="White" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" ItemsSource="{Binding Items}"
-                          DockPanel.Dock="Bottom" HorizontalContentAlignment="Stretch" SelectionMode="Single">
+                <ListView Name="lvErrors" Background="White" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" ItemsSource="{Binding Items}"
+                          DockPanel.Dock="Bottom" HorizontalContentAlignment="Stretch" SelectionMode="Single" MouseDoubleClick="ErrorsListView_MouseDoubleClick">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Copy" Click="CopyMenuItem_Click" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
                     <ListView.View>
                         <GridView>
+                            <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="450" />
+                            <GridViewColumn Header="Error" DisplayMemberBinding="{Binding Error}" Width="90" />
                             <GridViewColumn Header="Line" DisplayMemberBinding="{Binding Line}" Width="50" />
                             <GridViewColumn Header="Col" DisplayMemberBinding="{Binding Column}" Width="50" />
-                            <GridViewColumn Header="Error" DisplayMemberBinding="{Binding Error}" Width="90" />
-                            <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="450" />
                         </GridView>
                     </ListView.View>
                 </ListView>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit.Document;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -160,6 +161,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event EventHandler ScriptRunning;
+        private void RaiseScriptRunning()
+        {
+            if (ScriptRunning != null)
+            {
+                ScriptRunning(this, EventArgs.Empty);
+            }
+        }
+
         public bool HandleClosing()
         {
             if (IsModified)
@@ -246,45 +256,19 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        //private void Editor_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (e.NewItems != null && e.NewItems.Count > 0)
-        //    {
-        //        foreach (object o in e.NewItems)
-        //        {
-        //            if (o is PageViewModel)
-        //            {
-        //                PageViewModel page = (PageViewModel)o;
-
-        //                foreach (MenuItemViewModel root in _RootMenuItems)
-        //                {
-        //                    if (root.Header == "Window")
-        //                    {
-        //                        root.AddChild(new MenuItemViewModel(this, page.Name, page.SelectFileCommand) { Identifier = page.Identifier });
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    if (e.OldItems != null && e.OldItems.Count > 0)
-        //    {
-        //        foreach (object o in e.OldItems)
-        //        {
-        //            if (o is PageViewModel)
-        //            {
-        //                PageViewModel page = (PageViewModel)o;
-
-        //                foreach (MenuItemViewModel root in _RootMenuItems)
-        //                {
-        //                    if (root.Header == "Window")
-        //                    {
-        //                        root.RemoveChildByIdentifier(page.Identifier);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        public void FindError(OutputItemViewModel item)
+        {
+            if (item != null)
+            {
+                PageViewModel page = Editor.Items.Where(i => i.Filename == item.Filename).Single();
+                if (page != null)
+                {
+                    DocumentLine line = page.Content.Document.GetLineByNumber(item.Line);
+                    page.Content.Select(line.Offset, line.Length);
+                    page.Content.TextArea.Caret.BringCaretToView();
+                }
+            }
+        }
 
         #region Commands
 
@@ -345,7 +329,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 Interop.InGameScript script = new Interop.InGameScript(page.Content.Text);
 
+                string filename = page.Filename;
+
                 Output.Clear();
+                RaiseScriptRunning();
                 
                 if (script.CompileErrors.Count > 0)
                 {
@@ -368,7 +355,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                                 Line = line,
                                 Column = col,
                                 Error = errno,
-                                Message = errmsg
+                                Message = errmsg,
+                                Filename = filename
                             };
                             Output.AddItem(item);
                         }
@@ -382,18 +370,14 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                                 message = message.Replace(match.Groups[0].Value, "");
 
-                                Output.AddItem(new Models.OutputItem() { Line = line, Column = col, Message = message });
+                                Output.AddItem(new Models.OutputItem() { Line = line, Column = col, Message = message, Filename = filename });
                             }
                             else
                             {
-                                Output.AddItem(new Models.OutputItem() { Message = message });
+                                Output.AddItem(new Models.OutputItem() { Message = message, Filename = filename });
                             }
                         }
                     }
-
-                    Views.OutputView view = new Views.OutputView();
-                    view.DataContext = Output;
-                    view.ShowDialog();
                 }
                 else
                 {

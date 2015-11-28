@@ -2,12 +2,15 @@
 using System.Windows;
 
 using Gilgame.SEWorkbench.ViewModels;
+using Gilgame.SEWorkbench.Services;
 
 namespace Gilgame.SEWorkbench.Views
 {
     public partial class MainWindow : Window
     {
         private ProjectManagerViewModel _ProjectManager = new ProjectManagerViewModel(null);
+
+        private OutputView _OutputView = new OutputView() { Name = "OutputWindow" };
 
         public MainWindow()
         {
@@ -19,6 +22,9 @@ namespace Gilgame.SEWorkbench.Views
         private void RegisterEvents()
         {
             _ProjectManager.CloseViewRequested += ProjectManager_CloseViewRequested;
+            _ProjectManager.ScriptRunning += ProjectManager_ScriptRunning;
+
+            _OutputView.ErrorMessageSelected += OutputView_ErrorMessageSelected;
         }
 
         private void SetDataContext()
@@ -28,6 +34,8 @@ namespace Gilgame.SEWorkbench.Views
             tvBlueprint.DataContext = _ProjectManager.Blueprint;
             tcFileEditor.DataContext = _ProjectManager.Editor;
             tvProjectExplorer.DataContext = _ProjectManager.Project;
+
+            _OutputView.DataContext = _ProjectManager.Output;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -36,6 +44,11 @@ namespace Gilgame.SEWorkbench.Views
             {
                 e.Cancel = true;
             }
+            else
+            {
+                _OutputView.CloseWindow = true;
+                _OutputView.Close();
+            }
 
             base.OnClosing(e);
         }
@@ -43,6 +56,25 @@ namespace Gilgame.SEWorkbench.Views
         private void ProjectManager_CloseViewRequested(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void ProjectManager_ScriptRunning(object sender, EventArgs e)
+        {
+            if (!_OutputView.IsLoaded)
+            {
+                _OutputView.Show();
+            }
+            else
+            {
+                _OutputView.Visibility = System.Windows.Visibility.Visible;
+            }
+        }
+
+        private void OutputView_ErrorMessageSelected(object sender, ErrorMessageEventArgs e)
+        {
+            Focus();
+
+            _ProjectManager.FindError(e.Output);
         }
     }
 }
