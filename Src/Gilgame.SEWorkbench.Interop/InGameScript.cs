@@ -44,6 +44,7 @@ namespace Gilgame.SEWorkbench.Interop
         private static void InitIlChecker()
         {
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Ingame.IMyCubeBlock));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.Common.ObjectBuilders.Definitions.EnvironmentItemsEntry));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.ObjectBuilders.MyObjectBuilder_Base));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.Common.ObjectBuilders.MyObjectBuilder_AirVent));
