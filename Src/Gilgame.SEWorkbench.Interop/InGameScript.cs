@@ -45,9 +45,11 @@ namespace Gilgame.SEWorkbench.Interop
         {
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Ingame.IMyCubeBlock));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.Common.ObjectBuilders.Definitions.EnvironmentItemsEntry));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.ObjectBuilders.MyObjectBuilder_Base));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.Common.ObjectBuilders.MyObjectBuilder_AirVent));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.Common.ObjectBuilders.Definitions.EnvironmentItemsEntry));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.MyFixedPoint));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.ModAPI.IMyEntity));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.ObjectBuilders.MyObjectBuilder_Base));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(VRageMath.Vector3));
         }
 
