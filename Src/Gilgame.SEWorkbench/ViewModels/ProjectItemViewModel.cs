@@ -167,19 +167,23 @@ namespace Gilgame.SEWorkbench.ViewModels
             );
         }
 
-        public void AddChild(ProjectItem item)
+        public ProjectItemViewModel AddChild(ProjectItem item)
         {
-            _Children.Add(new ProjectItemViewModel(item, this));
-            Model.Children.Add(item);
+            return AddChild(item, null);
         }
 
-        public void AddChild(ProjectItem item, Interop.Grid grid)
+        public ProjectItemViewModel AddChild(ProjectItem item, Interop.Grid grid)
         {
             ProjectItemViewModel vm = new ProjectItemViewModel(item, this);
-            vm.Grid.Add(CreateGridViewModel(grid));
+            if (grid != null)
+            {
+                vm.Grid.Add(CreateGridViewModel(grid));
+            }
 
             _Children.Add(vm);
             Model.Children.Add(item);
+
+            return vm;
         }
 
         public void Remove()

@@ -71,6 +71,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     {
                         PageViewModel page = (PageViewModel)e.NewItems[0];
                         page.IsSelected = true;
+                        page.Content.Focus();
                     }
                 }
             }

@@ -150,6 +150,9 @@
     <Compile Include="Views\NewProjectDialog.xaml.cs">
       <DependentUpon>NewProjectDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\OpenFolderDialog.xaml.cs">
+      <DependentUpon>OpenFolderDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Selectors\MenuItemStyleSelector.cs" />
     <Compile Include="Services\MessageBox.cs" />
     <Compile Include="Services\NewFile.cs" />
@@ -248,6 +251,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewProjectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OpenFolderDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

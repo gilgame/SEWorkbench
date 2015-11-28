@@ -1,13 +1,35 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.Views
 {
-    public partial class NewItemDialog : Window
+    public partial class NewItemDialog : Window, INotifyPropertyChanged
     {
-        public string ItemName { get; set; }
+        private string _ItemName = String.Empty;
+        public string ItemName
+        {
+            get
+            {
+                return _ItemName;
+            }
+            set
+            {
+                _ItemName = value;
+                OnPropertyChanged("ItemName");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
 
         public NewItemDialog()
         {
@@ -34,11 +56,27 @@ namespace Gilgame.SEWorkbench.Views
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            PerformAdd();
+        }
+
+        private void PerformAdd()
+        {
+            if (String.IsNullOrEmpty(ItemName))
+            {
+                Services.MessageBox.ShowMessage("Name cannot be empty!");
+                return;
+            }
+
             DialogResult = true;
             Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            PerformCancel();
+        }
+
+        private void PerformCancel()
         {
             DialogResult = false;
             Close();
@@ -51,6 +89,18 @@ namespace Gilgame.SEWorkbench.Views
                 return false;
             }
             return true;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.Key == Key.Enter)
+            //{
+            //    PerformAdd();
+            //}
+            if (e.Key == Key.Escape)
+            {
+                PerformCancel();
+            }
         }
     }
 }

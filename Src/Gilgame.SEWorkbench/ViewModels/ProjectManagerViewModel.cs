@@ -116,6 +116,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             Project = new ProjectViewModel(this);
             Project.FileRequested += Project_FileRequested;
             Project.SelectionChanged += Project_SelectionChanged;
+            Project.FileCreated += Project_FileCreated;
             Project.FileDeleted += Project_FileDeleted;
 
             Blueprint = new BlueprintViewModel(this);
@@ -183,6 +184,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 Blueprint.SetBlueprint(item.Grid);
             }
+        }
+
+        private void Project_FileCreated(object sender, FileEventArgs e)
+        {
+            ProjectItemViewModel item = Project.GetItemByPath(e.Path);
+            PerformOpenItem(item);
         }
 
         private void Project_FileDeleted(object sender, FileEventArgs e)
@@ -295,9 +302,14 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformOpenSelected()
         {
             ProjectItemViewModel item = _Project.GetSelectedFile();
+            PerformOpenItem(item);
+        }
+
+        public void PerformOpenItem(ProjectItemViewModel item)
+        {
             if (item != null)
             {
-                foreach(PageViewModel page in Editor.Items)
+                foreach (PageViewModel page in Editor.Items)
                 {
                     if (page.Filename == item.Path)
                     {

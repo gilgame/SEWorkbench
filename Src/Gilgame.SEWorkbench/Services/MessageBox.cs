@@ -9,7 +9,7 @@ namespace Gilgame.SEWorkbench.Services
         {
             return System.Windows.MessageBox.Show(
                 message,
-                "Space Engineers Workbench",
+                "SE Workbench",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Information
             );
@@ -25,14 +25,19 @@ namespace Gilgame.SEWorkbench.Services
                 ex.StackTrace
             );
             
-            return System.Windows.MessageBox.Show(message);
+            return System.Windows.MessageBox.Show(
+                message,
+                "SE Workbench",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error
+            );
         }
 
         public static System.Windows.MessageBoxResult ShowQuestion(string question)
         {
             return System.Windows.MessageBox.Show(
                 question,
-                "Space Engineers Workbench",
+                "SE Workbench",
                 System.Windows.MessageBoxButton.YesNoCancel,
                 System.Windows.MessageBoxImage.Question
             );

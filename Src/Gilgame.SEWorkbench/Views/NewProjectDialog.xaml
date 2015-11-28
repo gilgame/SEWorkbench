@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Gilgame.SEWorkbench.Views.NewProjectDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SE Workbench - Create New Project" Height="150" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="SE Workbench - Create New Project" Height="150" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" KeyDown="Window_KeyDown">
     <Grid Background="#FF2B3B58" FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150" />
@@ -16,7 +16,7 @@
         <Rectangle Fill="#FFCFD6E5" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
 
         <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-            <TextBlock Text="Folder Name:" Margin="5,5,350,5" VerticalAlignment="Center" />
+            <TextBlock Text="Project Name:" Margin="5,5,350,5" VerticalAlignment="Center" />
             <TextBox Margin="155,5,5,5" Text="{Binding ProjectName, Mode=TwoWay}" Name="NameTextBox"
                      PreviewTextInput="NameTextBox_PreviewTextInput"
                      PreviewKeyDown="NameTextBox_PreviewKeyDown" />
@@ -24,12 +24,12 @@
 
         <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
             <TextBlock Text="Location:" Margin="5,5,350,5" VerticalAlignment="Center" />
-            <TextBox Margin="155,5,5,5" Text="{Binding ProjectLocation, Mode=TwoWay}" Name="LocTextBox" IsReadOnly="True" IsReadOnlyCaretVisible="True" />
+            <TextBox Margin="155,5,5,5" Text="{Binding ProjectLocation}" Name="LocTextBox" IsReadOnly="True" IsReadOnlyCaretVisible="True" />
         </Grid>
 
         <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <Button Margin="10,5,5,7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Height="23"
-                Content="Browse" Grid.Column="0" Grid.Row="2" Click="AddButton_Click" />
+                Content="Browse" Grid.Column="0" Grid.Row="2" Click="BrowseButton_Click" />
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">

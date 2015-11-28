@@ -98,6 +98,18 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event FileEventHandler FileCreated;
+        public void RaiseFileCreated(ProjectItemViewModel item)
+        {
+            if (item.Type == ProjectItemType.File)
+            {
+                if (FileCreated != null)
+                {
+                    FileCreated(this, new FileEventArgs(item.Path));
+                }
+            }
+        }
+
         public event FileEventHandler FileDeleted;
         public void RaiseFileDeleted(ProjectItemViewModel item)
         {
@@ -218,7 +230,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             else
             {
-                foreach(ProjectItemViewModel child in parent.Children)
+                foreach (ProjectItemViewModel child in parent.Children)
                 {
                     LoadBlueprints(child);
                 }
@@ -349,7 +361,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             foreach (ProjectItemViewModel child in item.Children)
             {
-                GetItemByPath(child, path);
+                ProjectItemViewModel result = GetItemByPath(child, path);
+                if (result != null)
+                {
+                    return result;
+                }
             }
             return null;
         }
@@ -372,28 +388,33 @@ namespace Gilgame.SEWorkbench.ViewModels
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string initial = Path.Combine(documents, "SEWorkbench");
 
+            bool success = false;
             try
             {
+                // TODO Move all IO to a separate class
                 if (!Directory.Exists(initial))
                 {
                     Directory.CreateDirectory(initial);
                 }
 
-                Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
+                Views.NewProjectDialog view = new Views.NewProjectDialog()
                 {
-                    DefaultExt = ".seproj",
-                    Filter = "SE Workbench Project File (.seproj)|*.seproj",
-                    InitialDirectory = initial,
+                    ProjectLocation = initial,
                 };
 
-                Nullable<bool> result = dialog.ShowDialog();
-                if (result == true)
+                Nullable<bool> result = view.ShowDialog();
+                if (result != null && result.Value == true)
                 {
-                    string fullpath = dialog.FileName;
-                    string name = Path.GetFileNameWithoutExtension(fullpath);
+                    string name = view.ProjectName;
+                    string filename = String.Format("{0}.seproj", name);
+                    string fullpath = Path.Combine(initial, name, filename);
+
+                    if (!Directory.Exists(Path.GetDirectoryName(fullpath)))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(fullpath));
+                    }
 
                     ProjectViewModel project = new ViewModels.ProjectViewModel(null);
-
                     ProjectItem root = new ProjectItem()
                     {
                         Name = name,
@@ -403,14 +424,21 @@ namespace Gilgame.SEWorkbench.ViewModels
                     };
                     SetRootItem(root);
 
-                    CreateNewProjectTemplate();
-                    SaveProject();
+                    success = true;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.ShowError("Unable to create new project", ex);
                 return;
+            }
+            finally
+            {
+                if (success)
+                {
+                    CreateNewProjectTemplate();
+                    SaveProject();
+                }
             }
         }
 
@@ -421,26 +449,55 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return;
             }
 
-            _RootItem.IsExpanded = true;
-            _RootItem.IsSelected = true;
+            string demofolder = "Library";
+            string rootpath = Path.GetDirectoryName(_RootItem.Path);
+            string folderpath = Path.Combine(rootpath, demofolder);
+            string filepath = Path.Combine(folderpath, String.Format("NewScript.csx"));
 
-            string folder = "Library";
-            string file = "NewScript";
-
-            PerformAddFolder(folder);
-            if (_RootItem.Children.Count > 0)
+            try
             {
-                _RootItem.Children[0].IsExpanded = true;
-                _RootItem.Children[0].IsSelected = true;
-
-                PerformAddFile("Script");
-                if (_RootItem.Children[0].Children.Count > 0)
+                if (!Directory.Exists(folderpath))
                 {
-                    ProjectItemViewModel item = GetItemByPath(
-                        Path.Combine(Path.GetDirectoryName(_RootItem.Path), folder, file)
-                    );
-                    item.IsSelected = true;
+                    Directory.CreateDirectory(folderpath);
                 }
+                ProjectItem folder = new ProjectItem()
+                {
+                    Name = demofolder,
+                    Path = folderpath,
+                    Type = ProjectItemType.Folder,
+                    Project = this,
+                };
+
+                File.WriteAllText(filepath, Services.NewFile.Contents);
+                ProjectItem file = new ProjectItem()
+                {
+                    Name = Path.GetFileNameWithoutExtension(filepath),
+                    Path = filepath,
+                    Type = ProjectItemType.File,
+                    Project = this,
+                };
+
+                ProjectItemViewModel newfile = null;
+
+                _RootItem.AddChild(folder);
+                if (_RootItem.Children.Count > 0)
+                {
+                    newfile = _RootItem.Children[0].AddChild(file);
+                    if (_RootItem.Children[0].Children.Count > 0)
+                    {
+                        _RootItem.Children[0].Children[0].IsSelected = true;
+                    }
+                    _RootItem.Children[0].IsExpanded = true;
+                }
+
+                if (newfile != null)
+                {
+                    RaiseFileCreated(newfile);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.ShowError("Unable to create new project template", ex);
             }
         }
 
@@ -595,7 +652,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformAddFile(string auto = null)
+        public void PerformAddFile()
         {
             ProjectItemViewModel selected = SelectedItem;
             if (selected == null)
@@ -612,14 +669,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
 
             Views.NewItemDialog view = new Views.NewItemDialog();
-            Nullable<bool> result = (auto == null) ? view.ShowDialog() : true;
+            Nullable<bool> result = view.ShowDialog();
             if (result != null && result.Value == true)
             {
-                string temp = (auto == null) ? view.ItemName : auto;
-                string fullpath = Path.Combine(selected.Path, String.Format("{0}.csx", temp));
+                string fullpath = Path.Combine(selected.Path, String.Format("{0}.csx", view.ItemName));
                 try
                 {
                     File.WriteAllText(fullpath, Services.NewFile.Contents);
+
+                    ProjectItemViewModel newfile = null;
 
                     string name = Path.GetFileNameWithoutExtension(fullpath);
                     ProjectItem item = new ProjectItem()
@@ -629,8 +687,13 @@ namespace Gilgame.SEWorkbench.ViewModels
                         Type = ProjectItemType.File,
                         Project = this,
                     };
-                    selected.AddChild(item);
+                    newfile = selected.AddChild(item);
                     selected.IsExpanded = true;
+
+                    if (newfile != null)
+                    {
+                        RaiseFileCreated(newfile);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -740,7 +803,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformAddFolder(string auto = null)
+        public void PerformAddFolder()
         {
             ProjectItemViewModel selected = SelectedItem;
             if (selected == null)
@@ -757,15 +820,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
 
             Views.NewItemDialog view = new Views.NewItemDialog();
-            Nullable<bool> result = (auto == null) ? view.ShowDialog() : true;
+            Nullable<bool> result = view.ShowDialog();
             if (result != null && result.Value == true)
             {
-                string temp = (auto == null) ? view.ItemName : auto;
+                string name = view.ItemName;
 
-                string fullpath = Path.Combine(selected.Path, temp);
+                string fullpath = Path.Combine(selected.Path, name);
                 if (selected.Type == ProjectItemType.Root)
                 {
-                    fullpath = Path.Combine(Path.GetDirectoryName(selected.Path), temp);
+                    fullpath = Path.Combine(Path.GetDirectoryName(selected.Path), name);
                 }
 
                 try
@@ -777,7 +840,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                     ProjectItem item = new ProjectItem()
                     {
-                        Name = temp,
+                        Name = name,
                         Path = fullpath,
                         Type = ProjectItemType.Folder,
                         Project = this,
@@ -818,6 +881,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string blueprints = Path.Combine(appdata, "SpaceEngineers", "Blueprints");
 
+            // TODO implement my own open file dialog to avoid API
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
             {
                 DefaultExt = ".sbc",
