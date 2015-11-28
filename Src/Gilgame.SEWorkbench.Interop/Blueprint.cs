@@ -83,33 +83,64 @@ namespace Gilgame.SEWorkbench.Interop
 
         public static MyObjectBuilder_Definitions SaveProgram(string path, MyObjectBuilder_Definitions definitions, long entityid, string program)
         {
-            foreach (MyObjectBuilder_ShipBlueprintDefinition blueprints in definitions.ShipBlueprints)
+            try
             {
-                foreach (MyObjectBuilder_CubeGrid cubegrid in blueprints.CubeGrids)
+                string backup = String.Format("{0}.bak", path);
+                if (!File.Exists(backup))
                 {
-                    foreach (MyObjectBuilder_CubeBlock block in cubegrid.CubeBlocks)
+                    File.Copy(path, backup);
+                }
+                else
+                {
+                    FileInfo source = new FileInfo(path);
+                    FileInfo dest = new FileInfo(path);
+
+                    if (source.LastWriteTime > dest.LastWriteTime)
                     {
-                        if (block is MyObjectBuilder_MyProgrammableBlock)
+                        File.Copy(path, backup, true);
+                    }
+                }
+
+                foreach (MyObjectBuilder_ShipBlueprintDefinition blueprints in definitions.ShipBlueprints)
+                {
+                    foreach (MyObjectBuilder_CubeGrid cubegrid in blueprints.CubeGrids)
+                    {
+                        foreach (MyObjectBuilder_CubeBlock block in cubegrid.CubeBlocks)
                         {
-                            if (block.EntityId == entityid)
+                            if (block is MyObjectBuilder_MyProgrammableBlock)
                             {
-                                MyObjectBuilder_MyProgrammableBlock prog = (MyObjectBuilder_MyProgrammableBlock)block;
-                                prog.Program = program;
+                                if (block.EntityId == entityid)
+                                {
+                                    MyObjectBuilder_MyProgrammableBlock prog = (MyObjectBuilder_MyProgrammableBlock)block;
+                                    prog.Program = program;
+                                }
                             }
                         }
                     }
                 }
+
+                MyObjectBuilderSerializer.SerializeXML(path, false, definitions);
             }
-            Save(path, definitions);
+            catch (Exception ex)
+            {
+                string message = String.Format(
+                    "{0} ({1}){2}{2}{3}",
+                    "There was an error saving the blueprint",
+                    ex.Message,
+                    Environment.NewLine,
+                    ex.StackTrace
+                );
+
+                System.Windows.MessageBox.Show(
+                    message,
+                    "SE Workbench",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error
+                );
+            }
 
             return definitions;
         }
-
-        private static void Save(string path, MyObjectBuilder_Definitions definitions)
-        {
-            MyObjectBuilderSerializer.SerializeXML(path, false, definitions);
-        }
-
 
         private static string GetBlockType(string name)
         {
