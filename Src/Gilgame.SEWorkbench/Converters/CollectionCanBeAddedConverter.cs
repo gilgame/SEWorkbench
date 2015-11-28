@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace Gilgame.SEWorkbench.Converters
 {
-    public class CanBeDeletedConverter : IValueConverter
+    public class CollectionCanBeAddedConverter : IValueConverter
     {
         public double Length { get; set; }
 
@@ -14,11 +14,11 @@ namespace Gilgame.SEWorkbench.Converters
             switch (type)
             {
                 case Models.ProjectItemType.Root:
-                case Models.ProjectItemType.None:
-                    return false;
+                case Models.ProjectItemType.Blueprints:
+                    return true;
 
                 default:
-                    return true;
+                    return false;
             }
         }
 

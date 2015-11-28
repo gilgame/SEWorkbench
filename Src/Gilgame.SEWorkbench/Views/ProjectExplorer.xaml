@@ -19,6 +19,7 @@
             <conv:FileSelectedConverter x:Key="FileSelectedToBool" />
 
             <conv:BlueprintCanBeAddedConverter x:Key="BlueprintsCanBeAddedToBool" />
+            <conv:CollectionCanBeAddedConverter x:Key="CollectionCanBeAddedToBool" />
             <conv:FolderCanBeAddedConverter x:Key="FolderCanBeAddedToBool" />
             <conv:FileCanBeAddedConverter x:Key="FileCanBeAddedToBool" />
 
@@ -75,6 +76,7 @@
                                 <MenuItem Header="New Item..." Command="{Binding AddCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
                                 <MenuItem Header="Existing Item..." Command="{Binding AddExistingCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
                                 <MenuItem Header="New Folder..." Command="{Binding AddFolderCommand}"  IsEnabled="{Binding SelectedItemType, Converter={StaticResource FolderCanBeAddedToBool}}" />
+                                <MenuItem Header="Collection..." Command="{Binding AddCollectionCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CollectionCanBeAddedToBool}}" />
                             </MenuItem>
                             <Separator />
                             <MenuItem Header="View Code" Command="{Binding OpenSelectedCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileSelectedToBool}}" />

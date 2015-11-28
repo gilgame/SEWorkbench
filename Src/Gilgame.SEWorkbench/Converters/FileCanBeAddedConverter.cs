@@ -14,6 +14,7 @@ namespace Gilgame.SEWorkbench.Converters
             switch (type)
             {
                 case Models.ProjectItemType.Blueprints:
+                case Models.ProjectItemType.Collection:
                 case Models.ProjectItemType.Folder:
                 case Models.ProjectItemType.File:
                     return true;

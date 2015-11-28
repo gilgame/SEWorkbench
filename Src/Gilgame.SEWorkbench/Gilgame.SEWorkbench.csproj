@@ -124,6 +124,7 @@
     <Compile Include="Completion\ScriptProvider.cs" />
     <Compile Include="Converters\BlueprintCanBeAddedConverter.cs" />
     <Compile Include="Converters\CanBeRenamedConverter.cs" />
+    <Compile Include="Converters\CollectionCanBeAddedConverter.cs" />
     <Compile Include="Converters\EditorTabHeaderConverter.cs" />
     <Compile Include="Converters\FileCanBeAddedConverter.cs" />
     <Compile Include="Converters\FileSelectedConverter.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Services\Windows.cs" />
+    <Compile Include="ViewModels\Commands\AddCollectionCommand.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="Views\SplashScreenView.xaml.cs">
       <DependentUpon>SplashScreenView.xaml</DependentUpon>
@@ -379,7 +381,10 @@
     <Resource Include="Icons\EditProgram.png" />
     <Resource Include="Icons\InsertName.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\Collection.png" />
+    <Resource Include="Icons\Save.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>(if exist "$(TargetDir)*old.pdb" del "$(TargetDir)*old.pdb") &amp; (if exist "$(TargetDir)*.pdb" ren "$(TargetDir)*.pdb" *.old.pdb)</PreBuildEvent>

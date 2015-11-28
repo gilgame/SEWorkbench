@@ -25,6 +25,9 @@ namespace Gilgame.SEWorkbench.Converters
                 case Models.ProjectItemType.Blueprints:
                     return "/Gilgame.SEWorkbench;component/Icons/Blueprints.png";
 
+                case Models.ProjectItemType.Collection:
+                    return "/Gilgame.SEWorkbench;component/Icons/Collection.png";
+
                 case Models.ProjectItemType.Folder:
                     if (expanded)
                     {

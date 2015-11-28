@@ -140,6 +140,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             _AddBlueprintsCommand = new Commands.AddBlueprintsCommand(this);
             _AddExistingCommand = new Commands.AddExistingFileCommand(this);
             _AddFolderCommand = new Commands.AddFolderCommand(this);
+            _AddCollectionCommand = new Commands.AddCollectionCommand(this);
 
             _OpenProjectCommand = new Commands.OpenProjectCommand(this);
             _NewProjectCommand = new Commands.NewProjectCommand(this);
@@ -285,7 +286,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
 
             ProjectItemViewModel parent = (ProjectItemViewModel)child.Parent;
-            if (parent.Type == ProjectItemType.Root || parent.Type == ProjectItemType.Blueprints || parent.Type == ProjectItemType.Folder)
+            if (parent.Type == ProjectItemType.Root || parent.Type == ProjectItemType.Collection || parent.Type == ProjectItemType.Blueprints || parent.Type == ProjectItemType.Folder)
             {
                 return parent;
             }
@@ -659,7 +660,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return;
             }
-            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
+            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Collection && selected.Type != ProjectItemType.Folder)
             {
                 selected = GetParentFolder(selected);
             }
@@ -724,7 +725,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return;
             }
-            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
+            if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Collection && selected.Type != ProjectItemType.Folder)
             {
                 selected = GetParentFolder(selected);
             }
@@ -813,7 +814,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return;
             }
-            if (selected.Type != ProjectItemType.Root && selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder)
+            if (selected.Type != ProjectItemType.Root && selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Collection && selected.Type != ProjectItemType.Folder)
             {
                 selected = GetParentFolder(selected);
             }
@@ -854,6 +855,69 @@ namespace Gilgame.SEWorkbench.ViewModels
                 catch (Exception ex)
                 {
                     MessageBox.ShowError("Unable to create new directory", ex);
+                    return;
+                }
+                SaveProject();
+            }
+        }
+
+        #endregion
+
+        #region Add Collection Command
+
+        private readonly ICommand _AddCollectionCommand;
+        public ICommand AddCollectionCommand
+        {
+            get
+            {
+                return _AddCollectionCommand;
+            }
+        }
+
+        public void PerformAddCollection()
+        {
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                return;
+            }
+            if (selected.Type != ProjectItemType.Root && selected.Type != ProjectItemType.Blueprints)
+            {
+                return;
+            }
+
+            Views.NewItemDialog view = new Views.NewItemDialog();
+            Nullable<bool> result = view.ShowDialog();
+            if (result != null && result.Value == true)
+            {
+                string name = view.ItemName;
+
+                string fullpath = Path.Combine(selected.Path, name);
+                if (selected.Type == ProjectItemType.Root)
+                {
+                    fullpath = Path.Combine(Path.GetDirectoryName(selected.Path), name);
+                }
+
+                try
+                {
+                    if (!Directory.Exists(fullpath))
+                    {
+                        Directory.CreateDirectory(fullpath);
+                    }
+
+                    ProjectItem item = new ProjectItem()
+                    {
+                        Name = name,
+                        Path = fullpath,
+                        Type = ProjectItemType.Collection,
+                        Project = this,
+                    };
+                    selected.AddChild(item);
+                    selected.IsExpanded = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.ShowError("Unable to create new collection", ex);
                     return;
                 }
                 SaveProject();
