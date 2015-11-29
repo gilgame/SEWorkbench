@@ -64,7 +64,7 @@
                                         <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                <Image Width="17" Height="17" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
+                                <Image Width="12" Height="12" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
                                 <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Grid.Column="1" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
