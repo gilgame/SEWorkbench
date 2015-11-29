@@ -31,13 +31,13 @@
 
         <KeyBinding Modifiers="Control+Shift" Key="O" Command="{Binding OpenProjectCommand}" />
         <KeyBinding Modifiers="Control+Shift" Key="N" Command="{Binding NewProjectCommand}" />
-        
+
         <KeyBinding Modifiers="Control" Key="N" Command="{Binding Project.AddCommand}" />
 
         <KeyBinding Key="F5" Command="{Binding RunScriptCommand}" />
         <KeyBinding Key="F7" Command="{Binding OpenSelectedCommand}" />
         <KeyBinding Key="F9" Command="{Binding Blueprint.EditProgramCommand}" />
-        
+
         <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding CloseViewCommand}" />
     </Window.InputBindings>
 
@@ -152,7 +152,20 @@
         <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5"
                       Grid.Column="3" Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
-        <Views:BlueprintView x:Name="tvBlueprint" Margin="0,5,5,5" Grid.Column="4" Grid.Row="1" />
+        <Grid Margin="0,5,5,5" Grid.Column="4" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250" MinHeight="100" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" MinHeight="100" />
+            </Grid.RowDefinitions>
+            
+            <Views:BlueprintView x:Name="tvBlueprint" Grid.Row="0" />
+
+            <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="5"
+                      Grid.Row="1" Background="Transparent" ResizeBehavior="PreviousAndNext" />
+
+            <Views:ClassView x:Name="tvClasses" Grid.Row="2" />
+        </Grid>
 
     </Grid>
 </Window>

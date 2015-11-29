@@ -63,6 +63,10 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\Mono.Cecil.dll</HintPath>
+    </Reference>
     <Reference Include="Sandbox.Common">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SpaceEngineers\Bin\Sandbox.Common.dll</HintPath>
       <Private>False</Private>
@@ -144,8 +148,12 @@
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Services\Windows.cs" />
+    <Compile Include="Tester.cs" />
     <Compile Include="ViewModels\Commands\AddCollectionCommand.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
+    <Compile Include="Views\ClassView.xaml.cs">
+      <DependentUpon>ClassView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SplashScreenView.xaml.cs">
       <DependentUpon>SplashScreenView.xaml</DependentUpon>
     </Compile>
@@ -250,6 +258,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ClassView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -333,6 +345,10 @@
       <Project>{82c28fbb-0408-466a-be20-bd4a3ce76a75}</Project>
       <Name>ICSharpCode.CodeCompletion</Name>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+    </ProjectReference>
+    <ProjectReference Include="..\ICSharpCode.Decompiler\ICSharpCode.Decompiler.csproj">
+      <Project>{984cc812-9470-4a13-aff9-cc44068d666c}</Project>
+      <Name>ICSharpCode.Decompiler</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
