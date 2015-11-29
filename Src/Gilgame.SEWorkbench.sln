@@ -11,9 +11,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{6055D402-CC45-4BC8-ADA2-41418A649C7A}"
 	ProjectSection(SolutionItems) = preProject
 		..\Doc\gpl.txt = ..\Doc\gpl.txt
-		license-avalondock.txt = license-avalondock.txt
-		license-seworkbench.txt = license-seworkbench.txt
-		license-sharpdevelop.txt = license-sharpdevelop.txt
+		..\Doc\license-avalondock.txt = ..\Doc\license-avalondock.txt
+		..\Doc\license-seworkbench.txt = ..\Doc\license-seworkbench.txt
+		..\Doc\license-sharpdevelop.txt = ..\Doc\license-sharpdevelop.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.AvalonEdit", "ICSharpCode.AvalonEdit\ICSharpCode.AvalonEdit.csproj", "{6C55B776-26D4-4DB3-A6AB-87E783B2F3D1}"
