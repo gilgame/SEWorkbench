@@ -139,6 +139,7 @@
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\OutputItem.cs" />
     <Compile Include="Models\Page.cs" />
+    <Compile Include="Models\PageType.cs" />
     <Compile Include="Models\ProjectItem.cs" />
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />

@@ -1,7 +1,9 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -124,6 +126,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             Blueprint.InsertRequested += Blueprint_InsertRequested;
 
             Editor = new EditorViewModel(this);
+            Editor.FileChanged += Editor_FileChanged;
             Editor.Items.CollectionChanged += Editor_CollectionChanged;
 
             Output = new OutputViewModel(this);
@@ -231,6 +234,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     if (o is PageViewModel)
                     {
                         PageViewModel page = (PageViewModel)o;
+                        RegisterPage(page);
 
                         WindowMenuItems.Add(new MenuItemViewModel(this, page.Name, page.SelectFileCommand) { Identifier = page.Identifier });
                     }
@@ -243,6 +247,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                     if (o is PageViewModel)
                     {
                         PageViewModel page = (PageViewModel)o;
+                        UnregisterPage(page);
+
                         foreach (MenuItemViewModel item in WindowMenuItems)
                         {
                             if (item.Identifier == page.Identifier)
@@ -254,6 +260,25 @@ namespace Gilgame.SEWorkbench.ViewModels
                     }
                 }
             }
+        }
+
+        private void RegisterPage(PageViewModel page)
+        {
+            page.FileCloseRequested += Page_CloseFileRequested;
+            page.FileSaved += Page_FileSaved;
+        }
+
+        private void UnregisterPage(PageViewModel page)
+        {
+            page.FileCloseRequested -= Page_CloseFileRequested;
+            page.FileSaved -= Page_FileSaved;
+        }
+
+        private void Editor_FileChanged(object sender, FileEventArgs e)
+        {
+            List<string> scripts = Project.GetAssociatedScripts(e.Path);
+
+            EditorViewModel.Completion.ScriptProvider.UpdateVars(scripts);
         }
 
         public void FindError(OutputItemViewModel item)
@@ -302,11 +327,14 @@ namespace Gilgame.SEWorkbench.ViewModels
                     }
                 }
 
-                PageViewModel newpage = new PageViewModel(this, item.Name, item.Path);
-                newpage.FileCloseRequested += Page_CloseFileRequested;
-
+                PageViewModel newpage = new PageViewModel(this, item.Name, item.Path, Models.PageType.Page);
                 Editor.Items.Add(newpage);
             }
+        }
+
+        private void Page_FileSaved(object sender, FileEventArgs e)
+        {
+            Project.UpdateItemCode(e.Path);
         }
 
         #endregion
@@ -325,14 +353,37 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformRunScript()
         {
             PageViewModel page = Editor.SelectedItem;
+            if (page == null || page.Type == Models.PageType.Output)
+            {
+                return;
+            }
+
+            PerformSaveAll();
+
+            string code = BuildScript(page.Filename);
+            if (code != page.Content.Text)
+            {
+                string tempfile = GetTempFile();
+                string tempname = String.Format("{0} - Results View", page.Header);
+
+                File.WriteAllText(tempfile, code);
+
+                PageViewModel newpage = new PageViewModel(this, tempname, tempfile, Models.PageType.Output);
+                newpage.Content.Text = code;
+                newpage.SetReadonly();
+
+                Editor.Items.Add(newpage);
+
+                page = newpage;
+            }
+
             if (page != null)
             {
-                Interop.InGameScript script = new Interop.InGameScript(page.Content.Text);
+                Interop.InGameScript script = new Interop.InGameScript(code);
 
                 string filename = page.Filename;
 
                 Output.Clear();
-                RaiseScriptRunning();
                 
                 if (script.CompileErrors.Count > 0)
                 {
@@ -383,7 +434,39 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     Services.MessageBox.ShowMessage("The program compiled without any errors.");
                 }
+
+                RaiseScriptRunning();
             }
+        }
+
+        private string GetTempFile()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "temp");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return Path.Combine(path, Path.GetRandomFileName());
+        }
+
+        private string BuildScript(string path)
+        {
+            string result = String.Empty;
+
+            ProjectItemViewModel item = Project.GetItemByPath(path);
+            if (item != null)
+            {
+                result += String.Format("{0}{1}{1}", item.Code, Environment.NewLine);
+
+                List<string> scripts = Project.GetAssociatedScripts(path);
+                foreach (string script in scripts)
+                {
+                    result += String.Format("{0}{1}{1}", script, Environment.NewLine);
+                }
+            }
+
+            return result;
         }
 
         #endregion
@@ -402,7 +485,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformSaveFile()
         {
             PageViewModel page = Editor.SelectedItem;
-            if (page != null)
+            if (page != null && page.Type == Models.PageType.Page)
             {
                 page.Save();
             }
@@ -425,7 +508,10 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             foreach (PageViewModel page in Editor.Items)
             {
-                page.Save();
+                if (page.Type == Models.PageType.Page)
+                {
+                    page.Save();
+                }
             }
         }
 

@@ -60,13 +60,16 @@ namespace Gilgame.SEWorkbench.Views
 
         private void ProjectManager_ScriptRunning(object sender, EventArgs e)
         {
-            if (!_OutputView.IsLoaded)
+            if (_ProjectManager.Output.Items.Count > 0)
             {
-                _OutputView.Show();
-            }
-            else
-            {
-                _OutputView.Visibility = System.Windows.Visibility.Visible;
+                if (!_OutputView.IsLoaded)
+                {
+                    _OutputView.Show();
+                }
+                else
+                {
+                    _OutputView.Visibility = System.Windows.Visibility.Visible;
+                }
             }
         }
 

@@ -218,23 +218,32 @@ namespace Gilgame.SEWorkbench.ViewModels
             LoadBlueprints(_RootItem);
         }
 
-        private void LoadBlueprints(ProjectItemViewModel parent)
+        private void LoadBlueprints(ProjectItemViewModel item)
         {
-            if (parent.Type == ProjectItemType.Blueprints)
+            if (item.Type == ProjectItemType.Blueprints)
             {
                 string name;
                 Interop.Grid grid;
 
-                Interop.Blueprint.Import(parent.Blueprint, out name, out grid);
+                Interop.Blueprint.Import(item.Blueprint, out name, out grid);
 
-                parent.SetGrid(grid);
+                item.SetGrid(grid);
             }
-            else
+            foreach (ProjectItemViewModel child in item.Children)
             {
-                foreach (ProjectItemViewModel child in parent.Children)
-                {
-                    LoadBlueprints(child);
-                }
+                LoadBlueprints(child);
+            }
+        }
+
+        private void LoadCode(ProjectItemViewModel item)
+        {
+            if (item.Type == ProjectItemType.File)
+            {
+                item.Code = File.ReadAllText(item.Path);
+            }
+            foreach (ProjectItemViewModel child in item.Children)
+            {
+                LoadCode(child);
             }
         }
 
@@ -369,6 +378,74 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
             }
             return null;
+        }
+
+        public List<string> GetAssociatedScripts(string path)
+        {
+            List<string> scripts = new List<string>();
+
+            ProjectItemViewModel item = GetItemByPath(path);
+            if (item != null)
+            {
+                ProjectItemViewModel collection = GetParentCollection(item);
+                if (collection != null)
+                {
+                    List<string> add = new List<string>();
+                    scripts.AddRange(CollectScripts(path, collection, add));
+                }
+            }
+
+            return scripts;
+        }
+
+        private List<string> CollectScripts(string path, ProjectItemViewModel item, List<string> scripts)
+        {
+            if (item == null)
+            {
+                return scripts;
+            }
+
+            if (item.Type == ProjectItemType.File && item.Path != path)
+            {
+                scripts.Add(item.Code);
+            }
+            foreach (ProjectItemViewModel child in item.Children)
+            {
+                List<string> empty = new List<string>();
+                scripts.AddRange(CollectScripts(path, child, empty));
+            }
+
+            return scripts;
+        }
+
+        private ProjectItemViewModel GetParentCollection(ProjectItemViewModel item)
+        {
+            if (item == null || item.Type == ProjectItemType.Root)
+            {
+                return null;
+            }
+            if (item.Type == ProjectItemType.Collection)
+            {
+                return item;
+            }
+            if (item.Parent == null)
+            {
+                return null;
+            }
+            else
+            {
+                ProjectItemViewModel parent = (ProjectItemViewModel)item.Parent;
+                return GetParentCollection(parent);
+            }
+        }
+
+        public void UpdateItemCode(string path)
+        {
+            ProjectItemViewModel item = GetItemByPath(path);
+            if (item != null)
+            {
+                item.Code = File.ReadAllText(path);
+            }
         }
 
         #region Commands
@@ -538,6 +615,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 SetRootItem(project.RootItem);
 
                 LoadBlueprints();
+                LoadCode(_RootItem);
 
                 _RootItem.IsExpanded = true;
             }
@@ -676,7 +754,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                 string fullpath = Path.Combine(selected.Path, String.Format("{0}.csx", view.ItemName));
                 try
                 {
-                    File.WriteAllText(fullpath, Services.NewFile.Contents);
+                    string starter = Services.NewFile.Contents;
+
+                    File.WriteAllText(fullpath, starter);
 
                     ProjectItemViewModel newfile = null;
 
@@ -687,6 +767,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         Path = fullpath,
                         Type = ProjectItemType.File,
                         Project = this,
+                        Code = starter
                     };
                     newfile = selected.AddChild(item);
                     selected.IsExpanded = true;
@@ -772,6 +853,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                                 File.Copy(source, destination);
                             }
 
+                            string code = File.ReadAllText(destination);
+
                             string name = Path.GetFileNameWithoutExtension(destination);
                             ProjectItem item = new ProjectItem()
                             {
@@ -779,6 +862,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                                 Path = destination,
                                 Type = ProjectItemType.File,
                                 Project = this,
+                                Code = code
                             };
                             selected.AddChild(item);
                             selected.IsExpanded = true;

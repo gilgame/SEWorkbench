@@ -9,5 +9,7 @@ namespace Gilgame.SEWorkbench.Models
         public string Filename { get; set; }
 
         public Guid Identifier { get; set; }
+
+        public PageType Type { get; set; }
     }
 }

@@ -43,11 +43,88 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public static readonly CSharpCompletion Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(new Completion.ScriptProvider());
+        public static Completion.ScriptProvider ScriptProvider = new Completion.ScriptProvider();
+        public static CSharpCompletion Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(ScriptProvider);
+
+        public event FileEventHandler FileChanged;
+        private void RaiseFileChanged(string path)
+        {
+            if (FileChanged != null)
+            {
+                FileChanged(this, new FileEventArgs(path));
+            }
+        }
 
         public EditorViewModel(BaseViewModel parent) : base(parent)
         {
             _Items.CollectionChanged += OnCollectionChanged;
+        }
+
+        private void Page_Selected(object sender, FileEventArgs e)
+        {
+            foreach(PageViewModel page in Items)
+            {
+                if (page.Filename != e.Path)
+                {
+                    page.IsSelected = false;
+                }
+            }
+
+            UpdateScriptProvider();
+        }
+
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                if (e.NewItems.Count == 1)
+                {
+                    if (e.NewItems[0] is PageViewModel)
+                    {
+                        PageViewModel page = (PageViewModel)e.NewItems[0];
+                        RegisterPage(page);
+
+                        page.IsSelected = true;
+                        page.Content.Focus();
+                    }
+                }
+                // shouldn't reach here,but just in case
+                if (e.NewItems.Count > 1)
+                {
+                    foreach(object o in e.NewItems)
+                    {
+                        if (o is PageViewModel)
+                        {
+                            PageViewModel page = (PageViewModel)o;
+                            RegisterPage(page);
+                        }
+                    }
+                }
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (object o in e.OldItems)
+                {
+                    if (o is PageViewModel)
+                    {
+                        PageViewModel page = (PageViewModel)o;
+                        UnregisterPage(page);
+                    }
+                }
+            }
+
+            OnPropertyChanged("HasChildren");
+        }
+
+        private void RegisterPage(PageViewModel page)
+        {
+            page.Selected += Page_Selected;
+        }
+
+        private void UnregisterPage(PageViewModel page)
+        {
+            page.Selected -= Page_Selected;
         }
 
         public void InsertText(string text)
@@ -59,21 +136,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void UpdateScriptProvider()
         {
-            OnPropertyChanged("HasChildren");
-            
-            if (e.NewItems != null)
+            if (SelectedItem != null)
             {
-                if (e.NewItems.Count > 0)
-                {
-                    if (e.NewItems[0] is PageViewModel)
-                    {
-                        PageViewModel page = (PageViewModel)e.NewItems[0];
-                        page.IsSelected = true;
-                        page.Content.Focus();
-                    }
-                }
+                RaiseFileChanged(SelectedItem.Filename);
             }
         }
     }

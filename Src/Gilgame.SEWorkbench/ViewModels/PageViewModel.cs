@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.CodeCompletion;
-using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -69,6 +70,18 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public Models.PageType Type
+        {
+            get
+            {
+                return _Model.Type;
+            }
+            set
+            {
+                _Model.Type = value;
+            }
+        }
+
         private string _Header = "untitled";
         public  string Header
         {
@@ -115,6 +128,10 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsSelected)
                 {
                     _IsSelected = value;
+                    if (_IsSelected)
+                    {
+                        RaiseSelected();
+                    }
                     OnPropertyChanged("IsSelected");
                 }
             }
@@ -137,18 +154,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public PageViewModel(BaseViewModel parent, string name, string filename) : base(parent)
+        public event FileEventHandler Selected;
+        private void RaiseSelected()
         {
-            _Model = new Models.Page();
-            Name = name;
-            Header = name;
-            Filename = filename;
-            Identifier = Guid.NewGuid();
-
-            BuildEditor();
-
-            _CloseFileCommand = new Commands.CloseFileCommand(this);
-            _SelectFileCommand = new Commands.SelectFileCommand(this);
+            if (Selected != null)
+            {
+                Selected(this, new FileEventArgs(Filename));
+            }
         }
 
         public event FileEventHandler FileCloseRequested;
@@ -158,6 +170,30 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 FileCloseRequested(this, new FileEventArgs(_Model.Filename));
             }
+        }
+
+        public event FileEventHandler FileSaved;
+        private void RaiseFileSaved()
+        {
+            if (FileSaved != null)
+            {
+                FileSaved(this, new FileEventArgs(_Model.Filename));
+            }
+        }
+
+        public PageViewModel(BaseViewModel parent, string name, string filename, Models.PageType type) : base(parent)
+        {
+            _Model = new Models.Page();
+            Name = name;
+            Header = name;
+            Filename = filename;
+            Identifier = Guid.NewGuid();
+            Type = type;
+
+            BuildEditor();
+
+            _CloseFileCommand = new Commands.CloseFileCommand(this);
+            _SelectFileCommand = new Commands.SelectFileCommand(this);
         }
 
         private void BuildEditor()
@@ -184,13 +220,25 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Editor_TextChanged(object sender, EventArgs e)
         {
-            IsModified = true;
+            if (Type == Models.PageType.Page)
+            {
+                IsModified = true;
+            }
         }
 
         public void Save()
         {
-            _Editor.SaveFile();
-            IsModified = false;
+            if (_Editor.SaveFile())
+            {
+                IsModified = false;
+
+                RaiseFileSaved();
+            }
+        }
+
+        public void SetReadonly()
+        {
+            Content.IsReadOnly = true;
         }
 
         #region Close File Command
