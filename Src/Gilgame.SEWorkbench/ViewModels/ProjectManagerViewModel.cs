@@ -457,12 +457,18 @@ namespace Gilgame.SEWorkbench.ViewModels
             ProjectItemViewModel item = Project.GetItemByPath(path);
             if (item != null)
             {
-                result += String.Format("{0}{1}{1}", item.Code, Environment.NewLine);
-
                 List<string> scripts = Project.GetAssociatedScripts(path);
-                foreach (string script in scripts)
+                if (scripts.Count < 1)
                 {
-                    result += String.Format("{0}{1}{1}", script, Environment.NewLine);
+                    return item.Code;
+                }
+                else
+                {
+                    result += String.Format("{0}{1}{1}", item.Code, Environment.NewLine);
+                    foreach (string script in scripts)
+                    {
+                        result += String.Format("{0}{1}{1}", script, Environment.NewLine);
+                    }
                 }
             }
 
