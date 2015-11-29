@@ -13,13 +13,18 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
-            Views.SplashScreenView splash = new Views.SplashScreenView();
-            splash.Show();
-
             if (!SandboxCopied())
             {
-                CopySandbox();
+                bool result = CopySandbox();
+                if(result)
+                {
+                    System.Windows.Forms.Application.Restart();
+                }
+                return;
             }
+
+            Views.SplashScreenView splash = new Views.SplashScreenView();
+            splash.Show();
 
             Interop.Blueprint.RunInit();
 
@@ -41,7 +46,7 @@ namespace Gilgame.SEWorkbench
             return File.Exists("Sandbox.Common.dll");
         }
 
-        private static void CopySandbox()
+        private static bool CopySandbox()
         {
             string saveto = Directory.GetCurrentDirectory();
 
@@ -51,7 +56,7 @@ namespace Gilgame.SEWorkbench
                 sepath = GetSEPath();
                 if (String.IsNullOrEmpty(sepath))
                 {
-                    return;
+                    return false;
                 }
             }
             else
@@ -85,14 +90,13 @@ namespace Gilgame.SEWorkbench
                 File.Copy(Path.Combine(sepath, "VRage.Math.dll"), Path.Combine(saveto, "VRage.Math.dll"));
                 File.Copy(Path.Combine(sepath, "VRage.Native.dll"), Path.Combine(saveto, "VRage.Native.dll"));
 
-                System.Windows.Forms.Application.Restart();
-                return;
+                return true;
             }
             catch (Exception ex)
             {
                 // TODO log error
                 MessageBox.ShowError("Failed to copy the required libraries", ex);
-                return;
+                return false;
             }
         }
 
