@@ -6,15 +6,21 @@ Features
 =================================
 These are just a few of the features that have been implemented so far. This project is still in an alpha phase and certain precautions should be taken. I recommend backing up blueprints and scripts until SE workbench can do so on its own. the environment is pretty stable so far, but accidents do happen in alpha.
 
- * Syntax Highlighting, Auto-Completion, and Refactoring
+ * Syntax Highlighting and Auto-Completion
  * An out-of-game script checker that tests scripts based on the actual parameters and limitations set forth by the game
+ * Script collections that allow the developer to separate larger scripts into multiple files and folders
  * Blueprint program importing and editing
+ * Basic integrated IL viewer for allowed namespaces
  * Script Organization Based on Project -> Blueprint (Grid)
 
+ Code completion:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
+
+Script and collection script checker:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-2.png)
+
+Blueprint program editing:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-3.png)
-![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-4.png)
 
 Caveats
 =================================
