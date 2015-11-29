@@ -18,7 +18,8 @@ These are just a few of the features that have been implemented so far. This pro
 
 Caveats
 =================================
-SE Workbench does currently require that Space Engineers is installed on the host machine.
+ * Having SE Workbench running while updating Space Engineers through steam may cause Steam to think the installation is corrupt because of files being in use.
+ * SE Workbench does currently require that Space Engineers is installed on the host machine.
 
 Attribution
 =================================
