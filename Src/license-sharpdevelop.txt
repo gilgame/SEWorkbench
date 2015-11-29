@@ -1,26 +1,16 @@
-MIT License (MIT)
-
-
 For the code copied from SharpDevelop & NRefactory
 
-	Copyright 2002-2012 by
+	MIT License (MIT)
 
-		AlphaSierraPapa, Christoph Wille
-		Vordernberger Strasse 27/8
-		A-8700 Leoben
-		Austria
+		Copyright 2002-2012 by
 
-		email: office@alphasierrapapa.com
-		court of jurisdiction: Landesgericht Leoben
+			AlphaSierraPapa, Christoph Wille
+			Vordernberger Strasse 27/8
+			A-8700 Leoben
+			Austria
 
-
-Space Engineers Workbench
-
-	Copyright (c) 2015 by
-
-		Gilgame, Tim Fellows
-
-		email: tdfellows@gmail.com
+			email: office@alphasierrapapa.com
+			court of jurisdiction: Landesgericht Leoben
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
