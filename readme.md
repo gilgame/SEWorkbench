@@ -13,7 +13,7 @@ These are just a few of the features that have been implemented so far. This pro
  * Basic integrated IL viewer for allowed namespaces
  * Script Organization Based on Project -> Blueprint (Grid)
 
- Code completion:
+Code completion:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
 
 Script and collection script checker:
