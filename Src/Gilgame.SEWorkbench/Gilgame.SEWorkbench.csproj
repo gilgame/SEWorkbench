@@ -54,6 +54,9 @@
   <PropertyGroup>
     <StartupObject>Gilgame.SEWorkbench.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=d4bfe873e7598c49, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -128,6 +131,7 @@
     <Compile Include="Completion\ScriptProvider.cs" />
     <Compile Include="Converters\BlueprintCanBeAddedConverter.cs" />
     <Compile Include="Converters\CanBeRenamedConverter.cs" />
+    <Compile Include="Converters\ClassItemTypeImageConverter.cs" />
     <Compile Include="Converters\CollectionCanBeAddedConverter.cs" />
     <Compile Include="Converters\EditorTabHeaderConverter.cs" />
     <Compile Include="Converters\FileCanBeAddedConverter.cs" />
@@ -138,6 +142,8 @@
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Converters\NameCanBeInsertedConverter.cs" />
     <Compile Include="Converters\ProgramCanBeEditedConverter.cs" />
+    <Compile Include="Models\ClassItem.cs" />
+    <Compile Include="Models\ClassItemType.cs" />
     <Compile Include="Models\GridItem.cs" />
     <Compile Include="Models\GridItemType.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -149,7 +155,10 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Services\Windows.cs" />
     <Compile Include="Tester.cs" />
+    <Compile Include="ViewModels\ClassItemViewModel.cs" />
+    <Compile Include="ViewModels\ClassViewModel.cs" />
     <Compile Include="ViewModels\Commands\AddCollectionCommand.cs" />
+    <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
@@ -401,6 +410,20 @@
   <ItemGroup>
     <Resource Include="Icons\Collection.png" />
     <Resource Include="Icons\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Class.gif" />
+    <Resource Include="Icons\Delegate.gif" />
+    <Resource Include="Icons\Enum.gif" />
+    <Resource Include="Icons\Event.gif" />
+    <Resource Include="Icons\Field.gif" />
+    <Resource Include="Icons\Interface.gif" />
+    <Resource Include="Icons\Method.gif" />
+    <Resource Include="Icons\Property.gif" />
+    <Resource Include="Icons\Struct.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Namespace.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

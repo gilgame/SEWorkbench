@@ -34,6 +34,7 @@ namespace Gilgame.SEWorkbench.Views
             tvBlueprint.DataContext = _ProjectManager.Blueprint;
             tcFileEditor.DataContext = _ProjectManager.Editor;
             tvProjectExplorer.DataContext = _ProjectManager.Project;
+            tvClasses.DataContext = _ProjectManager.Classes;
 
             _OutputView.DataContext = _ProjectManager.Output;
         }

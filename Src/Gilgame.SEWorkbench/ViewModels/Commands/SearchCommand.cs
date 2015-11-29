@@ -35,6 +35,11 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
                 BlueprintViewModel vm = (BlueprintViewModel)_ViewModel;
                 vm.PerformSearch();
             }
+            if (_ViewModel is ClassViewModel)
+            {
+                ClassViewModel vm = (ClassViewModel)_ViewModel;
+                vm.PerformSearch();
+            }
         }
     }
 }

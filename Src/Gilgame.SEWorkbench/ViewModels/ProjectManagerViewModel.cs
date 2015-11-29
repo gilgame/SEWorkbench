@@ -84,6 +84,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private ClassViewModel _Classes;
+        public ClassViewModel Classes
+        {
+            get
+            {
+                return _Classes;
+            }
+            private set
+            {
+                _Classes = value;
+                OnPropertyChanged("Classes");
+            }
+        }
+
         private OutputViewModel _Output;
         public OutputViewModel Output
         {
@@ -129,6 +143,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             Editor.FileChanged += Editor_FileChanged;
             Editor.Items.CollectionChanged += Editor_CollectionChanged;
 
+            Classes = new ClassViewModel(this);
+            BuildClasses();
+
             Output = new OutputViewModel(this);
 
             _NewProjectCommand = new Commands.NewProjectCommand(this);
@@ -153,6 +170,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             _SelectAllCommand = new Commands.SelectAllCommand(this);
 
             _CloseViewCommand = new Commands.CloseViewCommand(this);
+        }
+
+        private void BuildClasses()
+        {
+            Classes.AddNamespaces(Program.Classes);
         }
 
         public event EventHandler CloseViewRequested;

@@ -14,6 +14,8 @@
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/HeaderLabel.xaml"/>
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/TreeViewItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <conv:ClassItemTypeImageConverter x:Key="ClassItemTypeToImage" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -30,7 +32,7 @@
                     </StackPanel>
 
                     <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchTextBox_TextChanged" />
                 </Grid>
 
                 <TreeView Name="tvBlueprint" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" DockPanel.Dock="Bottom"
@@ -43,6 +45,7 @@
                                         <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
+                                <Image Width="17" Height="17" Source="{Binding Type, Converter={StaticResource ClassItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
                                 <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Grid.Column="1" />
                             </StackPanel>
                         </HierarchicalDataTemplate>

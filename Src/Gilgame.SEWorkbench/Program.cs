@@ -5,11 +5,14 @@ using System.Reflection;
 using Gilgame.SEWorkbench.Services;
 using Sandbox.Common.ObjectBuilders.Definitions;
 using VRage.ObjectBuilders;
+using System.Collections.Generic;
 
 namespace Gilgame.SEWorkbench
 {
     public class Program
     {
+        public static List<Interop.AssemblyObject> Classes = new List<Interop.AssemblyObject>();
+
         [STAThread]
         public static void Main(string[] args)
         {
@@ -27,10 +30,11 @@ namespace Gilgame.SEWorkbench
             splash.Show();
 
             Interop.Blueprint.RunInit();
-
             LoadSerializers();
+            LoadClasses();
 
             splash.Close();
+
             StartApp();
         }
 
@@ -130,6 +134,28 @@ namespace Gilgame.SEWorkbench
 
             try { MyObjectBuilderSerializer.DeserializeXML(String.Empty, out loaded); }
             catch { }
+        }
+
+        private static void LoadClasses()
+        {
+            List<string> namespaces = new List<string>()
+            {
+                "Sandbox.ModAPI.Ingame",
+                "Sandbox.ModAPI.Interfaces",
+                "VRageMath",
+                "VRage.Game"
+            };
+            Interop.Decompiler decompiler = new Interop.Decompiler(namespaces);
+
+            List<string> assemblies = new List<string>()
+            {
+                "Sandbox.Common.dll",
+                "VRage.Game.dll",
+                "VRage.Math.dll"
+            };
+            List<Interop.AssemblyObject> result = decompiler.Read(assemblies);
+
+            Classes.AddRange(result);
         }
     }
 }
