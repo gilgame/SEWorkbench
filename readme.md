@@ -4,7 +4,7 @@ SE Workbench is a development environment designed to help facilitate the creati
 
 Features
 =================================
-These are just a few of the features that have been implemented so far. This project is still in an alpha phase and certain precautions should be taken. I recommend backing up blueprints and scripts until SE workbench can do so on its own. the environment is pretty stable so far, but accidents do happen in alpha.
+These are just a few of the features that have been implemented so far. I think the project is beginning to reach a beta stage where additional features will slow down and serious release builds will be deployed. SE Workbench is fairly stable and can be trusted with the file system.
 
  * Syntax Highlighting and Auto-Completion
  * An out-of-game script checker that tests scripts based on the actual parameters and limitations set forth by the game
