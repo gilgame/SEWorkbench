@@ -5,6 +5,7 @@
         xmlns:av="clr-namespace:ICSharpCode.CodeCompletion;assembly=ICSharpCode.CodeCompletion"
         xmlns:v="clr-namespace:Gilgame.SEWorkbench.Views"
         xmlns:sel="clr-namespace:Gilgame.SEWorkbench.Views.Selectors"
+        xmlns:conv="clr-namespace:Gilgame.SEWorkbench.Converters"
         Title="TestWindow" Height="576" Width="1024" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
     <Window.Resources>
         <ResourceDictionary>
@@ -20,6 +21,8 @@
             </LinearGradientBrush>
 
             <CollectionViewSource Source="{Binding WindowMenuItems}" x:Key="wItems"/>
+            
+            <conv:EditorTabHeaderConverter x:Key="NameToModified" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -137,8 +140,15 @@
                 <sel:FileStyleSelector>
                     <sel:FileStyleSelector.FileStyle>
                         <Style TargetType="{x:Type ad:LayoutItem}">
-                            <Setter Property="Title" Value="{Binding Model.Header}" />
-                            <Setter Property="ContentId" Value="{Binding Model.Header}" />
+                            <Setter Property="Title">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource NameToModified}">
+                                        <Binding Path="Model.Header" />
+                                        <Binding Path="Model.IsModified" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ContentId" Value="{Binding Model.Name}" />
                             <Setter Property="ToolTip" Value="{Binding Model.Filename}" />
                             <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}" />
                             <Setter Property="CloseCommand" Value="{Binding Model.CloseFileCommand}" />

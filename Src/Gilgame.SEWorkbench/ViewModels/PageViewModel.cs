@@ -127,7 +127,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 if (value != _IsSelected)
                 {
+                    
                     _IsSelected = value;
+                    if (_IsSelected)
+                    {
+                        RaiseSelected();
+                    }
                     OnPropertyChanged("IsSelected");
                 }
             }
