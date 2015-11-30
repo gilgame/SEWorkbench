@@ -29,64 +29,60 @@
     </UserControl.Resources>
 
     <Grid>
-        <Border BorderThickness="1" CornerRadius="3,3,0,0" BorderBrush="#2B3B58" Margin="0">
-            <DockPanel Background="#FF2B3B58">
-                <Label Content="Project Explorer" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
-                       DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
-                <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
-                    <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
-                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
+        <DockPanel Background="#FF2B3B58">
+            <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
+                <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
                                 Command="{Binding AddBlueprintsCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource BlueprintsCanBeAddedToBool}}">
-                            <Image Source="/Gilgame.SEWorkbench;component/Icons/Blueprints.png" Stretch="UniformToFill" />
-                        </Button>
-                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/Blueprints.png" Stretch="UniformToFill" />
+                    </Button>
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
                                 Command="{Binding AddFolderCommand}"  IsEnabled="{Binding SelectedItemType, Converter={StaticResource FolderCanBeAddedToBool}}">
-                            <Image Source="/Gilgame.SEWorkbench;component/Icons/NewFolder.png" Stretch="UniformToFill" />
-                        </Button>
-                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/NewFolder.png" Stretch="UniformToFill" />
+                    </Button>
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
                                 Command="{Binding AddCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}">
-                            <Image Source="/Gilgame.SEWorkbench;component/Icons/NewPage.png" Stretch="UniformToFill" />
-                        </Button>
-                    </StackPanel>
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/NewPage.png" Stretch="UniformToFill" />
+                    </Button>
+                </StackPanel>
 
-                    <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
+                <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchTextBox_TextChanged" />
-                </Grid>
+            </Grid>
 
-                <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" 
+            <TreeView Name="tvPoject" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" 
                           DockPanel.Dock="Bottom" ItemsSource="{Binding First}" HorizontalContentAlignment="Stretch"
                           MouseDoubleClick="ProjectExplorer_MouseDoubleClick">
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger  EventName="PreviewMouseRightButtonDown">
-                                        <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <Image Width="12" Height="12" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
-                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Grid.Column="1" />
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                    <TreeView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Add">
-                                <MenuItem Header="Blueprints..." Command="{Binding AddBlueprintsCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource BlueprintsCanBeAddedToBool}}" />
-                                <MenuItem Header="New Item..." Command="{Binding AddCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
-                                <MenuItem Header="Existing Item..." Command="{Binding AddExistingCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
-                                <MenuItem Header="New Folder..." Command="{Binding AddFolderCommand}"  IsEnabled="{Binding SelectedItemType, Converter={StaticResource FolderCanBeAddedToBool}}" />
-                                <MenuItem Header="Collection..." Command="{Binding AddCollectionCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CollectionCanBeAddedToBool}}" />
-                            </MenuItem>
-                            <Separator />
-                            <MenuItem Header="View Code" Command="{Binding OpenSelectedCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileSelectedToBool}}" />
-                            <Separator />
-                            <MenuItem Header="Rename" Command="{Binding RenameCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeRenamedToBool}}" />
-                            <MenuItem Header="Delete" Command="{Binding DeleteCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeDeletedToBool}}" />
-                        </ContextMenu>
-                    </TreeView.ContextMenu>
-                </TreeView>
-            </DockPanel>
-        </Border>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger  EventName="PreviewMouseRightButtonDown">
+                                    <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Image Width="12" Height="12" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
+                            <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Grid.Column="1" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add">
+                            <MenuItem Header="Blueprints..." Command="{Binding AddBlueprintsCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource BlueprintsCanBeAddedToBool}}" />
+                            <MenuItem Header="New Item..." Command="{Binding AddCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
+                            <MenuItem Header="Existing Item..." Command="{Binding AddExistingCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
+                            <MenuItem Header="New Folder..." Command="{Binding AddFolderCommand}"  IsEnabled="{Binding SelectedItemType, Converter={StaticResource FolderCanBeAddedToBool}}" />
+                            <MenuItem Header="Collection..." Command="{Binding AddCollectionCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CollectionCanBeAddedToBool}}" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="View Code" Command="{Binding OpenSelectedCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileSelectedToBool}}" />
+                        <Separator />
+                        <MenuItem Header="Rename" Command="{Binding RenameCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeRenamedToBool}}" />
+                        <MenuItem Header="Delete" Command="{Binding DeleteCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeDeletedToBool}}" />
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+            </TreeView>
+        </DockPanel>
     </Grid>
 </UserControl>

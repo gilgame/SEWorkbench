@@ -1,37 +1,32 @@
-﻿<Window x:Class="Gilgame.SEWorkbench.Views.OutputView"
+﻿<UserControl x:Class="Gilgame.SEWorkbench.Views.OutputView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SE Workbench - Output" Height="300" Width="700">
-    <Window.Resources>
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"  d:DesignHeight="100" d:DesignWidth="900">
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/HeaderLabel.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Window.Resources>
-    <Grid Background="#FF2B3B58">
-        <Border BorderThickness="1" CornerRadius="3,3,0,0" BorderBrush="#2B3B58" Margin="5">
-            <DockPanel Background="#FF2B3B58">
-                <Label Content="Error List" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
-                       DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
-
-                <ListView Name="lvErrors" Background="White" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" ItemsSource="{Binding Items}"
+    </UserControl.Resources>
+    <Grid>
+        <ListView Name="lvErrors" Background="White" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" ItemsSource="{Binding Items}"
                           DockPanel.Dock="Bottom" HorizontalContentAlignment="Stretch" SelectionMode="Single" MouseDoubleClick="ErrorsListView_MouseDoubleClick">
-                    <ListView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Copy" Click="CopyMenuItem_Click" />
-                        </ContextMenu>
-                    </ListView.ContextMenu>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="450" />
-                            <GridViewColumn Header="Error" DisplayMemberBinding="{Binding Error}" Width="90" />
-                            <GridViewColumn Header="Line" DisplayMemberBinding="{Binding Line}" Width="50" />
-                            <GridViewColumn Header="Col" DisplayMemberBinding="{Binding Column}" Width="50" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </DockPanel>
-        </Border>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy" Click="CopyMenuItem_Click" />
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="675" />
+                    <GridViewColumn Header="Error" DisplayMemberBinding="{Binding Error}" Width="90" />
+                    <GridViewColumn Header="Line" DisplayMemberBinding="{Binding Line}" Width="50" />
+                    <GridViewColumn Header="Col" DisplayMemberBinding="{Binding Column}" Width="50" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
-</Window>
+</UserControl>

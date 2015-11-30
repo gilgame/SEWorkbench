@@ -313,6 +313,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     DocumentLine line = page.Content.Document.GetLineByNumber(item.Line);
                     page.Content.Select(line.Offset, line.Length);
                     page.Content.TextArea.Caret.BringCaretToView();
+                    page.IsSelected = true;
                 }
             }
         }

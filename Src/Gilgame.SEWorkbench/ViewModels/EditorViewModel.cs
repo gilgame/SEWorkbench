@@ -62,7 +62,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Page_Selected(object sender, FileEventArgs e)
         {
-            foreach(PageViewModel page in Items)
+            foreach (PageViewModel page in Items)
             {
                 if (page.Filename != e.Path)
                 {

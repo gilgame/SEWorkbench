@@ -33,3 +33,4 @@ This project makes use of works derived from:
  * https://github.com/lukebuehler/NRefactory-Completion-Sample
  * https://github.com/icsharpcode/NRefactory
  * https://github.com/icsharpcode/SharpDevelop
+ * http://avalondock.codeplex.com/

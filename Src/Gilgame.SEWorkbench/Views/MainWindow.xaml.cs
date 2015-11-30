@@ -45,11 +45,11 @@ namespace Gilgame.SEWorkbench.Views
             {
                 e.Cancel = true;
             }
-            else
-            {
-                _OutputView.CloseWindow = true;
-                _OutputView.Close();
-            }
+            //else
+            //{
+            //    _OutputView.CloseWindow = true;
+            //    _OutputView.Close();
+            //}
 
             base.OnClosing(e);
         }
@@ -63,14 +63,14 @@ namespace Gilgame.SEWorkbench.Views
         {
             if (_ProjectManager.Output.Items.Count > 0)
             {
-                if (!_OutputView.IsLoaded)
-                {
-                    _OutputView.Show();
-                }
-                else
-                {
-                    _OutputView.Visibility = System.Windows.Visibility.Visible;
-                }
+                //if (!_OutputView.IsLoaded)
+                //{
+                //    _OutputView.Show();
+                //}
+                //else
+                //{
+                //    _OutputView.Visibility = System.Windows.Visibility.Visible;
+                //}
             }
         }
 

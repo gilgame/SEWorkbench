@@ -1,11 +1,13 @@
-﻿using Gilgame.SEWorkbench.ViewModels;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows;
+using System.Windows.Controls;
+
+using Gilgame.SEWorkbench.ViewModels;
 
 namespace Gilgame.SEWorkbench.Views
 {
-    public partial class OutputView : Window
+    public partial class OutputView : UserControl
     {
         private bool _CloseWindow = false;
         public bool CloseWindow
@@ -32,18 +34,6 @@ namespace Gilgame.SEWorkbench.Views
         public OutputView()
         {
             InitializeComponent();
-        }
-
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            if (!_CloseWindow)
-            {
-                e.Cancel = true;
-
-                Visibility = System.Windows.Visibility.Hidden;
-            }
-
-            base.OnClosing(e);
         }
 
         private void CopyMenuItem_Click(object sender, RoutedEventArgs e)

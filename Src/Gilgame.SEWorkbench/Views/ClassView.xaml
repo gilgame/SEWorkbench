@@ -19,39 +19,35 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="Transparent">
-        <Border BorderThickness="1" CornerRadius="3,3,0,0" BorderBrush="#2B3B58" Margin="0">
-            <DockPanel Background="#FF2B3B58">
-                <Label Content="Class View" Height="21" VerticalAlignment="Top" Foreground="White" Padding="4,2,0,0"
-                       DockPanel.Dock="Top" Style="{StaticResource VS_HeaderLabel}" />
-                <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
-                    <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
-                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
-                            <Image />
-                        </Button>
-                    </StackPanel>
+    <Grid>
+        <DockPanel Background="#FF2B3B58">
+            <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="50">
+                <StackPanel Margin="3,2,3,26" Orientation="Horizontal">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22">
+                        <Image />
+                    </Button>
+                </StackPanel>
 
-                    <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
+                <TextBox Name="txtSearch" Margin="1,26,1,2" Foreground="#FF666666" BorderBrush="#FFBDC4D1"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="SearchTextBox_TextChanged" />
-                </Grid>
+            </Grid>
 
-                <TreeView Name="tvBlueprint" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" DockPanel.Dock="Bottom"
+            <TreeView Name="tvBlueprint" Background="#FFFFFFFF" BorderBrush="#F0F0F0" BorderThickness="1,0,1,1" DockPanel.Dock="Bottom"
                           ItemsSource="{Binding First}" >
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger  EventName="PreviewMouseRightButtonDown">
-                                        <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <Image Width="12" Height="12" Source="{Binding Type, Converter={StaticResource ClassItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
-                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Grid.Column="1" />
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-            </DockPanel>
-        </Border>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger  EventName="PreviewMouseRightButtonDown">
+                                    <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Image Width="12" Height="12" Source="{Binding Type, Converter={StaticResource ClassItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
+                            <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Grid.Column="1" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </DockPanel>
     </Grid>
 </UserControl>

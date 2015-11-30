@@ -164,6 +164,9 @@
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FileLayoutStrategy.cs" />
+    <Compile Include="Views\Selectors\FileStyleSelector.cs" />
+    <Compile Include="Views\Selectors\FileTemplateSelector.cs" />
     <Compile Include="Views\SplashScreenView.xaml.cs">
       <DependentUpon>SplashScreenView.xaml</DependentUpon>
     </Compile>
