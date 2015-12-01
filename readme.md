@@ -13,6 +13,15 @@ These are just a few of the features that have been implemented so far. I think 
  * Basic integrated IL viewer for allowed namespaces
  * Script Organization Based on Project -> Blueprint (Grid)
 
+Missing Features
+=================================
+Among the most glaring features that still need to be added:
+ * Find/Replace dialog
+ * Text area context menu (keyboard shortcuts are working)
+ * Remember panel layout for each project between sessions
+
+Screenshots
+=================================
 Code completion:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
 
@@ -25,7 +34,7 @@ Blueprint program editing:
 Caveats
 =================================
  * Having SE Workbench running while updating Space Engineers through steam may cause Steam to think the installation is corrupt because of files being in use.
- * SE Workbench does currently require that Space Engineers is installed on the host machine.
+ * SE Workbench does require that Space Engineers is installed on the host machine.
 
 Attribution
 =================================

@@ -21,8 +21,9 @@
             </LinearGradientBrush>
 
             <CollectionViewSource Source="{Binding WindowMenuItems}" x:Key="wItems"/>
-            
+
             <conv:EditorTabHeaderConverter x:Key="NameToModified" />
+            <conv:FileCanBeAddedConverter x:Key="FileCanBeAddedToBool" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -44,84 +45,110 @@
 
     <Grid Background="#FF2B3B58">
         <Grid.RowDefinitions>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="42" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Menu Background="{StaticResource MainMenuBackground}" FontSize="11" Grid.Row="0" Padding="1,2,1,0">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New">
-                    <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" Command="{Binding NewProjectCommand}" />
-                    <MenuItem Header="_File..." InputGestureText="Ctrl+N" Command="{Binding Project.AddCommand}" />
-                </MenuItem>
-                <MenuItem Header="_Open">
-                    <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" Command="{Binding OpenProjectCommand}" />
-                </MenuItem>
-                <Separator />
-                <MenuItem Header="_Close" Command="{Binding CloseProjectCommand}" />
-                <Separator />
-                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}" />
-                <MenuItem Header="Save _All" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAllCommand}" />
-                <Separator />
-                <MenuItem Header="E_xit" InputGestureText="Alt+F4" Command="{Binding CloseViewCommand}" />
-            </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoCommand}"
-                              IsEnabled="{Binding Editor.HasChildren}"/>
-                <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Command="{Binding RedoCommand}"
-                              IsEnabled="{Binding Editor.HasChildren}" />
-                <Separator />
-                <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" Command="{Binding CutCommand}"
-                              IsEnabled="{Binding Editor.HasChildren}" />
-                <MenuItem Header="_Copy" InputGestureText="Ctrl+C" Command="{Binding CopyCommand}"
-                              IsEnabled="{Binding Editor.HasChildren}" />
-                <MenuItem Header="_Paste" InputGestureText="Ctrl+P" Command="{Binding PasteCommand}"
-                              IsEnabled="{Binding Editor.HasChildren}" />
-                <MenuItem Header="_Delete" InputGestureText="Del" Command="{Binding DeleteCommand}"
-                              IsEnabled="False"/>
-                <MenuItem Header="Select _All" InputGestureText="Ctrl+A" Command="{Binding SelectAllCommand}"
-                              IsEnabled="{Binding Editor.HasChildren}" />
-                <Separator />
-                <MenuItem Header="P_references" IsEnabled="False" />
-            </MenuItem>
-            <MenuItem Header="_View">
-                <MenuItem Header="Project Explorer" Click="ProjectExplorerMenuItem_Click" />
-                <MenuItem Header="Blueprints View" Click="BlueprintsViewMenuItem_Click" />
-                <Separator />
-                <MenuItem Header="Classes View" Click="ClassesViewMenuItem_Click" />
-                <MenuItem Header="Output" Click="OutputViewMenuItem_Click" />
-            </MenuItem>
-            <MenuItem Header="_Project">
-                <MenuItem Header="_Run Script" InputGestureText="F5" Command="{Binding RunScriptCommand}" />
-            </MenuItem>
-            <MenuItem Header="_Window">
-                <MenuItem.ItemsSource>
-                    <CompositeCollection>
-                        <MenuItem Header="_Close" Command="{Binding CloseCommand}" />
-                        <MenuItem Header="Close _All" Command="{Binding CloseAllCommand}" />
+        <Grid  Background="{StaticResource MainMenuBackground}" Grid.Row="0">
+            <StackPanel>
+                <Menu FontSize="11" Padding="1,2,1,0" Background="Transparent">
+                    <MenuItem Header="_File">
+                        <MenuItem Header="_New">
+                            <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" Command="{Binding NewProjectCommand}" />
+                            <MenuItem Header="_File..." InputGestureText="Ctrl+N" Command="{Binding Project.AddCommand}" IsEnabled="{Binding Project.SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
+                        </MenuItem>
+                        <MenuItem Header="_Open">
+                            <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" Command="{Binding OpenProjectCommand}" />
+                        </MenuItem>
                         <Separator />
-                        <CollectionContainer Collection="{Binding Source={StaticResource wItems}}" />
-                    </CompositeCollection>
-                </MenuItem.ItemsSource>
-                <MenuItem.ItemContainerStyle>
-                    <Style TargetType="MenuItem">
-                        <Setter Property="Command" Value="{Binding Command}"/>
-                        <Setter Property="Header" Value="{Binding Header}"/>
-                        <Setter Property="InputGestureText" Value="{Binding InputGestureText}" />
-                    </Style>
-                </MenuItem.ItemContainerStyle>
-            </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="_About" IsEnabled="False" />
-            </MenuItem>
-        </Menu>
+                        <MenuItem Header="_Close" Command="{Binding CloseProjectCommand}" />
+                        <Separator />
+                        <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}" IsEnabled="{Binding Editor.HasChildren}" />
+                        <MenuItem Header="Save _All" InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAllCommand}" IsEnabled="{Binding Editor.HasChildren}" />
+                        <Separator />
+                        <MenuItem Header="E_xit" InputGestureText="Alt+F4" Command="{Binding CloseViewCommand}" />
+                    </MenuItem>
+                    <MenuItem Header="_Edit">
+                        <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoCommand}"
+                              IsEnabled="{Binding Editor.HasChildren}"/>
+                        <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Command="{Binding RedoCommand}"
+                              IsEnabled="{Binding Editor.HasChildren}" />
+                        <Separator />
+                        <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" Command="{Binding CutCommand}"
+                              IsEnabled="{Binding Editor.HasChildren}" />
+                        <MenuItem Header="_Copy" InputGestureText="Ctrl+C" Command="{Binding CopyCommand}"
+                              IsEnabled="{Binding Editor.HasChildren}" />
+                        <MenuItem Header="_Paste" InputGestureText="Ctrl+P" Command="{Binding PasteCommand}"
+                              IsEnabled="{Binding Editor.HasChildren}" />
+                        <MenuItem Header="_Delete" InputGestureText="Del" Command="{Binding DeleteCommand}"
+                              IsEnabled="False"/>
+                        <MenuItem Header="Select _All" InputGestureText="Ctrl+A" Command="{Binding SelectAllCommand}"
+                              IsEnabled="{Binding Editor.HasChildren}" />
+                        <Separator />
+                        <MenuItem Header="P_references" IsEnabled="False" />
+                    </MenuItem>
+                    <MenuItem Header="_View">
+                        <MenuItem Header="Project Explorer" Click="ProjectExplorerMenuItem_Click" />
+                        <MenuItem Header="Blueprints View" Click="BlueprintsViewMenuItem_Click" />
+                        <Separator />
+                        <MenuItem Header="Classes View" Click="ClassesViewMenuItem_Click" />
+                        <MenuItem Header="Output" Click="OutputViewMenuItem_Click" />
+                    </MenuItem>
+                    <MenuItem Header="_Project">
+                        <MenuItem Header="_Run Script" InputGestureText="F5" Command="{Binding RunScriptCommand}" IsEnabled="{Binding Editor.HasChildren}" />
+                    </MenuItem>
+                    <MenuItem Header="_Window">
+                        <MenuItem.ItemsSource>
+                            <CompositeCollection>
+                                <MenuItem Header="_Close" Command="{Binding CloseCommand}" IsEnabled="{Binding Editor.HasChildren}" />
+                                <MenuItem Header="Close _All" Command="{Binding CloseAllCommand}" IsEnabled="{Binding Editor.HasChildren}" />
+                                <Separator />
+                                <CollectionContainer Collection="{Binding Source={StaticResource wItems}}" />
+                            </CompositeCollection>
+                        </MenuItem.ItemsSource>
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding Command}"/>
+                                <Setter Property="Header" Value="{Binding Header}"/>
+                                <Setter Property="InputGestureText" Value="{Binding InputGestureText}" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="_Development Site" Click="DevMenuItem_Click" />
+                        <MenuItem Header="Read Me" Click="ReadmeMenuItem_Click" />
+                        <Separator />
+                        <MenuItem Header="_About SE Workbench" Click="AboutMenuItem_Click" />
+                    </MenuItem>
+                </Menu>
 
-        <ad:DockingManager x:Name="DockManager" Grid.Row="1" AllowMixedOrientation="True" DocumentsSource="{Binding Items}">
-        <!--<ad:DockingManager x:Name="DockManager" Grid.Row="1" AllowMixedOrientation="True">-->
+                <StackPanel Margin="4,2,4,2" Orientation="Horizontal">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding SaveFileCommand}">
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/Save.png" />
+                    </Button>
+
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding CutCommand}">
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/CutHS.png" />
+                    </Button>
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding CopyCommand}">
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/CopyHS.png" />
+                    </Button>
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding PasteCommand}">
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/PasteHS.png" />
+                    </Button>
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding DeleteCommand}">
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/DeleteHS.png" />
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <ad:DockingManager x:Name="DockManager" Grid.Row="2" AllowMixedOrientation="True" DocumentsSource="{Binding Items}">
+            <!--<ad:DockingManager x:Name="DockManager" Grid.Row="1" AllowMixedOrientation="True">-->
             <ad:DockingManager.Theme>
                 <ad:VS2010Theme />
             </ad:DockingManager.Theme>
-            
+
             <ad:DockingManager.LayoutUpdateStrategy>
                 <v:FileLayoutStrategy />
             </ad:DockingManager.LayoutUpdateStrategy>
@@ -186,7 +213,7 @@
                         </ad:LayoutAnchorable>
                     </ad:LayoutDocumentPane>-->
 
-                    <ad:LayoutAnchorablePaneGroup DockWidth="200">
+                    <ad:LayoutAnchorablePaneGroup DockWidth="250">
                         <ad:LayoutAnchorablePane>
                             <ad:LayoutAnchorable x:Name="pnBlueprints" ContentId="Blueprints" Title="Blueprints">
                                 <v:BlueprintView x:Name="tvBlueprint" />

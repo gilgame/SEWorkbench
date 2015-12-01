@@ -12,8 +12,6 @@ namespace Gilgame.SEWorkbench.Views
 {
     public partial class TestWindow : Window
     {
-        private const string DockConfig = "dock.config";
-
         private ProjectManagerViewModel _ProjectManager = new ProjectManagerViewModel(null);
 
         public TestWindow()
@@ -110,6 +108,7 @@ namespace Gilgame.SEWorkbench.Views
                 Configuration.MainWindow.WindowState = WindowState;
             }
             
+            // TODO get this working, also needs to be project specific (on open/close project)
 
             //string path = Path.Combine(Directory.GetCurrentDirectory(), DockConfig);
 
@@ -163,6 +162,21 @@ namespace Gilgame.SEWorkbench.Views
                     pnOutput.ToggleAutoHide();
                 }
             }
+        }
+
+        private void DevMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://github.com/gilgame/SEWorkbench");
+        }
+
+        private void ReadmeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("readme.txt");
+        }
+
+        private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            new AboutView().ShowDialog();
         }
     }
 }
