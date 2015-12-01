@@ -7,6 +7,7 @@ using Gilgame.SEWorkbench.Services;
 
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 using Xceed.Wpf.AvalonDock.Layout;
+using System.Diagnostics;
 
 namespace Gilgame.SEWorkbench.Views
 {
@@ -167,11 +168,6 @@ namespace Gilgame.SEWorkbench.Views
         private void DevMenuItem_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://github.com/gilgame/SEWorkbench");
-        }
-
-        private void ReadmeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("readme.txt");
         }
 
         private void AboutMenuItem_Click(object sender, RoutedEventArgs e)

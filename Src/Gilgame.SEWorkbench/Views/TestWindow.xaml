@@ -116,7 +116,6 @@
                     </MenuItem>
                     <MenuItem Header="_Help">
                         <MenuItem Header="_Development Site" Click="DevMenuItem_Click" />
-                        <MenuItem Header="Read Me" Click="ReadmeMenuItem_Click" />
                         <Separator />
                         <MenuItem Header="_About SE Workbench" Click="AboutMenuItem_Click" />
                     </MenuItem>
