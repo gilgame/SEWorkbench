@@ -211,6 +211,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 ConvertTabsToSpaces = true,
                 IndentationSize = 4,
+                EnableTextDragDrop = true,
             };
             _Editor.Options = options;
 

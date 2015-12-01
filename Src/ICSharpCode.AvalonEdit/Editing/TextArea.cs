@@ -926,7 +926,7 @@ namespace ICSharpCode.AvalonEdit.Editing
 		/// </summary>
 		public static readonly DependencyProperty IndentationStrategyProperty =
 			DependencyProperty.Register("IndentationStrategy", typeof(IIndentationStrategy), typeof(TextArea),
-			                            new FrameworkPropertyMetadata(new CSharpIndentationStrategy()));
+			                            new FrameworkPropertyMetadata(new DefaultIndentationStrategy()));
 		
 		/// <summary>
 		/// Gets/Sets the indentation strategy used when inserting new lines.
