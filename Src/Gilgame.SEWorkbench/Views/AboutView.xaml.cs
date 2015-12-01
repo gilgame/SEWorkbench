@@ -64,6 +64,10 @@ namespace Gilgame.SEWorkbench.Views
                         OpenDocument(Path.Combine(path, "license-seworkbench.txt"));
                         break;
 
+                    case "General Public License (GPLv3) Full":
+                        OpenDocument(Path.Combine(path, "gpl.txt"));
+                        break;
+
                     case "SharpDevelop License":
                         OpenDocument(Path.Combine(path, "license-sharpdevelop.txt"));
                         break;

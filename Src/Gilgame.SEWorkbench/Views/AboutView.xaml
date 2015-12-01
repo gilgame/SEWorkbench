@@ -28,6 +28,7 @@
                           HorizontalAlignment="Left" VerticalAlignment="Top">
                 <ListViewItem Content="Readme File" />
                 <ListViewItem Content="SE Workbench License" />
+                <ListViewItem Content="General Public License (GPLv3) Full" />
                 <ListViewItem Content="SharpDevelop License" />
                 <ListViewItem Content="Xceed Extended WPF License" />
             </ListView>
