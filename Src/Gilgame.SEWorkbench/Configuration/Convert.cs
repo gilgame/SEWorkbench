@@ -27,7 +27,20 @@ namespace Gilgame.SEWorkbench.Configuration
             catch (Exception ex)
             {
                 LogError(ex);
-                return -1;
+                return 0;
+            }
+        }
+
+        public static double ToDouble(object o)
+        {
+            try
+            {
+                return System.Convert.ToDouble(o);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return 0;
             }
         }
 
@@ -41,6 +54,21 @@ namespace Gilgame.SEWorkbench.Configuration
             {
                 LogError(ex);
                 return String.Empty;
+            }
+        }
+
+        public static WindowState ToWindowState(object o)
+        {
+            string state = o.ToString();
+            switch(state)
+            {
+                case "Maximized":
+                    return WindowState.Maximized;
+
+                case "Normal":
+                case "Minimized":
+                default:
+                    return WindowState.Normal;
             }
         }
 

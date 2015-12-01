@@ -74,6 +74,14 @@ namespace Gilgame.SEWorkbench.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Width = Configuration.MainWindow.Width;
+            Height = Configuration.MainWindow.Height;
+            Left = Configuration.MainWindow.Left;
+            Top = Configuration.MainWindow.Top;
+
+            WindowState = Configuration.MainWindow.WindowState;
+            
+
             //string path = Path.Combine(Directory.GetCurrentDirectory(), DockConfig);
             //if (File.Exists(path))
             //{
@@ -88,6 +96,21 @@ namespace Gilgame.SEWorkbench.Views
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
+            if (WindowState == WindowState.Normal)
+            {
+                Configuration.MainWindow.Width = Width;
+                Configuration.MainWindow.Height = Height;
+                Configuration.MainWindow.Left = Left;
+                Configuration.MainWindow.Top = Top;
+
+                Configuration.MainWindow.WindowState = WindowState;
+            }
+            if (WindowState == WindowState.Maximized)
+            {
+                Configuration.MainWindow.WindowState = WindowState;
+            }
+            
+
             //string path = Path.Combine(Directory.GetCurrentDirectory(), DockConfig);
 
             //XmlLayoutSerializer serializer = new XmlLayoutSerializer(DockManager);
