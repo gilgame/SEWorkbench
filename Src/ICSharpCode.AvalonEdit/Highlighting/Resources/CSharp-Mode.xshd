@@ -8,7 +8,7 @@
 	<Color name="Punctuation" exampleText="a(b.c);" />
 	<Color name="ValueTypeKeywords" foreground="Blue" exampleText="bool b = true;" />
 	<Color name="ReferenceTypeKeywords" foreground="Blue" exampleText="object o;" />
-	<Color name="MethodCall" foreground="MidnightBlue" exampleText="o.ToString();"/>
+	<Color name="MethodCall" foreground="SteelBlue" exampleText="o.ToString();"/>
 	<Color name="NumberLiteral" exampleText="3.1415f"/>
 	<Color name="ThisOrBaseReference" foreground="Blue" exampleText="this.Do(); base.Do();"/>
 	<Color name="NullOrValueKeywords" foreground="Blue" exampleText="if (value == null)"/>
