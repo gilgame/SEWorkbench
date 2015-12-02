@@ -17,7 +17,7 @@ namespace Gilgame.SEWorkbench.Configuration
         {
             get
             {
-                return Convert.ToString(Services.Registry.GetValue(Microsoft.Win32.RegistryHive.CurrentUser, Root, "SEPath", null));
+                return Convert.ToString(Services.Registry.GetValue(Microsoft.Win32.RegistryHive.CurrentUser, Root, "SEPath", String.Empty));
             }
             set
             {

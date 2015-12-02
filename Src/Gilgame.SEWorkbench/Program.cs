@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
 using Gilgame.SEWorkbench.Services;
 using Sandbox.Common.ObjectBuilders.Definitions;
 using VRage.ObjectBuilders;
-using System.Collections.Generic;
 
 namespace Gilgame.SEWorkbench
 {
