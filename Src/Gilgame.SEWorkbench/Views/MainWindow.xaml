@@ -7,7 +7,7 @@
         xmlns:sel="clr-namespace:Gilgame.SEWorkbench.Views.Selectors"
         xmlns:conv="clr-namespace:Gilgame.SEWorkbench.Converters"
         xmlns:svc="clr-namespace:Gilgame.SEWorkbench.Services"
-        Title="TestWindow" Height="576" Width="1024" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
+        Title="TestWindow" Height="576" Width="1024" Loaded="Window_Loaded" Unloaded="Window_Unloaded" Icon="/Gilgame.SEWorkbench;component/Icons/app.ico">
     <Window.Resources>
         <ResourceDictionary>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />

@@ -10,8 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{6055D402-CC45-4BC8-ADA2-41418A649C7A}"
 	ProjectSection(SolutionItems) = preProject
-		..\Doc\gpl.txt = ..\Doc\gpl.txt
 		..\Doc\license-avalondock.txt = ..\Doc\license-avalondock.txt
+		..\Doc\license-iconarchive.txt = ..\Doc\license-iconarchive.txt
 		..\Doc\license-seworkbench.txt = ..\Doc\license-seworkbench.txt
 		..\Doc\license-sharpdevelop.txt = ..\Doc\license-sharpdevelop.txt
 	EndProjectSection

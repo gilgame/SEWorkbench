@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Gilgame.SEWorkbench.Views.ProgramView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="{Binding TitleText}" Height="400" Width="600">
+        Title="{Binding TitleText}" Height="400" Width="600"
+        Icon="/Gilgame.SEWorkbench;component/Icons/app.ico">
     <Grid Background="#FF2B3B58" FocusManager.FocusedElement="{Binding ElementName=ProgramTextBox}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
