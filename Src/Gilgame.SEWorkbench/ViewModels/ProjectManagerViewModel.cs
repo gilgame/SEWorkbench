@@ -336,7 +336,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     DocumentLine line = page.Content.Document.GetLineByNumber(item.Line);
                     page.Content.Select(line.Offset, line.Length);
                     page.Content.TextArea.Caret.BringCaretToView();
-                    page.IsSelected = true;
+                    page.IsActive = true;
                     return true;
                 }
             }
@@ -370,7 +370,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     if (page.Filename == item.Path)
                     {
-                        page.IsSelected = true;
+                        page.IsActive = true;
                         return;
                     }
                 }
