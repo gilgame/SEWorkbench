@@ -10,10 +10,6 @@
         Title="TestWindow" Height="576" Width="1024" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
     <Window.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/TabControl.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
             <LinearGradientBrush x:Key="MainMenuBackground" EndPoint="0,1">
@@ -71,7 +67,7 @@
                     </MenuItem>
                     <MenuItem Header="_Edit">
                         <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoCommand}"
-                              IsEnabled="{Binding Editor.HasChildren}"/>
+                              IsEnabled="{Binding Editor.HasChildren}" />
                         <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Command="{Binding RedoCommand}"
                               IsEnabled="{Binding Editor.HasChildren}" />
                         <Separator />
@@ -123,20 +119,25 @@
                 </Menu>
 
                 <StackPanel Margin="4,2,4,2" Orientation="Horizontal">
-                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding SaveFileCommand}">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21"
+                            IsEnabled="{Binding Editor.HasChildren}" Command="{Binding SaveFileCommand}">
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/Save.png" />
                     </Button>
 
-                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding CutCommand}">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21"
+                            IsEnabled="{Binding Editor.HasChildren}"  Command="{Binding CutCommand}">
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/CutHS.png" />
                     </Button>
-                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding CopyCommand}">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21"
+                            IsEnabled="{Binding Editor.HasChildren}" Command="{Binding CopyCommand}">
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/CopyHS.png" />
                     </Button>
-                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding PasteCommand}">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21"
+                            IsEnabled="{Binding Editor.HasChildren}" Command="{Binding PasteCommand}">
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/PasteHS.png" />
                     </Button>
-                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21" Command="{Binding DeleteCommand}">
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21"
+                            IsEnabled="{Binding Editor.HasChildren}" Command="{Binding DeleteCommand}">
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/DeleteHS.png" />
                     </Button>
                 </StackPanel>
@@ -144,7 +145,6 @@
         </Grid>
 
         <ad:DockingManager x:Name="DockManager" Grid.Row="2" AllowMixedOrientation="True" DocumentsSource="{Binding Items}">
-            <!--<ad:DockingManager x:Name="DockManager" Grid.Row="1" AllowMixedOrientation="True">-->
             <ad:DockingManager.Theme>
                 <ad:VS2010Theme />
             </ad:DockingManager.Theme>
@@ -196,22 +196,6 @@
                     <ad:LayoutPanel Orientation="Vertical">
                         <ad:LayoutDocumentPane x:Name="pnFiles" />
                     </ad:LayoutPanel>
-
-                    <!--<ad:LayoutPanel Orientation="Vertical">
-                        <ad:LayoutAnchorablePane>
-                            <ad:LayoutAnchorable>
-                                <TabControl Name="tcFileEditor" Margin="0,5,0,5" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Items}"
-                    Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}}" />
-                            </ad:LayoutAnchorable>
-                        </ad:LayoutAnchorablePane>
-                    </ad:LayoutPanel>-->
-
-                    <!--<ad:LayoutDocumentPane x:Name="pnFiles">
-                        <ad:LayoutAnchorable>
-                            <TabControl Name="tcFileEditor" Margin="0,5,0,5" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Items}"
-                    Visibility="{Binding HasChildren, Converter={StaticResource BoolToVis}}" />
-                        </ad:LayoutAnchorable>
-                    </ad:LayoutDocumentPane>-->
 
                     <ad:LayoutAnchorablePaneGroup DockWidth="250">
                         <ad:LayoutAnchorablePane>
