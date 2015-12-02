@@ -16,7 +16,8 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
-            if (!SandboxCopied())
+            string path = GetSandboxPath();
+            if (!SandboxCopied(path))
             {
                 bool result = CopySandbox();
                 if(result)
@@ -45,34 +46,41 @@ namespace Gilgame.SEWorkbench
             app.Run();
         }
 
-        private static bool SandboxCopied()
+        private static bool SandboxCopied(string sepath)
         {
-            return File.Exists("Sandbox.Common.dll");
-        }
-
-        private static bool CopySandbox()
-        {
-            string saveto = Directory.GetCurrentDirectory();
-
-            string sepath = Services.Registry.GetValue(Microsoft.Win32.RegistryHive.LocalMachine, Registry.K_SEROOT, Registry.V_SELOC).ToString();
-            if (String.IsNullOrEmpty(sepath))
+            string local = Directory.GetCurrentDirectory();
+            foreach(string assembly in GetDependencyNames())
             {
-                sepath = GetSEPath();
-                if (String.IsNullOrEmpty(sepath))
+                string file = Path.Combine(local, assembly);
+                string sefile = Path.Combine(sepath, assembly);
+                if (File.Exists(file))
+                {
+                    FileInfo current = new FileInfo(file);
+                    FileInfo official = new FileInfo(sefile);
+
+                    if (official.LastWriteTime > current.LastWriteTime)
+                    {
+                        return false;
+                    }
+                }
+                else
                 {
                     return false;
                 }
             }
-            else
-            {
-                sepath = Path.Combine(sepath, "Bin");
-            }
+            return true;
+        }
+
+        private static bool CopySandbox(string path = null)
+        {
+            string saveto = Directory.GetCurrentDirectory();
+            string sepath = (path == null) ? GetSandboxPath() : path;
 
             try
             {
                 foreach (string assembly in GetDependencyNames())
                 {
-                    File.Copy(Path.Combine(sepath, assembly), Path.Combine(saveto, assembly));
+                    File.Copy(Path.Combine(sepath, assembly), Path.Combine(saveto, assembly), true);
                 }
 
                 return true;
@@ -83,6 +91,24 @@ namespace Gilgame.SEWorkbench
                 MessageBox.ShowError("Failed to copy the required libraries", ex);
                 return false;
             }
+        }
+
+        private static string GetSandboxPath()
+        {
+            string sepath = Services.Registry.GetValue(Microsoft.Win32.RegistryHive.LocalMachine, Registry.K_SEROOT, Registry.V_SELOC).ToString();
+            if (String.IsNullOrEmpty(sepath))
+            {
+                sepath = UserGetPath();
+                if (String.IsNullOrEmpty(sepath))
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                sepath = Path.Combine(sepath, "Bin");
+            }
+            return sepath;
         }
 
         private static List<string> GetDependencyNames()
@@ -116,26 +142,39 @@ namespace Gilgame.SEWorkbench
             return assemblies;
         }
 
-        private static string GetSEPath()
+        private static string UserGetPath()
         {
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
-            {
-                DefaultExt = ".exe",
-                Filter = "Space Engineers Executable (SpaceEngineers.exe)|SpaceEngineers.exe",
-                InitialDirectory = @"C:\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin",
-            };
+            string path = Configuration.Program.SEPath;
 
-            Nullable<bool> result = dialog.ShowDialog();
-            if (result != null && result.Value == true)
+            if (String.IsNullOrEmpty(path) || !File.Exists(Path.Combine(path, "Sandbox.Common.dll")))
             {
-                string filename = dialog.FileName;
-                if (!String.IsNullOrEmpty(filename))
+                Services.MessageBox.ShowMessage("SE Workbench was unable to locate Space Engineers. You will now be prompted to locate SpaceEngineers.exe manually.");
+                Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
                 {
-                    return Path.GetDirectoryName(filename);
+                    DefaultExt = ".exe",
+                    Filter = "Space Engineers Executable (SpaceEngineers.exe)|SpaceEngineers.exe",
+                    InitialDirectory = @"C:\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin",
+                };
+
+                Nullable<bool> result = dialog.ShowDialog();
+                if (result != null && result.Value == true)
+                {
+                    string filename = dialog.FileName;
+                    if (!String.IsNullOrEmpty(filename))
+                    {
+                        string found = Path.GetDirectoryName(filename);
+
+                        Configuration.Program.SEPath = found;
+                        return found;
+                    }
                 }
+
+                return null;
             }
-            
-            return null;
+            else
+            {
+                return path;
+            }
         }
 
         private static void LoadSerializers()

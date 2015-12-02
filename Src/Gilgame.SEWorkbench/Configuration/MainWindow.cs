@@ -21,7 +21,7 @@ namespace Gilgame.SEWorkbench.Configuration
             }
             set
             {
-                Services.Registry.SetValue(Microsoft.Win32.RegistryHive.CurrentUser, Root, "Width", value);
+                Services.Registry.SetValue(Microsoft.Win32.RegistryHive.CurrentUser, Root, "Width", Convert.ToString(value));
             }
         }
 
