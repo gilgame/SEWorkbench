@@ -71,12 +71,11 @@ namespace Gilgame.SEWorkbench.Views
             bool found = _ProjectManager.FindError(e.Output);
             if (found)
             {
-                foreach (LayoutContent doc in pnFiles.Children)
+                foreach (PageViewModel page in _ProjectManager.Editor.Items)
                 {
-                    if (doc.IsSelected)
+                    if (page.Filename == e.Output.Filename)
                     {
-                        doc.IsActive = true;
-                        return;
+                        page.IsActive = true;
                     }
                 }
             }

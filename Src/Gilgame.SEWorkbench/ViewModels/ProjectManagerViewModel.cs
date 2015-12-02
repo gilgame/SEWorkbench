@@ -311,7 +311,9 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             if (item != null)
             {
-                PageViewModel page = Editor.Items.Where(i => i.Filename == item.Filename).Single();
+                PageViewModel page = null;
+
+                try { page = Editor.Items.Where(i => i.Filename == item.Filename).Single(); } catch { /* if we're here the page is closed */ }
                 if (page != null)
                 {
                     DocumentLine line = page.Content.Document.GetLineByNumber(item.Line);
@@ -390,6 +392,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             PerformSaveAll();
 
             string code = BuildScript(page.Filename);
+
             if (code != page.Content.Text)
             {
                 string tempfile = GetTempFile();

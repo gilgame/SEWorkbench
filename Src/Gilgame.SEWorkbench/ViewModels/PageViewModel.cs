@@ -126,13 +126,30 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 if (value != _IsSelected)
                 {
-                    
                     _IsSelected = value;
-                    if (_IsSelected)
+                    OnPropertyChanged("IsSelected");
+                }
+            }
+        }
+
+        private bool _IsActive = false;
+        public bool IsActive
+        {
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                if (value != _IsActive)
+                {
+
+                    _IsActive = value;
+                    if (_IsActive)
                     {
                         RaiseSelected();
                     }
-                    OnPropertyChanged("IsSelected");
+                    OnPropertyChanged("IsActive");
                 }
             }
         }

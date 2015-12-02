@@ -35,7 +35,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 foreach(PageViewModel page in Items)
                 {
-                    if (page.IsSelected)
+                    if (page.IsActive)
                     {
                         return page;
                     }
@@ -65,13 +65,13 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             // wpf sucks at setting other items in the collection back to IsSelected = false,
             // so we'll do it quietly as not to trigger all the bindings again
-            foreach (PageViewModel page in Items)
-            {
-                if (page.Filename != e.Path)
-                {
-                    page.SilentUnselected();
-                }
-            }
+            //foreach (PageViewModel page in Items)
+            //{
+            //    if (page.Filename != e.Path)
+            //    {
+            //        page.SilentUnselected();
+            //    }
+            //}
 
             UpdateScriptProvider();
         }
@@ -87,8 +87,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         PageViewModel page = (PageViewModel)e.NewItems[0];
                         RegisterPage(page);
 
-                        page.IsSelected = true;
-                        page.Content.Focus();
+                        page.IsActive = true;
                     }
                 }
                 // shouldn't reach here,but just in case
