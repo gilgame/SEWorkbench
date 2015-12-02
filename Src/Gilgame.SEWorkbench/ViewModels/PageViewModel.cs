@@ -220,6 +220,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             Content = _Editor;
         }
 
+        public void SilentUnselected()
+        {
+            _IsSelected = false;
+        }
+
         private void Editor_TextChanged(object sender, EventArgs e)
         {
             if (Type == Models.PageType.Page)

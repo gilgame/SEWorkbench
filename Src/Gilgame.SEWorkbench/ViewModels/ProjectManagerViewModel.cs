@@ -229,7 +229,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Project_FileDeleted(object sender, FileEventArgs e)
         {
-            Editor.Items.Remove(Editor.Items.Where(i => i.Filename == e.Path).Single());
+            PageViewModel page = Editor.Items.Where(i => i.Filename == e.Path).Single();
+            if (page != null)
+            {
+                Editor.Items.Remove(page);
+            }
         }
 
         private void Project_FileRequested(object sender, EventArgs e)
@@ -299,7 +303,6 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void Editor_FileChanged(object sender, FileEventArgs e)
         {
             List<string> scripts = Project.GetAssociatedScripts(e.Path);
-
             EditorViewModel.Completion.ScriptProvider.UpdateVars(scripts);
         }
 
