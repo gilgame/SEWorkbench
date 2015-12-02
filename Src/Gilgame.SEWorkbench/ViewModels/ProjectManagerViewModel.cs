@@ -232,7 +232,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Project_FileDeleted(object sender, FileEventArgs e)
         {
-            PageViewModel page = Editor.Items.Where(i => i.Filename == e.Path).Single();
+            PageViewModel page = null;
+            try { page = Editor.Items.Where(i => i.Filename == e.Path).Single(); } catch { /* if we get here, it wasn't open */ }
             if (page != null)
             {
                 Editor.Items.Remove(page);
