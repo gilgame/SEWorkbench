@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
@@ -7,7 +8,6 @@ using Gilgame.SEWorkbench.Services;
 
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 using Xceed.Wpf.AvalonDock.Layout;
-using System.Diagnostics;
 
 namespace Gilgame.SEWorkbench.Views
 {
@@ -68,7 +68,18 @@ namespace Gilgame.SEWorkbench.Views
 
         private void OutputView_ErrorMessageSelected(object sender, ErrorMessageEventArgs e)
         {
-            _ProjectManager.FindError(e.Output);
+            bool found = _ProjectManager.FindError(e.Output);
+            if (found)
+            {
+                foreach (LayoutContent doc in pnFiles.Children)
+                {
+                    if (doc.IsSelected)
+                    {
+                        doc.IsActive = true;
+                        return;
+                    }
+                }
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -79,18 +90,6 @@ namespace Gilgame.SEWorkbench.Views
             Top = Configuration.MainWindow.Top;
 
             WindowState = Configuration.MainWindow.WindowState;
-            
-
-            //string path = Path.Combine(Directory.GetCurrentDirectory(), DockConfig);
-            //if (File.Exists(path))
-            //{
-            //    XmlLayoutSerializer serializer = new XmlLayoutSerializer(DockManager);
-            //    serializer.LayoutSerializationCallback += (s, args) =>
-            //    {
-            //        args.Content = args.Content;
-            //    };
-            //    serializer.Deserialize(path);
-            //}
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
@@ -108,13 +107,6 @@ namespace Gilgame.SEWorkbench.Views
             {
                 Configuration.MainWindow.WindowState = WindowState;
             }
-            
-            // TODO get this working, also needs to be project specific (on open/close project)
-
-            //string path = Path.Combine(Directory.GetCurrentDirectory(), DockConfig);
-
-            //XmlLayoutSerializer serializer = new XmlLayoutSerializer(DockManager);
-            //serializer.Serialize(path);
         }
 
         private void ProjectExplorerMenuItem_Click(object sender, RoutedEventArgs e)

@@ -306,7 +306,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             EditorViewModel.Completion.ScriptProvider.UpdateVars(scripts);
         }
 
-        public void FindError(OutputItemViewModel item)
+        public bool FindError(OutputItemViewModel item)
         {
             if (item != null)
             {
@@ -317,8 +317,10 @@ namespace Gilgame.SEWorkbench.ViewModels
                     page.Content.Select(line.Offset, line.Length);
                     page.Content.TextArea.Caret.BringCaretToView();
                     page.IsSelected = true;
+                    return true;
                 }
             }
+            return false;
         }
 
         #region Commands
