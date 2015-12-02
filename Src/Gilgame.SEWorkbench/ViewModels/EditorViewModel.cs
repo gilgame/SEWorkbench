@@ -62,6 +62,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Page_Selected(object sender, FileEventArgs e)
         {
+            // wpf sucks at setting other items in the collection back to IsSelected = false,
+            // so we'll do it quietly as not to trigger all the bindings again
             foreach (PageViewModel page in Items)
             {
                 if (page.Filename != e.Path)

@@ -294,6 +294,10 @@ namespace ICSharpCode.AvalonEdit.CodeCompletion
 				e.Handled = true;
 				Close();
 			}
+            // don't dump the whole <T> bit on a < press
+            if (!e.Handled && e.Key == Key.OemComma) {
+                Close();
+            }
 		}
 		
 		Point visualLocation, visualLocationTop;
