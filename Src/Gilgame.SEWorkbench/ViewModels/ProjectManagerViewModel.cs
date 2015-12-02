@@ -17,20 +17,19 @@ namespace Gilgame.SEWorkbench.ViewModels
         private Regex _LineColRegex = new Regex(@"\(([0-9]+),([0-9]+)\)");
         private Regex _ErrorRegex = new Regex(@"^(.*?)\(([0-9]+),([0-9]+)\)\s:\serror\s(.*?):\s(.*?)$");
 
-        private string _ProjectName = "SomeProject.seproj";
-        public string ProjectName
+        private const string _ProjectTitlePrefix = "Space Engineers Workbench";
+
+        private string _ProjectTitle = _ProjectTitlePrefix;
+        public string ProjectTitle
         {
             get
             {
-                return _ProjectName;
+                return _ProjectTitle;
             }
-            private set
+            set
             {
-                if (_ProjectName != value)
-                {
-                    _ProjectName = value;
-                    OnPropertyChanged("ProjectName");
-                }
+                _ProjectTitle = value;
+                OnPropertyChanged("ProjectTitle");
             }
         }
 
@@ -136,6 +135,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             Project.SelectionChanged += Project_SelectionChanged;
             Project.FileCreated += Project_FileCreated;
             Project.FileDeleted += Project_FileDeleted;
+            Project.ProjectCreated += Project_ProjectCreated;
+            Project.ProjectOpened += Project_ProjectOpened;
+            Project.ProjectClosed += Project_ProjectClosed;
 
             Blueprint = new BlueprintViewModel(this);
             Blueprint.InsertRequested += Blueprint_InsertRequested;
@@ -235,6 +237,21 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 Editor.Items.Remove(page);
             }
+        }
+
+        private void Project_ProjectCreated(object sender, EventArgs e)
+        {
+            ProjectTitle = String.Format("{0} - {1}", Project.Model.Name, _ProjectTitlePrefix);
+        }
+
+        private void Project_ProjectOpened(object sender, EventArgs e)
+        {
+            ProjectTitle = String.Format("{0} - {1}", Project.Model.Name, _ProjectTitlePrefix);
+        }
+
+        private void Project_ProjectClosed(object sender, EventArgs e)
+        {
+            ProjectTitle = _ProjectTitlePrefix;
         }
 
         private void Project_FileRequested(object sender, EventArgs e)

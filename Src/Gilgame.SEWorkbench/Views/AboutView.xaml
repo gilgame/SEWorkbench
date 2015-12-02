@@ -4,7 +4,7 @@
         Title="About Space Engineers Workbench" Height="400" Width="600"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" KeyDown="Window_KeyDown" Icon="/Gilgame.SEWorkbench;component/Icons/app.ico">
     <Grid>
-        <TextBlock Text="SE Workbench" Margin="15,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" />
+        <TextBlock Text="Space Engineers Workbench" Margin="15,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" />
 
         <Grid Background="#FFF0F0F0" Margin="0,100,0,0">
             <StackPanel Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top">

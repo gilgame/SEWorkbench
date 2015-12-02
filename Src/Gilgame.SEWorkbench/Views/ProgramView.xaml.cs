@@ -5,12 +5,12 @@ namespace Gilgame.SEWorkbench.Views
 {
     public partial class ProgramView : Window
     {
-        private string _Title = "SE Workbench";
+        private string _Title = "Space Engineers Workbench";
         public string TitleText
         {
             get
             {
-                return String.Format("{0} - {1} ({2})", _Title, Blueprint, Block);
+                return String.Format("{0} ({1}) - {2}", Blueprint, Block, _Title);
             }
         }
 

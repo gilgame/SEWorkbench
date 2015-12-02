@@ -70,6 +70,33 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event EventHandler ProjectCreated;
+        private void RaiseProjectCreated()
+        {
+            if (ProjectCreated != null)
+            {
+                ProjectCreated(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler ProjectOpened;
+        private void RaiseProjectOpened()
+        {
+            if (ProjectOpened != null)
+            {
+                ProjectOpened(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler ProjectClosed;
+        private void RaiseProjectClosed()
+        {
+            if (ProjectClosed != null)
+            {
+                ProjectClosed(this, EventArgs.Empty);
+            }
+        }
+
         public event EventHandler SelectionChanged;
         public void RaiseSelectionChanged()
         {
@@ -516,6 +543,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     CreateNewProjectTemplate();
                     SaveProject();
+
+                    RaiseProjectCreated();
                 }
             }
         }
@@ -618,6 +647,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                 LoadCode(_RootItem);
 
                 _RootItem.IsExpanded = true;
+
+                RaiseProjectOpened();
             }
         }
 
@@ -639,6 +670,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             // TODO check for unsaved files
 
             SetRootItem(null);
+
+            RaiseProjectClosed();
         }
 
         #endregion

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Gilgame.SEWorkbench.Views.SplashScreenView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SE Workbench is Loading" Height="200" Width="300" WindowStartupLocation="CenterScreen"
+        Title="Space Engineers Workbench is Loading" Height="200" Width="300" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" WindowStyle="None" Icon="/Gilgame.SEWorkbench;component/Icons/app.ico">
     <Border BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}">
         <Grid>

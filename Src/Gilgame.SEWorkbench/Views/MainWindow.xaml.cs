@@ -110,7 +110,7 @@ namespace Gilgame.SEWorkbench.Views
 
         private void ProjectExplorerMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if(pnProjectExplorer.IsHidden)
+            if (pnProjectExplorer.IsHidden)
             {
                 pnProjectExplorer.Show();
                 if (pnProjectExplorer.IsAutoHidden)
