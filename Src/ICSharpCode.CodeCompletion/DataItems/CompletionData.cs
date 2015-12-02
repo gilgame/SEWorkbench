@@ -53,7 +53,9 @@ namespace ICSharpCode.CodeCompletion.DataItems
 
         public virtual void Complete(ICSharpCode.AvalonEdit.Editing.TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
         {
-            textArea.Document.Replace(completionSegment, this.CompletionText);
+            // TODO quick fix, may need to revisit this
+            //textArea.Document.Replace(completionSegment, this.CompletionText);
+            textArea.Document.Replace(completionSegment, this.DisplayText);
         }
 
         public object Content
