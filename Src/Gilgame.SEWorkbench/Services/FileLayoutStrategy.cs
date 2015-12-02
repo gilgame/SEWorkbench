@@ -3,7 +3,7 @@ using System.Linq;
 
 using Xceed.Wpf.AvalonDock.Layout;
 
-namespace Gilgame.SEWorkbench.Views
+namespace Gilgame.SEWorkbench.Services
 {
     public class FileLayoutStrategy : ILayoutUpdateStrategy
     {

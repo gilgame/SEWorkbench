@@ -1,7 +1,8 @@
-﻿using ICSharpCode.CodeCompletion;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+
+using ICSharpCode.CodeCompletion;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {

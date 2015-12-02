@@ -157,7 +157,6 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Configuration\Convert.cs" />
     <Compile Include="Services\Windows.cs" />
-    <Compile Include="Tester.cs" />
     <Compile Include="ViewModels\ClassItemViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModel.cs" />
     <Compile Include="ViewModels\Commands\AddCollectionCommand.cs" />
@@ -169,14 +168,14 @@
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FileLayoutStrategy.cs" />
+    <Compile Include="Services\FileLayoutStrategy.cs" />
     <Compile Include="Views\Selectors\FileStyleSelector.cs" />
     <Compile Include="Views\Selectors\FileTemplateSelector.cs" />
     <Compile Include="Views\SplashScreenView.xaml.cs">
       <DependentUpon>SplashScreenView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TestWindow.xaml.cs">
-      <DependentUpon>TestWindow.xaml</DependentUpon>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <None Include="NewFile.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -260,10 +259,6 @@
     <Compile Include="Views\ProjectExplorer.xaml.cs">
       <DependentUpon>ProjectExplorer.xaml</DependentUpon>
     </Compile>
-    <Page Include="Styles\HeaderLabel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\Scrollbar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -312,15 +307,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TestWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Resource Include="Styles\MenuButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Resource>
-    <Resource Include="Styles\TabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>

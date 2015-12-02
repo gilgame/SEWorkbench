@@ -6,6 +6,7 @@
         xmlns:v="clr-namespace:Gilgame.SEWorkbench.Views"
         xmlns:sel="clr-namespace:Gilgame.SEWorkbench.Views.Selectors"
         xmlns:conv="clr-namespace:Gilgame.SEWorkbench.Converters"
+        xmlns:svc="clr-namespace:Gilgame.SEWorkbench.Services"
         Title="TestWindow" Height="576" Width="1024" Loaded="Window_Loaded" Unloaded="Window_Unloaded">
     <Window.Resources>
         <ResourceDictionary>
@@ -149,7 +150,7 @@
             </ad:DockingManager.Theme>
 
             <ad:DockingManager.LayoutUpdateStrategy>
-                <v:FileLayoutStrategy />
+                <svc:FileLayoutStrategy />
             </ad:DockingManager.LayoutUpdateStrategy>
 
             <ad:DockingManager.LayoutItemTemplateSelector>
