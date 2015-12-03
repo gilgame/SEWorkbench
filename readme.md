@@ -15,11 +15,14 @@ These are just a few of the features that have been implemented so far. I think 
 
 Missing Features
 =================================
-Among the most glaring features that still need to be added:
+This is not an exhaustive list:
  * Find/Replace dialog
  * Text area context menu (keyboard shortcuts are working)
  * Remember panel layout for each project between sessions
- * Enable Drag and Drop support for Project Explorer.
+ * Enable Drag and Drop support for Project Explorer
+ * Context menu for the text area
+ * Configurable settings for the text area
+ * Code reformatting
 
 Screenshots
 =================================
