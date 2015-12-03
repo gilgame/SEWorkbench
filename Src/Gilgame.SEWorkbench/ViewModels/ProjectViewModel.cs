@@ -1137,7 +1137,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformViewCode()
         {
-            // TODO add new folder logic
+            RaiseFileRequested();
         }
 
         #endregion

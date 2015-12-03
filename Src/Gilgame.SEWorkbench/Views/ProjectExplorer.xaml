@@ -75,7 +75,7 @@
                             <MenuItem Header="Collection..." Command="{Binding AddCollectionCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CollectionCanBeAddedToBool}}" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="View Code" Command="{Binding OpenSelectedCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileSelectedToBool}}" />
+                        <MenuItem Header="View Code" Command="{Binding ViewCodeCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileSelectedToBool}}" />
                         <Separator />
                         <MenuItem Header="Rename" Command="{Binding RenameCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeRenamedToBool}}" />
                         <MenuItem Header="Delete" Command="{Binding DeleteCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeDeletedToBool}}" />
