@@ -11,7 +11,7 @@ These are just a few of the features that have been implemented so far. I think 
  * Script collections that allow the developer to separate larger scripts into multiple files and folders
  * Blueprint program importing and editing
  * Basic integrated IL viewer for allowed namespaces
- * Script Organization Based on Project -> Blueprint (Grid)
+ * Script Organization using a directory structure
 
 Missing Features
 =================================
@@ -19,13 +19,11 @@ Among the most glaring features that still need to be added:
  * Find/Replace dialog
  * Text area context menu (keyboard shortcuts are working)
  * Remember panel layout for each project between sessions
+ * Enable Drag and Drop support for Project Explorer.
 
 Screenshots
 =================================
-Code completion:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
-
-Script and collection script checker:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-2.png)
 
 Caveats
@@ -40,3 +38,4 @@ This project makes use of works derived from:
  * https://github.com/icsharpcode/NRefactory
  * https://github.com/icsharpcode/SharpDevelop
  * http://avalondock.codeplex.com/
+ * http://www.fatcow.com/free-icons
