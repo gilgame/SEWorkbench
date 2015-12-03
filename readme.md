@@ -28,9 +28,6 @@ Code completion:
 Script and collection script checker:
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-2.png)
 
-Blueprint program editing:
-![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-3.png)
-
 Caveats
 =================================
  * Having SE Workbench running while updating Space Engineers through steam may cause Steam to think the installation is corrupt because of files being in use.
