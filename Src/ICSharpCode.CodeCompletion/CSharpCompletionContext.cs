@@ -91,12 +91,13 @@ namespace ICSharpCode.CodeCompletion
 
             if (fileExtension.ToLower() == ".csx")
             {
-                string classname = replaceRegex.Replace(fileNameWithoutExtension, "");
-                classname = classname.TrimStart('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-
+                //string classname = replaceRegex.Replace(fileNameWithoutExtension, "");
+                //classname = classname.TrimStart('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+                
                 string header = String.Empty;
                 header += (usings ?? "") + Environment.NewLine;
-                header += "public static class " + classname + " {" + Environment.NewLine;
+                //header += "public static class " + classname + " {" + Environment.NewLine;
+                header += "public static class Script {" + Environment.NewLine;
                 header += (variables ?? "") + Environment.NewLine;
 
                 string footer = "}" + Environment.NewLine;
