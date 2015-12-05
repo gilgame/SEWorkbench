@@ -32,6 +32,7 @@ namespace Gilgame.SEWorkbench
 
             LoadClasses();
             Interop.Blueprint.RunInit();
+            Interop.InGameScript.Init();
             LoadSerializers();
 
             splash.Close();
