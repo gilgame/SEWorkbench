@@ -20,7 +20,6 @@ This is not an exhaustive list:
  * Text area context menu (keyboard shortcuts are working)
  * Remember panel layout for each project between sessions
  * Enable Drag and Drop support for Project Explorer
- * Context menu for the text area
  * Configurable settings for the text area
  * Code reformatting
 
