@@ -191,6 +191,32 @@ namespace ICSharpCode.CodeCompletion
                 {
                     cshellCompletionData.TriggerWord = result.TriggerWord;
                     cshellCompletionData.TriggerWordLength = result.TriggerWordLength;
+
+                    if (completion is ICSharpCode.CodeCompletion.DataItems.EntityCompletionData)
+                    {
+                        string typename = String.Empty;
+
+                        var entity = cshellCompletionData as ICSharpCode.CodeCompletion.DataItems.EntityCompletionData;
+
+                        if (entity.Entity is ICSharpCode.NRefactory.TypeSystem.Implementation.DefaultResolvedTypeDefinition)
+                        {
+                            var def = entity.Entity as ICSharpCode.NRefactory.TypeSystem.Implementation.DefaultResolvedTypeDefinition;
+
+                            typename = def.FullTypeName.ReflectionName;
+                        }
+                        else
+                        {
+                            typename = entity.Entity.DeclaringType.FullName;
+                        }
+
+                        Type type = Type.GetType(typename);
+
+                        if (!AllowedType(type))
+                        {
+                            continue;
+                        }
+                    }
+
                     result.CompletionData.Add(cshellCompletionData);
                 }
             }
@@ -213,5 +239,16 @@ namespace ICSharpCode.CodeCompletion
 
             return result;
         }
+
+        private bool AllowedType(Type type)
+        {
+            return VRage.Compiler.IlChecker.CheckTypeAndMember(type, true);
+        }
+
+        //private bool AllowedNamespace(string asmb, string nspc)
+        //{
+        //    return VRage.Compiler.IlChecker.AllowedNamespacesCommon.ContainsKey(asmb)
+        //        && VRage.Compiler.IlChecker.AllowedNamespacesCommon[asmb].Contains(nspc);
+        //}
     }
 }
