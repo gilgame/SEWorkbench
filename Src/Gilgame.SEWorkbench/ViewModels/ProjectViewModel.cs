@@ -637,18 +637,25 @@ namespace Gilgame.SEWorkbench.ViewModels
             Nullable<bool> result = dialog.ShowDialog();
             if (result == true)
             {
-                string fullpath = dialog.FileName;
-                string serialized = File.ReadAllText(fullpath);
+                try
+                {
+                    string fullpath = dialog.FileName;
+                    string serialized = File.ReadAllText(fullpath);
 
-                Project project = (Project)Serialization.Convert.ToObject(serialized);
-                SetRootItem(project.RootItem);
+                    Project project = (Project)Serialization.Convert.ToObject(serialized);
+                    SetRootItem(project.RootItem);
 
-                LoadBlueprints();
-                LoadCode(_RootItem);
+                    LoadBlueprints();
+                    LoadCode(_RootItem);
 
-                _RootItem.IsExpanded = true;
+                    _RootItem.IsExpanded = true;
 
-                RaiseProjectOpened();
+                    RaiseProjectOpened();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.ShowError("Unable to open project", ex);
+                }
             }
         }
 
