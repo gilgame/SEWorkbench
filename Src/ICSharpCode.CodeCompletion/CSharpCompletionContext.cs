@@ -97,7 +97,7 @@ namespace ICSharpCode.CodeCompletion
                 string header = String.Empty;
                 header += (usings ?? "") + Environment.NewLine;
                 //header += "public static class " + classname + " {" + Environment.NewLine;
-                header += "public static class Script {" + Environment.NewLine;
+                header += "public static class Script : Sandbox.ModAPI.Ingame.MyGridProgram {" + Environment.NewLine;
                 header += (variables ?? "") + Environment.NewLine;
 
                 string footer = "}" + Environment.NewLine;
