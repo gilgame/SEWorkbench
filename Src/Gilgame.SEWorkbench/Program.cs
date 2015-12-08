@@ -30,14 +30,14 @@ namespace Gilgame.SEWorkbench
             string path = GetSandboxPath();
             if (!SandboxIsCopied(path))
             {
-                if (!IsAdmin)
-                {
-                    Elevate();
-                    return;
-                }
+                //if (!IsAdmin)
+                //{
+                //    Elevate();
+                //    return;
+                //}
 
-                bool copied = CopySandbox();
-                if (copied)
+                bool success = CopySandbox();
+                if (success)
                 {
                     System.Windows.Forms.Application.Restart();
                 }
@@ -117,7 +117,7 @@ namespace Gilgame.SEWorkbench
             {
                 foreach (string assembly in GetDependencyNames())
                 {
-                    File.Copy(Path.Combine(sepath, assembly), Path.Combine(saveto, assembly), true);
+                    CopyFile(Path.Combine(sepath, assembly), Path.Combine(saveto, assembly));
                 }
 
                 return true;
@@ -127,6 +127,21 @@ namespace Gilgame.SEWorkbench
                 // TODO log errors
                 MessageBox.ShowError("Failed to copy the required libraries", ex);
                 return false;
+            }
+        }
+
+        private static void CopyFile(string source, string destination)
+        {
+            using (FileStream infile = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (FileStream outfile = new FileStream(destination, FileMode.Create))
+                {
+                    int buffer;
+                    while ((buffer = infile.ReadByte()) != -1)
+                    {
+                        outfile.WriteByte((byte)buffer);
+                    }
+                }
             }
         }
 
