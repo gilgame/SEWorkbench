@@ -30,7 +30,7 @@ namespace Gilgame.SEWorkbench.Completion
         {
             List<String> variables = new List<string>()
             {
-                "public static IMyGridTerminalSystem GridTerminalSystem = null;",
+                //"public static IMyGridTerminalSystem GridTerminalSystem = null;",
             };
             variables.AddRange(_Vars);
 
