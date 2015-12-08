@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Security.Principal;
 
 using Gilgame.SEWorkbench.Services;
 
@@ -13,14 +15,29 @@ namespace Gilgame.SEWorkbench
     {
         public static List<Interop.AssemblyObject> Classes = new List<Interop.AssemblyObject>();
 
+        public static bool IsAdmin
+        {
+            get
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
+
         [STAThread]
         public static void Main(string[] args)
         {
             string path = GetSandboxPath();
-            if (!SandboxCopied(path))
+            if (!SandboxIsCopied(path))
             {
-                bool result = CopySandbox();
-                if(result)
+                if (!IsAdmin)
+                {
+                    Elevate();
+                    return;
+                }
+
+                bool copied = CopySandbox();
+                if (copied)
                 {
                     System.Windows.Forms.Application.Restart();
                 }
@@ -47,7 +64,26 @@ namespace Gilgame.SEWorkbench
             app.Run();
         }
 
-        private static bool SandboxCopied(string sepath)
+        private static void Elevate()
+        {
+            ProcessStartInfo info = new ProcessStartInfo()
+            {
+                WorkingDirectory = Environment.CurrentDirectory,
+                FileName = Process.GetCurrentProcess().MainModule.FileName,
+                UseShellExecute = true,
+                Verb = "runas"
+            };
+            try
+            {
+                Process.Start(info);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.ShowError("Failed to start the program with elevated privileges", ex);
+            }
+        }
+
+        private static bool SandboxIsCopied(string sepath)
         {
             string local = Directory.GetCurrentDirectory();
             foreach(string assembly in GetDependencyNames())
@@ -180,8 +216,6 @@ namespace Gilgame.SEWorkbench
 
         private static void LoadSerializers()
         {
-            // make a call to get serializers loaded so blueprints load faster
-
             MyObjectBuilder_Definitions loaded = null;
 
             try { MyObjectBuilderSerializer.DeserializeXML(String.Empty, out loaded); }
