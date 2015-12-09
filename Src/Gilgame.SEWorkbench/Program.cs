@@ -147,7 +147,13 @@ namespace Gilgame.SEWorkbench
 
         private static string GetSandboxPath()
         {
-            string sepath = Services.Registry.GetValue(Microsoft.Win32.RegistryHive.LocalMachine, Registry.K_SEROOT, Registry.V_SELOC).ToString();
+            string sepath = Services.Registry.GetValue(
+                Microsoft.Win32.RegistryHive.LocalMachine,
+                Registry.K_SEROOT,
+                Registry.V_SELOC,
+                String.Empty
+            ).ToString();
+
             if (String.IsNullOrEmpty(sepath))
             {
                 sepath = UserGetPath();
