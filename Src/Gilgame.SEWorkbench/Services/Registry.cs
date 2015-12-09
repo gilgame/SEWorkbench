@@ -6,7 +6,7 @@ namespace Gilgame.SEWorkbench.Services
     public class Registry
     {
         public const string K_ROOT = @"SOFTWARE\Gilgame\SEWorkbench";
-        public const string K_SEROOT = @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 244850";
+        public const string K_SEROOT = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 244850";
         public const string V_SELOC = "InstallLocation";
 
         public static object GetValue(RegistryHive hive, string path, string name, object value = null, bool try64 = false)
