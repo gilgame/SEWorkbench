@@ -37,6 +37,9 @@ namespace Gilgame.SEWorkbench.Views
             tvBlueprint.DataContext = _ProjectManager.Blueprint;
             tvProjectExplorer.DataContext = _ProjectManager.Project;
             tvClasses.DataContext = _ProjectManager.Classes;
+
+            vFindReplace.DataContext = _ProjectManager.FindReplace;
+
             DockManager.DataContext = _ProjectManager.Editor;
 
             vOutput.DataContext = _ProjectManager.Output;
@@ -152,6 +155,18 @@ namespace Gilgame.SEWorkbench.Views
                 if (pnOutput.IsAutoHidden)
                 {
                     pnOutput.ToggleAutoHide();
+                }
+            }
+        }
+
+        private void FindReplaceMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (pnFindReplace.IsHidden)
+            {
+                pnFindReplace.Show();
+                if (pnFindReplace.IsAutoHidden)
+                {
+                    pnFindReplace.ToggleAutoHide();
                 }
             }
         }

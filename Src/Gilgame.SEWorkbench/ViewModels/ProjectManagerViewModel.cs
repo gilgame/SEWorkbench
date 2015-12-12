@@ -112,6 +112,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private FindReplaceViewModel _FindReplace;
+        public FindReplaceViewModel FindReplace
+        {
+            get
+            {
+                return _FindReplace;
+            }
+            set
+            {
+                _FindReplace = value;
+                OnPropertyChanged("FindReplace");
+            }
+        }
+
         public bool IsModified
         {
             get
@@ -150,6 +164,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             BuildClasses();
 
             Output = new OutputViewModel(this);
+
+            FindReplace = new FindReplaceViewModel(this);
 
             _NewProjectCommand = new Commands.NewProjectCommand(this);
             _OpenProjectCommand = new Commands.OpenProjectCommand(this);

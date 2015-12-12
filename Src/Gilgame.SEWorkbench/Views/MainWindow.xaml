@@ -87,10 +87,12 @@
                     </MenuItem>
                     <MenuItem Header="_View">
                         <MenuItem Header="Project Explorer" Click="ProjectExplorerMenuItem_Click" />
-                        <MenuItem Header="Blueprints View" Click="BlueprintsViewMenuItem_Click" />
+                        <MenuItem Header="Blueprints" Click="BlueprintsViewMenuItem_Click" />
                         <Separator />
-                        <MenuItem Header="Classes View" Click="ClassesViewMenuItem_Click" />
+                        <MenuItem Header="Classes" Click="ClassesViewMenuItem_Click" />
                         <MenuItem Header="Output" Click="OutputViewMenuItem_Click" />
+                        <Separator />
+                        <MenuItem Header="Find and Replace" Click="FindReplaceMenuItem_Click" />
                     </MenuItem>
                     <MenuItem Header="_Project">
                         <MenuItem Header="_Run Script" InputGestureText="F5" Command="{Binding RunScriptCommand}" IsEnabled="{Binding Editor.HasChildren}" />
@@ -212,6 +214,19 @@
 
                 </ad:LayoutPanel>
 
+                <ad:LayoutRoot.FloatingWindows>
+                    <ad:LayoutAnchorableFloatingWindow>
+                        <ad:LayoutAnchorablePaneGroup>
+                            <ad:LayoutAnchorablePane FloatingWidth="300" FloatingHeight="350" DockWidth="300" DockHeight="350"
+                                                     FloatingLeft="100" FloatingTop="100">
+                                <ad:LayoutAnchorable x:Name="pnFindReplace" Title="Find and Replace" ContentId="FindReplace" IsVisible="False">
+                                    <v:FindReplaceView x:Name="vFindReplace" />
+                                </ad:LayoutAnchorable>
+                            </ad:LayoutAnchorablePane>
+                        </ad:LayoutAnchorablePaneGroup>
+                    </ad:LayoutAnchorableFloatingWindow>
+                </ad:LayoutRoot.FloatingWindows>
+
                 <ad:LayoutRoot.BottomSide>
                     <ad:LayoutAnchorSide>
                         <ad:LayoutAnchorGroup>
@@ -221,7 +236,7 @@
                         </ad:LayoutAnchorGroup>
                     </ad:LayoutAnchorSide>
                 </ad:LayoutRoot.BottomSide>
-
+                
             </ad:LayoutRoot>
 
         </ad:DockingManager>

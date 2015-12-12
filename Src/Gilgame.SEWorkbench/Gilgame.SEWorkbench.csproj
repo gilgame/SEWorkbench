@@ -90,6 +90,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -149,6 +150,7 @@
     <Compile Include="Converters\ProgramCanBeEditedConverter.cs" />
     <Compile Include="Models\ClassItem.cs" />
     <Compile Include="Models\ClassItemType.cs" />
+    <Compile Include="Models\FindMode.cs" />
     <Compile Include="Models\GridItem.cs" />
     <Compile Include="Models\GridItemType.cs" />
     <Compile Include="Models\MenuItem.cs" />
@@ -165,6 +167,7 @@
     <Compile Include="ViewModels\Commands\AddCollectionCommand.cs" />
     <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
+    <Compile Include="ViewModels\FindReplaceViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,9 @@
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\FileLayoutStrategy.cs" />
+    <Compile Include="Views\FindReplaceView.xaml.cs">
+      <DependentUpon>FindReplaceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Selectors\FileStyleSelector.cs" />
     <Compile Include="Views\Selectors\FileTemplateSelector.cs" />
     <Compile Include="Views\SplashScreenView.xaml.cs">
@@ -279,6 +285,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClassView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FindReplaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
