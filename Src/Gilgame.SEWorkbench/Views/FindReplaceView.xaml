@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" d:DesignHeight="350" d:DesignWidth="300">
+             xmlns:conv="clr-namespace:Gilgame.SEWorkbench.Converters"
+             mc:Ignorable="d" d:DesignHeight="380" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
-            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <conv:BoolToCollapsedConverter x:Key="BoolToVis" />
             
             <Style TargetType="{x:Type RadioButton}">
                 <Setter Property="Focusable" Value="False" />
@@ -74,9 +75,9 @@
             
             <TextBlock Text="Find what:" Margin="0,7,0,0" />
             <ComboBox IsEditable="True" />
-            
-            <TextBlock Text="Replace with:" Margin="0,7,0,0" Visibility="Collapsed" />
-            <ComboBox IsEditable="True" Visibility="Collapsed" />
+
+            <TextBlock Text="Replace with:" Margin="0,7,0,0" Visibility="{Binding IsReplaceMode, Converter={StaticResource BoolToVis}}" />
+            <ComboBox IsEditable="True" Visibility="{Binding IsReplaceMode, Converter={StaticResource BoolToVis}}" />
 
             <TextBlock Text="Look In:" Margin="0,7,0,0" />
             <ComboBox />
@@ -85,8 +86,8 @@
             <CheckBox Content="Match Case" Margin="10,7,0,0" />
             <CheckBox Content="Match Whole Word" Margin="10,7,0,0" />
             <CheckBox Content="Use Regular Expressions" Margin="10,7,0,0" />
-            
-            <Grid Margin="0,20,0,0" Visibility="Visible">
+
+            <Grid Margin="0,20,0,0" Visibility="{Binding IsFindMode, Converter={StaticResource BoolToVis}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="120" />
@@ -104,7 +105,7 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
 
-            <Grid Margin="0,20,0,0" Visibility="Collapsed">
+            <Grid Margin="0,20,0,0" Visibility="{Binding IsReplaceMode, Converter={StaticResource BoolToVis}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="120" />

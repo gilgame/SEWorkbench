@@ -127,6 +127,8 @@
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/Save.png" />
                     </Button>
 
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
                     <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21"
                             IsEnabled="{Binding Editor.HasChildren}"  Command="{Binding CutCommand}">
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/CutHS.png" />
@@ -217,9 +219,9 @@
                 <ad:LayoutRoot.FloatingWindows>
                     <ad:LayoutAnchorableFloatingWindow>
                         <ad:LayoutAnchorablePaneGroup>
-                            <ad:LayoutAnchorablePane FloatingWidth="300" FloatingHeight="350" DockWidth="300" DockHeight="350"
+                            <ad:LayoutAnchorablePane FloatingWidth="300" FloatingHeight="380" DockWidth="300" DockHeight="380"
                                                      FloatingLeft="100" FloatingTop="100">
-                                <ad:LayoutAnchorable x:Name="pnFindReplace" Title="Find and Replace" ContentId="FindReplace" IsVisible="False">
+                                <ad:LayoutAnchorable x:Name="pnFindReplace" Title="Find and Replace" ContentId="FindReplace">
                                     <v:FindReplaceView x:Name="vFindReplace" />
                                 </ad:LayoutAnchorable>
                             </ad:LayoutAnchorablePane>
