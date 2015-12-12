@@ -85,12 +85,20 @@ namespace Xceed.Wpf.AvalonDock.Controls
                 this.Drop(fwAsDocument);
             }
 
+            // TODO figure out why currentActiveContent is sometimes null
+            if (currentActiveContent == null)
+            {
+                string message = "There was an error docking the panel. Some functionality may not work until the program is restarted.";
+                MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    currentActiveContent.IsSelected = false;
-                    currentActiveContent.IsActive = false;
-                    currentActiveContent.IsActive = true;
-                }), DispatcherPriority.Background);
+            {
+                currentActiveContent.IsSelected = false;
+                currentActiveContent.IsActive = false;
+                currentActiveContent.IsActive = true;
+            }), DispatcherPriority.Background);
         }
 
         public virtual bool HitTest(Point dragPoint)
