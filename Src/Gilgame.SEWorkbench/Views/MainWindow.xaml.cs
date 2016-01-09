@@ -161,14 +161,14 @@ namespace Gilgame.SEWorkbench.Views
 
         private void FindReplaceMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (pnFindReplace.IsHidden)
-            {
-                pnFindReplace.Show();
-                if (pnFindReplace.IsAutoHidden)
-                {
-                    pnFindReplace.ToggleAutoHide();
-                }
-            }
+            //if (pnFindReplace.IsHidden)
+            //{
+            //    pnFindReplace.Show();
+            //    if (pnFindReplace.IsAutoHidden)
+            //    {
+            //        pnFindReplace.ToggleAutoHide();
+            //    }
+            //}
         }
 
         private void DevMenuItem_Click(object sender, RoutedEventArgs e)
