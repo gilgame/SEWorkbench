@@ -1,6 +1,7 @@
 Beta 4
 ================================
  * Program will now request elevated priviledges to copy sandbox.
+ * Blueprint view will now be cleared when a blueprint is removed from the project.
 
 Beta 3
 =================================

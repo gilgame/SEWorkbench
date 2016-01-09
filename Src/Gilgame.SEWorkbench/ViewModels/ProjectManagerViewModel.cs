@@ -238,6 +238,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 Blueprint.SetBlueprint(item.Grid);
             }
+            else
+            {
+                Blueprint.SetBlueprint(null);
+            }
         }
 
         private void Project_FileCreated(object sender, FileEventArgs e)
