@@ -25,16 +25,15 @@ namespace Gilgame.SEWorkbench
         }
 
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main()
         {
             string path = GetSandboxPath();
             if (!SandboxIsCopied(path))
             {
-                //if (!IsAdmin)
-                //{
-                //    Elevate();
-                //    return;
-                //}
+                if (!IsAdmin)
+                {
+                    Elevate();
+                }
 
                 bool success = CopySandbox();
                 if (success)
@@ -73,6 +72,7 @@ namespace Gilgame.SEWorkbench
                 UseShellExecute = true,
                 Verb = "runas"
             };
+
             try
             {
                 Process.Start(info);

@@ -38,7 +38,7 @@ namespace Gilgame.SEWorkbench.Views
             tvProjectExplorer.DataContext = _ProjectManager.Project;
             tvClasses.DataContext = _ProjectManager.Classes;
 
-            vFindReplace.DataContext = _ProjectManager.FindReplace;
+            //vFindReplace.DataContext = _ProjectManager.FindReplace;
 
             DockManager.DataContext = _ProjectManager.Editor;
 

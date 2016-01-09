@@ -1,6 +1,18 @@
-
-
+Beta 4
+================================
+ * Program will now request elevated priviledges to copy sandbox.
 
 Beta 3
 =================================
+ * Scripts now inherit from Sandbox.ModAPI.Ingame.MyGridProgram (issue 12).
+ * Fixed the registry path for space engineers so it isn't ignoring 32 bit paths.
+ * Fixed a null reference exception if the SE registry key can't be found for some reason.
 
+Beta 2
+=================================
+ * Code Completion window should now only list items for types allowed by the SE API.
+ * Failure to open a project should now show an error instead of crash the program.
+
+Beta 1
+=================================
+ * Initial Beta release.
