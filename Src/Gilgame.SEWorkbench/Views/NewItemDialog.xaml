@@ -16,11 +16,11 @@
             <TextBlock Text="Name:" Margin="5,5,350,5" VerticalAlignment="Center" />
             <TextBox Margin="155,5,5,5" Text="{Binding ItemName, Mode=TwoWay}" Name="NameTextBox"
                      PreviewTextInput="NameTextBox_PreviewTextInput"
-                     PreviewKeyDown="NameTextBox_PreviewKeyDown" />
+                     PreviewKeyDown="NameTextBox_PreviewKeyDown" KeyDown="NameTextBox_KeyDown" />
         </Grid>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Margin="5,5,0,7" Width="75" Height="23" Content="Add" Grid.Column="1" Grid.Row="2" Click="AddButton_Click" />
+            <Button Margin="5,5,0,7" Width="75" Height="23" Content="Add" Grid.Column="1" Grid.Row="2" Click="AddButton_Click" Name="AddButton" />
             <Button Margin="5,5,10,7" Width="75" Height="23" Content="Cancel" Grid.Column="1" Grid.Row="2" Click="CancelButton_Click" />
         </StackPanel>
     </Grid>

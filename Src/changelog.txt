@@ -1,9 +1,10 @@
 Beta 4
 ================================
  * Program will now request elevated priviledges to copy sandbox.
- * Blocks can now be renamed in the blueprint view.
+ * Blocks can now be renamed in the blueprint view via context menu.
  * Blueprint view will now be cleared when a blueprint is removed from the project.
- * Fixed an issue that was preventing the blueprint view context menu items from updating.
+ * Pressing Enter will now be the same as clicking 'OK' for most dialogs that take a name for input.
+ * Fixed an issue that was preventing the blueprint view context menu items from updating when selection changed.
 
 Beta 3
 =================================

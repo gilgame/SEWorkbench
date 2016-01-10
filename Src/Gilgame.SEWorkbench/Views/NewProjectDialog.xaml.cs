@@ -127,5 +127,14 @@ namespace Gilgame.SEWorkbench.Views
                 PerformCancel();
             }
         }
+
+        private void NameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                AddButton.Focus();
+                PerformAdd();
+            }
+        }
     }
 }

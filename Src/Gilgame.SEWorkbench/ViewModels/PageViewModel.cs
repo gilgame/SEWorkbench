@@ -216,8 +216,8 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void BuildEditor()
         {
             // TODO make text editor settings gui
-            _Editor.FontFamily = new FontFamily("Consolas");
-            _Editor.FontSize = 11;
+            _Editor.FontFamily = new FontFamily(Configuration.TextEditor.FontFamily);
+            _Editor.FontSize = Configuration.TextEditor.FontSize;
             _Editor.Completion = EditorViewModel.Completion;
             _Editor.OpenFile(Filename);
             _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
@@ -225,8 +225,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             
             ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
             {
-                ConvertTabsToSpaces = true,
-                IndentationSize = 4,
+                ConvertTabsToSpaces = Configuration.TextEditor.ConvertTabsToSpaces,
+                IndentationSize = Configuration.TextEditor.IndentationSize,
                 EnableTextDragDrop = true,
             };
             _Editor.Options = options;

@@ -46,7 +46,7 @@ namespace Gilgame.SEWorkbench.Views
 
         private void NameTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (!ValidName(e.Text))
+            if (!ValidChar(e.Text))
             {
                 e.Handled = true;
             }
@@ -54,7 +54,7 @@ namespace Gilgame.SEWorkbench.Views
 
         private void NameTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!ValidName(e.Key.ToString()))
+            if (!ValidChar(e.Key.ToString()))
             {
                 e.Handled = true;
             }
@@ -88,9 +88,9 @@ namespace Gilgame.SEWorkbench.Views
             Close();
         }
 
-        private bool ValidName(string text)
+        private bool ValidChar(string text)
         {
-            Regex regex = new Regex(Services.Regex.BlockName);
+            Regex regex = new Regex(Services.Regex.BlockNameChar);
             if (!regex.IsMatch(text))
             {
                 return false;
@@ -103,6 +103,15 @@ namespace Gilgame.SEWorkbench.Views
             if (e.Key == Key.Escape)
             {
                 PerformCancel();
+            }
+        }
+
+        private void NameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SubmitButton.Focus();
+                PerformAdd();
             }
         }
     }
