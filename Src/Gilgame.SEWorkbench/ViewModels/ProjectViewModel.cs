@@ -654,6 +654,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
                 catch (Exception ex)
                 {
+                    SetRootItem(null);
                     MessageBox.ShowError("Unable to open project", ex);
                 }
             }
