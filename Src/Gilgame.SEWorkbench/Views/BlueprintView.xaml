@@ -15,6 +15,7 @@
 
             <conv:ProgramCanBeEditedConverter x:Key="CanBeEditedToBool" />
             <conv:NameCanBeInsertedConverter x:Key="CanBeInsertedToBool" />
+            <conv:SelectedIsBlockConverter x:Key="CanBeRenamedToBool" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -54,7 +55,8 @@
                     <ContextMenu>
                         <MenuItem Header="Insert" Command="{Binding InsertNameCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeInsertedToBool}}" />
                         <Separator />
-                        <MenuItem Header="Edit" Command="{Binding EditProgramCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeEditedToBool}}" InputGestureText="F9"/>
+                        <MenuItem Header="Rename" Command="{Binding RenameBlockCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeRenamedToBool}}" />
+                        <MenuItem Header="Edit" Command="{Binding EditProgramCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource CanBeEditedToBool}}" InputGestureText="F9" />
                     </ContextMenu>
                 </TreeView.ContextMenu>
             </TreeView>

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.Views
 {
-    public partial class NewItemDialog : Window, INotifyPropertyChanged
+    public partial class RenameDialog : Window, INotifyPropertyChanged
     {
         private string _ItemName = String.Empty;
         public string ItemName
@@ -31,11 +32,16 @@ namespace Gilgame.SEWorkbench.Views
             }
         }
 
-        public NewItemDialog()
+        public RenameDialog()
         {
             InitializeComponent();
 
             DataContext = this;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            NameTextBox.SelectAll();
         }
 
         private void NameTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -84,7 +90,8 @@ namespace Gilgame.SEWorkbench.Views
 
         private bool ValidName(string text)
         {
-            if (text.IndexOfAny(Services.Strings.InvalidFilenameChars) > -1)
+            Regex regex = new Regex(Services.Regex.BlockName);
+            if (!regex.IsMatch(text))
             {
                 return false;
             }

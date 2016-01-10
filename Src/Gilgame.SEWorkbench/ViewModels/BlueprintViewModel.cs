@@ -80,6 +80,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             _SearchCommand = new Commands.SearchCommand(this);
             _InsertNameCommand = new Commands.InsertNameCommand(this);
             _EditProgramCommand = new Commands.EditProgramCommand(this);
+            _RenameBlockCommand = new Commands.RenameBlockCommand(this);
+        }
+        
+        public event EventHandler SelectionChanged;
+        public void RaiseSelectionChanged()
+        {
+            OnPropertyChanged("SelectedItemType");
         }
 
         public event InsertEventHandler InsertRequested;
@@ -101,8 +108,21 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 if (grid.Count > 0)
                 {
+                    SetBlueprint(grid[0]);
                     grid[0].IsExpanded = true;
                     First.Add(grid[0]);
+                }
+            }
+        }
+
+        private void SetBlueprint(GridItemViewModel root)
+        {
+            if (root != null)
+            {
+                root.Model.Blueprint = this;
+                foreach(GridItemViewModel item in root.Children)
+                {
+                    SetBlueprint(item);
                 }
             }
         }
@@ -265,6 +285,50 @@ namespace Gilgame.SEWorkbench.ViewModels
                 RootItem.Definitions = Interop.Blueprint.SaveProgram(RootItem.Path, RootItem.Definitions, selected.EntityID, program);
 
                 selected.Program = program;
+            }
+        }
+
+        #endregion
+
+        #region Rename Block Command
+
+        private readonly ICommand _RenameBlockCommand;
+        public ICommand RenameBlockCommand
+        {
+            get
+            {
+                return _RenameBlockCommand;
+            }
+        }
+
+        public void PerformRenameBlock()
+        {
+            if (SelectedItemType != Models.GridItemType.Block)
+            {
+                return;
+            }
+
+            GridItemViewModel selected = SelectedItem;
+
+            Views.RenameDialog dialog = new Views.RenameDialog()
+            {
+                ItemName = selected.Name
+            };
+
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true)
+            {
+                string name = dialog.ItemName;
+                try
+                {
+                    RootItem.Definitions = Interop.Blueprint.SaveBlockName(RootItem.Path, RootItem.Definitions, selected.EntityID, name);
+
+                    selected.Name = name;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.ShowError("Unable to change block name", ex);
+                }
             }
         }
 

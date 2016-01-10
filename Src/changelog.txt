@@ -1,7 +1,9 @@
 Beta 4
 ================================
  * Program will now request elevated priviledges to copy sandbox.
+ * Blocks can now be renamed in the blueprint view.
  * Blueprint view will now be cleared when a blueprint is removed from the project.
+ * Fixed an issue that was preventing the blueprint view context menu items from updating.
 
 Beta 3
 =================================

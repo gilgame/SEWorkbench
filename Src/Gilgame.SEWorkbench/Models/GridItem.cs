@@ -20,6 +20,9 @@ namespace Gilgame.SEWorkbench.Models
         [XmlElement("Type")]
         public GridItemType Type { get; set; }
 
+        [XmlIgnore]
+        public ViewModels.BlueprintViewModel Blueprint { get; set; }
+
         private ObservableCollection<GridItem> _Children = new ObservableCollection<GridItem>();
 
         [XmlElement("Items")]

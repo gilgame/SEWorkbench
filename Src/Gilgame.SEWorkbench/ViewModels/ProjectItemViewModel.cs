@@ -154,7 +154,11 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _IsSelected = value;
                     OnPropertyChanged("IsSelected");
-                    _Model.Project.RaiseSelectionChanged();
+
+                    if (_Model.Project != null)
+                    {
+                        _Model.Project.RaiseSelectionChanged();
+                    }
                 }
             }
         }

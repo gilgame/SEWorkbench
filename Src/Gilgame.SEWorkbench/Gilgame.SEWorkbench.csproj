@@ -135,6 +135,7 @@
     <Compile Include="Completion\ScriptProvider.cs" />
     <Compile Include="Configuration\MainWindow.cs" />
     <Compile Include="Configuration\Program.cs" />
+    <Compile Include="Configuration\TextEditor.cs" />
     <Compile Include="Converters\BlueprintCanBeAddedConverter.cs" />
     <Compile Include="Converters\BoolToCollapsedConverter.cs" />
     <Compile Include="Converters\CanBeRenamedConverter.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Converters\NameCanBeInsertedConverter.cs" />
     <Compile Include="Converters\ProgramCanBeEditedConverter.cs" />
+    <Compile Include="Converters\SelectedIsBlockConverter.cs" />
     <Compile Include="Models\ClassItem.cs" />
     <Compile Include="Models\ClassItemType.cs" />
     <Compile Include="Models\FindMode.cs" />
@@ -162,10 +164,12 @@
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Configuration\Convert.cs" />
+    <Compile Include="Services\Regex.cs" />
     <Compile Include="Services\Windows.cs" />
     <Compile Include="ViewModels\ClassItemViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModel.cs" />
     <Compile Include="ViewModels\Commands\AddCollectionCommand.cs" />
+    <Compile Include="ViewModels\Commands\RenameBlockCommand.cs" />
     <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="ViewModels\FindReplaceViewModel.cs" />
@@ -178,6 +182,9 @@
     <Compile Include="Services\FileLayoutStrategy.cs" />
     <Compile Include="Views\FindReplaceView.xaml.cs">
       <DependentUpon>FindReplaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RenameDialog.xaml.cs">
+      <DependentUpon>RenameDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Selectors\FileStyleSelector.cs" />
     <Compile Include="Views\Selectors\FileTemplateSelector.cs" />
@@ -314,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProjectExplorer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RenameDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

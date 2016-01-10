@@ -142,6 +142,67 @@ namespace Gilgame.SEWorkbench.Interop
             return definitions;
         }
 
+        public static MyObjectBuilder_Definitions SaveBlockName(string path, MyObjectBuilder_Definitions definitions, long entityid, string name)
+        {
+            try
+            {
+                string backup = String.Format("{0}.bak", path);
+                if (!File.Exists(backup))
+                {
+                    File.Copy(path, backup);
+                }
+                else
+                {
+                    FileInfo source = new FileInfo(path);
+                    FileInfo dest = new FileInfo(path);
+
+                    if (source.LastWriteTime > dest.LastWriteTime)
+                    {
+                        File.Copy(path, backup, true);
+                    }
+                }
+
+                foreach (MyObjectBuilder_ShipBlueprintDefinition blueprints in definitions.ShipBlueprints)
+                {
+                    foreach (MyObjectBuilder_CubeGrid cubegrid in blueprints.CubeGrids)
+                    {
+                        foreach (MyObjectBuilder_CubeBlock block in cubegrid.CubeBlocks)
+                        {
+                            if (block is MyObjectBuilder_TerminalBlock)
+                            {
+                                if (block.EntityId == entityid)
+                                {
+                                    MyObjectBuilder_TerminalBlock term = (MyObjectBuilder_TerminalBlock)block;
+                                    term.CustomName = name;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                MyObjectBuilderSerializer.SerializeXML(path, false, definitions);
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format(
+                    "{0} ({1}){2}{2}{3}",
+                    "There was an error saving the blueprint",
+                    ex.Message,
+                    Environment.NewLine,
+                    ex.StackTrace
+                );
+
+                System.Windows.MessageBox.Show(
+                    message,
+                    "SE Workbench",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error
+                );
+            }
+
+            return definitions;
+        }
+
         private static string GetBlockType(string name)
         {
             return name.Replace("MyObjectBuilder_", "");

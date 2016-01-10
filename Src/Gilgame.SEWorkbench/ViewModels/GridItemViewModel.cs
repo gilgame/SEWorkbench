@@ -32,6 +32,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return _Model.Name;
             }
+            set
+            {
+                if (_Model.Name != value)
+                {
+                    _Model.Name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
         }
 
         public long EntityID
@@ -146,6 +154,10 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _IsSelected = value;
                     OnPropertyChanged("IsSelected");
+                    if (_Model.Blueprint != null)
+                    {
+                        _Model.Blueprint.RaiseSelectionChanged();
+                    }
                 }
             }
         }
