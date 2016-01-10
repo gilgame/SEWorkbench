@@ -180,5 +180,11 @@ namespace Gilgame.SEWorkbench.Views
         {
             new AboutView().ShowDialog();
         }
+
+        private void PreferencesItem_Click(object sender, RoutedEventArgs e)
+        {
+            Config.EditorView dialog = new Config.EditorView();
+            dialog.Show();
+        }
     }
 }

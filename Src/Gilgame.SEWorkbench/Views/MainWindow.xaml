@@ -83,7 +83,7 @@
                         <MenuItem Header="Select _All" InputGestureText="Ctrl+A" Command="{Binding SelectAllCommand}"
                               IsEnabled="{Binding Editor.HasChildren}" />
                         <Separator />
-                        <MenuItem Header="P_references" IsEnabled="False" />
+                        <MenuItem Header="P_references" Click="PreferencesItem_Click" />
                     </MenuItem>
                     <MenuItem Header="_View">
                         <MenuItem Header="Project Explorer" Click="ProjectExplorerMenuItem_Click" />

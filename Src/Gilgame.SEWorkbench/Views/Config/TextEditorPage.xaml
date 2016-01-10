@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Gilgame.SEWorkbench.Views.Config.TextEditorPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="390" d:DesignWidth="385">
+    <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="21" Margin="10,5,0,0" Text="Settings" />
+        <Separator HorizontalAlignment="Left" VerticalAlignment="Top" Width="315" Margin="60,14,0,0" />
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="21" Margin="10,31,0,0" Text="Convert Tabs to Spaces:" />
+        <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,32,0,0" />
+
+        <Separator HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Margin="10,114,0,0" />
+        
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="270" Height="21" Margin="10,129,0,0" Text="Font:" />
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="270" Height="23" Margin="10,150,0,0" />
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Height="21" Margin="290,129,0,0" Text="Size:" />
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Height="23" Margin="290,150,0,0" />
+    </Grid>
+</UserControl>

@@ -180,6 +180,12 @@
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\FileLayoutStrategy.cs" />
+    <Compile Include="Views\Config\EditorView.xaml.cs">
+      <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Config\TextEditorPage.xaml.cs">
+      <DependentUpon>TextEditorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FindReplaceView.xaml.cs">
       <DependentUpon>FindReplaceView.xaml</DependentUpon>
     </Compile>
@@ -293,6 +299,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClassView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Config\EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Config\TextEditorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
