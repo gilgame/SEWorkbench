@@ -17,7 +17,7 @@ namespace Gilgame.SEWorkbench.Interop
             if (!Initialized)
             {
                 string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string sepath = String.Format("{0}\\SpaceEngineers", appdata);
+                string sepath = Path.Combine(appdata, "SpaceEngineers");
 
                 VRage.FileSystem.MyFileSystem.Init(sepath, sepath);
 
@@ -35,7 +35,7 @@ namespace Gilgame.SEWorkbench.Interop
             {
                 using (FileStream stream = File.Open(filename, FileMode.Open))
                 {
-                    MyObjectBuilderSerializer.DeserializeXML(stream, out loaded);
+                    MyObjectBuilderSerializer.DeserializeXML<MyObjectBuilder_Definitions>(stream, out loaded);
                 }
             }
 

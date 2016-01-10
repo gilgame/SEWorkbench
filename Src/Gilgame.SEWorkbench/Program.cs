@@ -46,9 +46,14 @@ namespace Gilgame.SEWorkbench
             Views.SplashScreenView splash = new Views.SplashScreenView();
             splash.Show();
 
-            LoadClasses();
             Interop.Blueprint.RunInit();
             Interop.InGameScript.Init();
+
+            #if DEBUG
+                EnableLogging();
+            #endif
+
+            LoadClasses();
             LoadSerializers();
 
             splash.Close();
@@ -169,6 +174,12 @@ namespace Gilgame.SEWorkbench
             return sepath;
         }
 
+        private static void EnableLogging()
+        {
+            VRage.Utils.MyLog.Default = new VRage.Utils.MyLog();
+            VRage.Utils.MyLog.Default.Init("test.log", new System.Text.StringBuilder());
+        }
+
         private static List<string> GetDependencyNames()
         {
             List<string> assemblies = new List<string>()
@@ -195,7 +206,12 @@ namespace Gilgame.SEWorkbench
                 "VRage.Input.dll",
                 "VRage.Library.dll",
                 "VRage.Math.dll",
-                "VRage.Native.dll"
+                "VRage.Native.dll",
+                "SpaceEngineers.Game.dll",
+                "SpaceEngineers.ObjectBuilders.dll",
+                "SpaceEngineers.ObjectBuilders.XmlSerializers.dll",
+                "MedievalEngineers.ObjectBuilders.dll",
+                "MedievalEngineers.ObjectBuilders.XmlSerializers.dll",
             };
             return assemblies;
         }
@@ -237,11 +253,10 @@ namespace Gilgame.SEWorkbench
 
         private static void LoadSerializers()
         {
-            MyObjectBuilder_Definitions loaded = null;
+            MyObjectBuilder_Base loaded = null;
 
             try { MyObjectBuilderSerializer.DeserializeXML(String.Empty, out loaded); }
             catch { }
-
         }
 
         private static void LoadClasses()

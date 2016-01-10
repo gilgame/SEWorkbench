@@ -240,8 +240,6 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void LoadBlueprints()
         {
-            Interop.Blueprint.RunInit();
-
             LoadBlueprints(_RootItem);
         }
 
