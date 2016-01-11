@@ -8,6 +8,8 @@ using Gilgame.SEWorkbench.Services;
 
 using Sandbox.Common.ObjectBuilders.Definitions;
 using VRage.ObjectBuilders;
+using VRage.Plugins;
+using Sandbox.Game;
 
 namespace Gilgame.SEWorkbench
 {
@@ -25,8 +27,14 @@ namespace Gilgame.SEWorkbench
         }
 
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
+            Process parent = null;
+            if (args.Length > 1 && args[0].ToLower() == "--pid")
+            {
+                parent = Process.GetProcessById(Configuration.Convert.ToInteger(args[1]));
+            }
+
             string path = GetSandboxPath();
             if (!SandboxIsCopied(path))
             {
@@ -43,15 +51,24 @@ namespace Gilgame.SEWorkbench
                 return;
             }
 
+            if (parent != null)
+            {
+                parent.Kill();
+            }
+
             Views.SplashScreenView splash = new Views.SplashScreenView();
             splash.Show();
 
+            // TODO separate sandbox init from blueprint init
             Interop.Blueprint.RunInit();
+
             Interop.InGameScript.Init();
 
             #if DEBUG
                 EnableLogging();
             #endif
+
+            RegisterPlugins();
 
             LoadClasses();
             LoadSerializers();
@@ -75,7 +92,8 @@ namespace Gilgame.SEWorkbench
                 WorkingDirectory = Environment.CurrentDirectory,
                 FileName = Process.GetCurrentProcess().MainModule.FileName,
                 UseShellExecute = true,
-                Verb = "runas"
+                Verb = "runas",
+                Arguments = "--pid " + Process.GetCurrentProcess().Id.ToString()
             };
 
             try
@@ -172,6 +190,13 @@ namespace Gilgame.SEWorkbench
                 sepath = Path.Combine(sepath, "Bin");
             }
             return sepath;
+        }
+
+        private static void RegisterPlugins()
+        {
+            MyPlugins.RegisterGameObjectBuildersAssemblyFile("SpaceEngineers.ObjectBuilders.dll");
+            MyPlugins.RegisterSandboxAssemblyFile("Sandbox.Common.dll");
+            MyPlugins.RegisterSandboxGameAssemblyFile("Sandbox.Game.dll");
         }
 
         private static void EnableLogging()
