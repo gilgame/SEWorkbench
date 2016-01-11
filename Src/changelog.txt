@@ -1,7 +1,3 @@
-Beta 5
-================================
- * Fixed an issue where Workbench was unable to copy sandbox or allow the user to find it manually.
-
 Beta 4
 ================================
  * Program will now request elevated priviledges to copy sandbox.

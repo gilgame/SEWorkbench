@@ -35,31 +35,25 @@ namespace Gilgame.SEWorkbench
                 parent = Process.GetProcessById(Configuration.Convert.ToInteger(args[1]));
             }
 
-            if (parent != null)
-            {
-                parent.Kill();
-            }
-
-            string path = Configuration.Program.SEPath;
+            string path = GetSandboxPath();
             if (!SandboxIsCopied(path))
             {
                 if (!IsAdmin)
                 {
-                    Restart(true);
+                    Elevate();
                 }
 
-                if (!ValidPath(path))
-                {
-                    path = GetSandboxPath();
-                }
-
-                bool success = CopySandbox(path);
+                bool success = CopySandbox();
                 if (success)
                 {
-                    Configuration.Program.SEPath = path;
-
-                    Restart();
+                    System.Windows.Forms.Application.Restart();
                 }
+                return;
+            }
+
+            if (parent != null)
+            {
+                parent.Kill();
             }
 
             Views.SplashScreenView splash = new Views.SplashScreenView();
@@ -75,6 +69,7 @@ namespace Gilgame.SEWorkbench
             #endif
 
             RegisterPlugins();
+
             LoadClasses();
             LoadSerializers();
 
@@ -88,30 +83,6 @@ namespace Gilgame.SEWorkbench
             Gilgame.SEWorkbench.App app = new Gilgame.SEWorkbench.App();
             app.InitializeComponent();
             app.Run();
-        }
-
-        private static void Restart(bool elevate = false)
-        {
-            ProcessStartInfo info = new ProcessStartInfo()
-            {
-                WorkingDirectory = Environment.CurrentDirectory,
-                FileName = Process.GetCurrentProcess().MainModule.FileName,
-                UseShellExecute = true,
-                Arguments = "--pid " + Process.GetCurrentProcess().Id.ToString()
-            };
-            if (elevate)
-            {
-                info.Verb = "runas";
-            }
-
-            try
-            {
-                Process.Start(info);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.ShowError("Failed to start the program", ex);
-            }
         }
 
         private static void Elevate()
@@ -160,16 +131,16 @@ namespace Gilgame.SEWorkbench
             return true;
         }
 
-        private static bool CopySandbox(string path)
+        private static bool CopySandbox(string path = null)
         {
-            string destination = Directory.GetCurrentDirectory();
-            string source = path;
+            string saveto = Directory.GetCurrentDirectory();
+            string sepath = (path == null) ? GetSandboxPath() : path;
 
             try
             {
                 foreach (string assembly in GetDependencyNames())
                 {
-                    CopyFile(Path.Combine(source, assembly), Path.Combine(destination, assembly));
+                    CopyFile(Path.Combine(sepath, assembly), Path.Combine(saveto, assembly));
                 }
 
                 return true;
@@ -197,13 +168,6 @@ namespace Gilgame.SEWorkbench
             }
         }
 
-        private static bool ValidPath(string path)
-        {
-            string exe = Path.Combine(path, "SpaceEngineers.exe");
-
-            return File.Exists(exe);
-        }
-
         private static string GetSandboxPath()
         {
             string sepath = Services.Registry.GetValue(
@@ -213,7 +177,7 @@ namespace Gilgame.SEWorkbench
                 String.Empty
             ).ToString();
 
-            if (String.IsNullOrEmpty(sepath) || !ValidPath(sepath))
+            if (String.IsNullOrEmpty(sepath))
             {
                 sepath = UserGetPath();
                 if (String.IsNullOrEmpty(sepath))
@@ -228,27 +192,17 @@ namespace Gilgame.SEWorkbench
             return sepath;
         }
 
-        private static string UserGetPath()
+        private static void RegisterPlugins()
         {
-            Services.MessageBox.ShowMessage("SE Workbench was unable to locate Space Engineers. You will now be prompted to locate SpaceEngineers.exe manually.");
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
-            {
-                DefaultExt = ".exe",
-                Filter = "Space Engineers Executable (SpaceEngineers.exe)|SpaceEngineers.exe",
-                InitialDirectory = @"C:\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin",
-            };
+            MyPlugins.RegisterGameObjectBuildersAssemblyFile("SpaceEngineers.ObjectBuilders.dll");
+            MyPlugins.RegisterSandboxAssemblyFile("Sandbox.Common.dll");
+            MyPlugins.RegisterSandboxGameAssemblyFile("Sandbox.Game.dll");
+        }
 
-            Nullable<bool> result = dialog.ShowDialog();
-            if (result != null && result.Value == true)
-            {
-                string filename = dialog.FileName;
-                if (!String.IsNullOrEmpty(filename))
-                {
-                    return Path.GetDirectoryName(filename);
-                }
-            }
-
-            return String.Empty;
+        private static void EnableLogging()
+        {
+            VRage.Utils.MyLog.Default = new VRage.Utils.MyLog();
+            VRage.Utils.MyLog.Default.Init("test.log", new System.Text.StringBuilder());
         }
 
         private static List<string> GetDependencyNames()
@@ -287,19 +241,39 @@ namespace Gilgame.SEWorkbench
             return assemblies;
         }
 
-        #region Init
-
-        private static void RegisterPlugins()
+        private static string UserGetPath()
         {
-            MyPlugins.RegisterGameObjectBuildersAssemblyFile("SpaceEngineers.ObjectBuilders.dll");
-            MyPlugins.RegisterSandboxAssemblyFile("Sandbox.Common.dll");
-            MyPlugins.RegisterSandboxGameAssemblyFile("Sandbox.Game.dll");
-        }
+            string path = Configuration.Program.SEPath;
 
-        private static void EnableLogging()
-        {
-            VRage.Utils.MyLog.Default = new VRage.Utils.MyLog();
-            VRage.Utils.MyLog.Default.Init("test.log", new System.Text.StringBuilder());
+            if (String.IsNullOrEmpty(path) || !File.Exists(Path.Combine(path, "Sandbox.Common.dll")))
+            {
+                Services.MessageBox.ShowMessage("SE Workbench was unable to locate Space Engineers. You will now be prompted to locate SpaceEngineers.exe manually.");
+                Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
+                {
+                    DefaultExt = ".exe",
+                    Filter = "Space Engineers Executable (SpaceEngineers.exe)|SpaceEngineers.exe",
+                    InitialDirectory = @"C:\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin",
+                };
+
+                Nullable<bool> result = dialog.ShowDialog();
+                if (result != null && result.Value == true)
+                {
+                    string filename = dialog.FileName;
+                    if (!String.IsNullOrEmpty(filename))
+                    {
+                        string found = Path.GetDirectoryName(filename);
+
+                        Configuration.Program.SEPath = found;
+                        return found;
+                    }
+                }
+
+                return null;
+            }
+            else
+            {
+                return path;
+            }
         }
 
         private static void LoadSerializers()
@@ -331,7 +305,5 @@ namespace Gilgame.SEWorkbench
 
             Classes.AddRange(result);
         }
-
-        #endregion
     }
 }
