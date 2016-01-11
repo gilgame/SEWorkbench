@@ -432,8 +432,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             if (item.Type == ProjectItemType.File && item.Path != path)
             {
-	            var itemFromRoot = GetItemByPath(item.Path);
-                scripts.Add((itemFromRoot ?? item).Code);
+                scripts.Add(item.Code);
             }
             foreach (ProjectItemViewModel child in item.Children)
             {
