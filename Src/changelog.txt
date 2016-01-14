@@ -1,3 +1,7 @@
+Beta 6
+================================
+ * Will now detect files changed outside the environment.
+
 Beta 5
 ================================
  * Fixed an issue where Workbench was unable to copy sandbox or allow the user to find it manually.
