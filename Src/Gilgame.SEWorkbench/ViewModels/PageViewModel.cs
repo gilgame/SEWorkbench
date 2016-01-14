@@ -171,6 +171,28 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private bool _IgnoreUpdates = false;
+        public bool IgnoreUpdates
+        {
+            get
+            {
+                return _IgnoreUpdates;
+            }
+            set
+            {
+                _IgnoreUpdates = value;
+            }
+        }
+
+        private DateTime _LastSaved = DateTime.Now;
+        public DateTime LastSaved
+        {
+            get
+            {
+                return _LastSaved;
+            }
+        }
+
         public event FileEventHandler Selected;
         private void RaiseSelected()
         {
@@ -254,6 +276,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             if (_Editor.SaveFile())
             {
                 IsModified = false;
+                IgnoreUpdates = false;
+
+                _LastSaved = DateTime.Now;
 
                 RaiseFileSaved();
             }
@@ -278,6 +303,21 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformCloseFile()
         {
             RaiseFileCloseRequested();
+        }
+
+        public void UpdateContent()
+        {
+            if (!IgnoreUpdates)
+            {
+                int start = Content.SelectionStart;
+
+                Content.OpenFile(Filename);
+                Content.SelectionStart = start;
+
+                _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+
+                IsModified = false;
+            }
         }
 
         #endregion

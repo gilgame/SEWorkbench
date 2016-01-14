@@ -19,6 +19,15 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private const string _ProjectTitlePrefix = "Space Engineers Workbench";
 
+        private bool _Verifying = false;
+        public bool IsVerifying
+        {
+            get
+            {
+                return _Verifying;
+            }
+        }
+
         private string _ProjectTitle = _ProjectTitlePrefix;
         public string ProjectTitle
         {
@@ -212,6 +221,49 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 ScriptRunning(this, EventArgs.Empty);
             }
+        }
+
+        public void VerifyFiles()
+        {
+            if (!IsVerifying)
+            {
+                BeginVerify();
+                foreach (PageViewModel page in _Editor.Items)
+                {
+                    if (!page.IgnoreUpdates)
+                    {
+                        ProjectItemViewModel item = _Project.GetItemByPath(page.Filename);
+
+                        FileInfo file = new FileInfo(page.Filename);
+                        if (file.LastWriteTime > page.LastSaved)
+                        {
+                            string message = String.Format("{0} has been modified outside SE Workbench. Do you want to reload it?", page.Name);
+
+                            MessageBoxResult result = Services.MessageBox.ShowQuestion(message);
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                page.UpdateContent();
+                                item.Code = page.Content.Text;
+                            }
+                            else
+                            {
+                                page.IgnoreUpdates = true;
+                            }
+                        }
+                    }
+                }
+                EndVerify();
+            }
+        }
+
+        private void BeginVerify()
+        {
+            _Verifying = true;
+        }
+
+        private void EndVerify()
+        {
+            _Verifying = false;
         }
 
         public bool HandleClosing()

@@ -94,6 +94,19 @@ namespace Gilgame.SEWorkbench.Views
             WindowState = Configuration.MainWindow.WindowState;
         }
 
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            _ProjectManager.VerifyFiles();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState != WindowState.Minimized)
+            {
+                _ProjectManager.VerifyFiles();
+            }
+        }
+
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             if (WindowState == WindowState.Normal)
