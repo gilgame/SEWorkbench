@@ -243,7 +243,6 @@ namespace Gilgame.SEWorkbench.ViewModels
                             if (result == MessageBoxResult.Yes)
                             {
                                 page.UpdateContent();
-                                item.Code = page.Content.Text;
                             }
                             else
                             {
@@ -455,7 +454,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Page_FileSaved(object sender, FileEventArgs e)
         {
-            Project.UpdateItemCode(e.Path);
+            // do nothing for now
         }
 
         #endregion
@@ -579,14 +578,16 @@ namespace Gilgame.SEWorkbench.ViewModels
             ProjectItemViewModel item = Project.GetItemByPath(path);
             if (item != null)
             {
+                string code = File.ReadAllText(item.Path);
+
                 List<string> scripts = Project.GetAssociatedScripts(path);
                 if (scripts.Count < 1)
                 {
-                    return item.Code;
+                    return code;
                 }
                 else
                 {
-                    result += String.Format("{0}{1}{1}", item.Code, Environment.NewLine);
+                    result += String.Format("{0}{1}{1}", code, Environment.NewLine);
                     foreach (string script in scripts)
                     {
                         result += String.Format("{0}{1}{1}", script, Environment.NewLine);

@@ -260,18 +260,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private void LoadCode(ProjectItemViewModel item)
-        {
-            if (item.Type == ProjectItemType.File)
-            {
-                item.Code = File.ReadAllText(item.Path);
-            }
-            foreach (ProjectItemViewModel child in item.Children)
-            {
-                LoadCode(child);
-            }
-        }
-
         private ProjectItemViewModel FindSelectedItem()
         {
             VerifySelectedItemEnumerator();
@@ -432,7 +420,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             if (item.Type == ProjectItemType.File && item.Path != path)
             {
-                scripts.Add(item.Code);
+                string code = File.ReadAllText(item.Path);
+                scripts.Add(code);
             }
             foreach (ProjectItemViewModel child in item.Children)
             {
@@ -461,15 +450,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 ProjectItemViewModel parent = (ProjectItemViewModel)item.Parent;
                 return GetParentCollection(parent);
-            }
-        }
-
-        public void UpdateItemCode(string path)
-        {
-            ProjectItemViewModel item = GetItemByPath(path);
-            if (item != null)
-            {
-                item.Code = File.ReadAllText(path);
             }
         }
 
@@ -644,7 +624,6 @@ namespace Gilgame.SEWorkbench.ViewModels
                     SetRootItem(project.RootItem);
 
                     LoadBlueprints();
-                    LoadCode(_RootItem);
 
                     _RootItem.IsExpanded = true;
 

@@ -62,18 +62,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public string Code
-        {
-            get
-            {
-                return _Model.Code;
-            }
-            set
-            {
-                _Model.Code = value;
-            }
-        }
-
         public string Blueprint
         {
             get
