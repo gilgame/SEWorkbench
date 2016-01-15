@@ -181,6 +181,7 @@
     <Compile Include="Converters\CanBeDeletedConverter.cs" />
     <Compile Include="Converters\NameCanBeInsertedConverter.cs" />
     <Compile Include="Converters\ProgramCanBeEditedConverter.cs" />
+    <Compile Include="Converters\ReferenceCanBeAddedConverter.cs" />
     <Compile Include="Converters\SelectedIsBlockConverter.cs" />
     <Compile Include="Models\ClassItem.cs" />
     <Compile Include="Models\ClassItemType.cs" />
@@ -200,12 +201,17 @@
     <Compile Include="ViewModels\ClassItemViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModel.cs" />
     <Compile Include="ViewModels\Commands\AddCollectionCommand.cs" />
+    <Compile Include="ViewModels\Commands\AddReferenceCommand.cs" />
+    <Compile Include="ViewModels\Commands\RemoveReferenceCommand.cs" />
     <Compile Include="ViewModels\Commands\RenameBlockCommand.cs" />
     <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="ViewModels\FindReplaceViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddReferenceView.xaml.cs">
+      <DependentUpon>AddReferenceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
@@ -322,6 +328,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddReferenceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -509,6 +519,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Reference.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

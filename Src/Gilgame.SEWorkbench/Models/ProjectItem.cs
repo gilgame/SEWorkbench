@@ -23,9 +23,6 @@ namespace Gilgame.SEWorkbench.Models
         [XmlIgnore]
         public ViewModels.ProjectViewModel Project { get; set; }
 
-        [XmlIgnore]
-        public string Code { get; set; }
-
         private ObservableCollection<ProjectItem> _Children = new ObservableCollection<ProjectItem>();
 
         [XmlElement("Items")]

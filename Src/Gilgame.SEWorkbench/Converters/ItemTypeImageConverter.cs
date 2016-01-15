@@ -22,6 +22,10 @@ namespace Gilgame.SEWorkbench.Converters
                 case Models.ProjectItemType.Root:
                     return "/Gilgame.SEWorkbench;component/Icons/Book.png";
 
+                case Models.ProjectItemType.References:
+                case Models.ProjectItemType.Reference:
+                    return "/Gilgame.SEWorkbench;component/Icons/Reference.png";
+
                 case Models.ProjectItemType.Blueprints:
                     return "/Gilgame.SEWorkbench;component/Icons/Blueprints.png";
 

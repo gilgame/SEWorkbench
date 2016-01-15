@@ -137,6 +137,18 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event FileEventHandler ReferenceAdded;
+        public void RaiseReferenceAdded(ProjectItemViewModel item)
+        {
+            if (item.Type == ProjectItemType.Reference)
+            {
+                if (ReferenceAdded != null)
+                {
+                    ReferenceAdded(this, new FileEventArgs(item.Path));
+                }
+            }
+        }
+
         public event FileEventHandler FileDeleted;
         public void RaiseFileDeleted(ProjectItemViewModel item)
         {
@@ -153,7 +165,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public ProjectViewModel(BaseViewModel parent) : base(parent)
+        public ProjectViewModel(BaseViewModel parent)
+            : base(parent)
         {
 
             _First = new Services.ObservableSortedList<ProjectItemViewModel>(
@@ -164,10 +177,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             _SearchCommand = new Commands.SearchCommand(this);
 
             _AddCommand = new Commands.AddFileCommand(this);
+            _AddReferenceCommand = new Commands.AddReferenceCommand(this);
             _AddBlueprintsCommand = new Commands.AddBlueprintsCommand(this);
             _AddExistingCommand = new Commands.AddExistingFileCommand(this);
             _AddFolderCommand = new Commands.AddFolderCommand(this);
             _AddCollectionCommand = new Commands.AddCollectionCommand(this);
+
+            _RemoveReferenceCommand = new Commands.RemoveReferenceCommand(this);
 
             _OpenProjectCommand = new Commands.OpenProjectCommand(this);
             _NewProjectCommand = new Commands.NewProjectCommand(this);
@@ -505,6 +521,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                         Path = fullpath,
                         Project = project,
                     };
+
+                    root.Children.Add(new ProjectItem() { Name = "References", Type = ProjectItemType.References });
+
                     SetRootItem(root);
 
                     success = true;
@@ -567,12 +586,20 @@ namespace Gilgame.SEWorkbench.ViewModels
                 _RootItem.AddChild(folder);
                 if (_RootItem.Children.Count > 0)
                 {
-                    newfile = _RootItem.Children[0].AddChild(file);
-                    if (_RootItem.Children[0].Children.Count > 0)
+                    foreach(ProjectItemViewModel item in _RootItem.Children)
                     {
-                        _RootItem.Children[0].Children[0].IsSelected = true;
+                        if (item.Type == ProjectItemType.Folder)
+                        {
+                            newfile = item.AddChild(file);
+                            if (item.Children.Count > 0)
+                            {
+                                item.Children[0].IsSelected = true;
+                            }
+                            item.IsExpanded = true;
+
+                            break;
+                        }
                     }
-                    _RootItem.Children[0].IsExpanded = true;
                 }
 
                 if (newfile != null)
@@ -583,6 +610,122 @@ namespace Gilgame.SEWorkbench.ViewModels
             catch (Exception ex)
             {
                 MessageBox.ShowError("Unable to create new project template", ex);
+            }
+        }
+
+        #endregion
+
+        #region Remove Reference Command
+
+        private readonly ICommand _RemoveReferenceCommand;
+        public ICommand RemoveReferenceCommand
+        {
+            get
+            {
+                return _RemoveReferenceCommand;
+            }
+        }
+
+        public void PerformRemoveReference()
+        {
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                return;
+            }
+            if (selected.Type != ProjectItemType.Reference)
+            {
+                return;
+            }
+
+            System.Windows.MessageBoxResult result =
+                Services.MessageBox.ShowQuestion(
+                    String.Format("Are you sure you want to remove this reference ({0})?", selected.Name)
+                );
+
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                foreach (ProjectItemViewModel item in _RootItem.Children)
+                {
+                    if (item.Type == ProjectItemType.References)
+                    {
+                        foreach (ProjectItemViewModel reference in item.Children)
+                        {
+                            if (reference.Path == selected.Path)
+                            {
+                                reference.Remove();
+                                break;
+                            }
+                        }
+                    }
+                }
+                SaveProject();
+            }
+        }
+
+        #endregion
+
+        #region Add Reference Command
+
+        private readonly ICommand _AddReferenceCommand;
+        public ICommand AddReferenceCommand
+        {
+            get
+            {
+                return _AddReferenceCommand;
+            }
+        }
+
+        public void PerformAddReference()
+        {
+            ProjectItemViewModel selected = SelectedItem;
+            if (selected == null)
+            {
+                return;
+            }
+            if (selected.Type != ProjectItemType.References)
+            {
+                return;
+            }
+
+            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string initial = Path.Combine(documents, "SEWorkbench");
+
+            Views.AddReferenceView view = new Views.AddReferenceView()
+            {
+                Initial = initial
+            };
+
+            Nullable<bool> result = view.ShowDialog();
+            if (result != null && result.Value == true)
+            {
+                string path = view.Filename;
+                string name = Path.GetFileNameWithoutExtension(path);
+
+                try
+                {
+                    ProjectItemViewModel reference = null;
+
+                    ProjectItem item = new ProjectItem()
+                    {
+                        Name = name,
+                        Path = path,
+                        Type = ProjectItemType.Reference,
+                        Project = this
+                    };
+
+                    reference = selected.AddChild(item);
+                    if (reference != null)
+                    {
+                        RaiseReferenceAdded(reference);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.ShowError("Unable to create new file", ex);
+                    return;
+                }
+                SaveProject();
             }
         }
 
@@ -625,6 +768,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                     LoadBlueprints();
 
+                    if (!ReferencesExists(_RootItem))
+                    {
+                        _RootItem.AddChild(new ProjectItem() { Name = "References", Type = ProjectItemType.References });
+                        SaveProject();
+                    }
+
                     _RootItem.IsExpanded = true;
 
                     RaiseProjectOpened();
@@ -635,6 +784,19 @@ namespace Gilgame.SEWorkbench.ViewModels
                     MessageBox.ShowError("Unable to open project", ex);
                 }
             }
+        }
+
+        private bool ReferencesExists(ProjectItemViewModel root)
+        {
+            foreach(ProjectItemViewModel child in root.Children)
+            {
+                if (child.Type == ProjectItemType.References)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
@@ -784,8 +946,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         Name = name,
                         Path = fullpath,
                         Type = ProjectItemType.File,
-                        Project = this,
-                        Code = starter
+                        Project = this
                     };
                     newfile = selected.AddChild(item);
                     selected.IsExpanded = true;
@@ -879,8 +1040,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                                 Name = name,
                                 Path = destination,
                                 Type = ProjectItemType.File,
-                                Project = this,
-                                Code = code
+                                Project = this
                             };
                             selected.AddChild(item);
                             selected.IsExpanded = true;
@@ -1223,6 +1383,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             ProjectItemViewModel selected = SelectedItem;
             if (selected == null)
             {
+                return;
+            }
+            if (selected.Type == ProjectItemType.Reference)
+            {
+                PerformRemoveReference();
                 return;
             }
             if (selected.Type != ProjectItemType.Blueprints && selected.Type != ProjectItemType.Folder && selected.Type != ProjectItemType.File)

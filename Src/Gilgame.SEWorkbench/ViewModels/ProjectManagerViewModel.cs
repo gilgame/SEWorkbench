@@ -157,6 +157,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             Project.FileRequested += Project_FileRequested;
             Project.SelectionChanged += Project_SelectionChanged;
             Project.FileCreated += Project_FileCreated;
+            Project.ReferenceAdded += Project_ReferenceAdded;
             Project.FileDeleted += Project_FileDeleted;
             Project.ProjectCreated += Project_ProjectCreated;
             Project.ProjectOpened += Project_ProjectOpened;
@@ -299,6 +300,12 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             ProjectItemViewModel item = Project.GetItemByPath(e.Path);
             PerformOpenItem(item);
+        }
+
+        private void Project_ReferenceAdded(object sender, FileEventArgs e)
+        {
+            ProjectItemViewModel item = Project.GetItemByPath(e.Path);
+
         }
 
         private void Project_FileDeleted(object sender, FileEventArgs e)

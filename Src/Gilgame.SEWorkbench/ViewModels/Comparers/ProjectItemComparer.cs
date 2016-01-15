@@ -7,66 +7,78 @@ namespace Gilgame.SEWorkbench.ViewModels.Comparers
     {
         public int Compare(ProjectItemViewModel left, ProjectItemViewModel right)
         {
-            if (left == null)
+            if (left.Type == Models.ProjectItemType.References)
             {
-                if (right == null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
             else
             {
-                if (right == null)
+                if (right.Type == Models.ProjectItemType.References)
                 {
                     return 1;
                 }
+
+                if (left == null)
+                {
+                    if (right == null)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
                 else
                 {
-                    if (IsDirectory(left))
+                    if (right == null)
                     {
-                        if (IsDirectory(right))
+                        return 1;
+                    }
+                    else
+                    {
+                        if (IsDirectory(left))
                         {
-                            if (left.Type == Models.ProjectItemType.Blueprints)
+                            if (IsDirectory(right))
                             {
-                                if (right.Type == Models.ProjectItemType.Blueprints)
+                                if (left.Type == Models.ProjectItemType.Blueprints)
                                 {
-                                    return left.Name.CompareTo(right.Name);
+                                    if (right.Type == Models.ProjectItemType.Blueprints)
+                                    {
+                                        return left.Name.CompareTo(right.Name);
+                                    }
+                                    else
+                                    {
+                                        return -1;
+                                    }
                                 }
                                 else
                                 {
-                                    return -1;
+                                    if (right.Type == Models.ProjectItemType.Blueprints)
+                                    {
+                                        return 1;
+                                    }
+                                    else
+                                    {
+                                        return left.Name.CompareTo(right.Name);
+                                    }
                                 }
                             }
                             else
                             {
-                                if (right.Type == Models.ProjectItemType.Blueprints)
-                                {
-                                    return 1;
-                                }
-                                else
-                                {
-                                    return left.Name.CompareTo(right.Name);
-                                }
+                                return -1;
                             }
                         }
                         else
                         {
-                            return -1;
-                        }
-                    }
-                    else
-                    {
-                        if (IsDirectory(right))
-                        {
-                            return 1;
-                        }
-                        else
-                        {
-                            return left.Name.CompareTo(right.Name);
+                            if (IsDirectory(right))
+                            {
+                                return 1;
+                            }
+                            else
+                            {
+                                return left.Name.CompareTo(right.Name);
+                            }
                         }
                     }
                 }

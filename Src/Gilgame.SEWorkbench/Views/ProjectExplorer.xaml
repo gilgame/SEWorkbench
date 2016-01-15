@@ -17,6 +17,7 @@
             <conv:ItemTypeImageConverter x:Key="ItemTypeToImage" />
             <conv:FileSelectedConverter x:Key="FileSelectedToBool" />
 
+            <conv:ReferenceCanBeAddedConverter x:Key="ReferenceCanBeAddedToBool" />
             <conv:BlueprintCanBeAddedConverter x:Key="BlueprintsCanBeAddedToBool" />
             <conv:CollectionCanBeAddedConverter x:Key="CollectionCanBeAddedToBool" />
             <conv:FolderCanBeAddedConverter x:Key="FolderCanBeAddedToBool" />
@@ -68,6 +69,7 @@
                 <TreeView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Add">
+                            <MenuItem Header="Reference..." Command="{Binding AddReferenceCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource ReferenceCanBeAddedToBool}}" />
                             <MenuItem Header="Blueprints..." Command="{Binding AddBlueprintsCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource BlueprintsCanBeAddedToBool}}" />
                             <MenuItem Header="New Item..." Command="{Binding AddCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
                             <MenuItem Header="Existing Item..." Command="{Binding AddExistingCommand}" IsEnabled="{Binding SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />

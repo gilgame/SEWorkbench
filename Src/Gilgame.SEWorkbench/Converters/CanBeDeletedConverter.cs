@@ -14,6 +14,7 @@ namespace Gilgame.SEWorkbench.Converters
             switch (type)
             {
                 case Models.ProjectItemType.Root:
+                case Models.ProjectItemType.References:
                 case Models.ProjectItemType.None:
                     return false;
 
