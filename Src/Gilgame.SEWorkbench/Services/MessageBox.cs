@@ -38,7 +38,7 @@ namespace Gilgame.SEWorkbench.Services
             return System.Windows.MessageBox.Show(
                 question,
                 "SE Workbench",
-                System.Windows.MessageBoxButton.YesNoCancel,
+                System.Windows.MessageBoxButton.YesNo,
                 System.Windows.MessageBoxImage.Question
             );
         }
