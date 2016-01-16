@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Grid Background="#FFCFD6E5" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-            <TextBox Margin="5,5,89,5" Text="{Binding ItemName, Mode=TwoWay}" Name="NameTextBox" IsReadOnly="True" />
+            <TextBox Margin="5,5,89,5" Text="{Binding Filename, Mode=TwoWay}" Name="NameTextBox" IsReadOnly="True" />
             <Button Content="Browse" Name="btnBrowse" Click="btnBrowse_Click" Margin="409,5,10,5" />
         </Grid>
 

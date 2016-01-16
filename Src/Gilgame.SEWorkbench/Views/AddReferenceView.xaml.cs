@@ -48,6 +48,12 @@ namespace Gilgame.SEWorkbench.Views
         public AddReferenceView()
         {
             InitializeComponent();
+            SetDataContext();
+        }
+
+        private void SetDataContext()
+        {
+            DataContext = this;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
