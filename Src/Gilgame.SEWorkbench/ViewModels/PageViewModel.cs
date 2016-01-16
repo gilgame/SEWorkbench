@@ -5,6 +5,7 @@ using System.Windows.Media;
 
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.CodeCompletion;
+using System.Collections.Generic;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -115,6 +116,28 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public string Text
+        {
+            get
+            {
+                if (_Content != null)
+                {
+                    return _Content.Text;
+                }
+                return String.Empty;
+            }
+        }
+
+        public string Line
+        {
+            get
+            {
+                ICSharpCode.AvalonEdit.Document.DocumentLine line = _Content.Document.GetLineByOffset(_Content.CaretOffset);
+
+                return _Content.Text.Substring(line.Offset, line.Length);
+            }
+        }
+
         private bool _IsSelected = false;
         public bool IsSelected
         {
@@ -220,6 +243,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event EventHandler TextChanged;
+        private void RaiseTextChanged()
+        {
+            if (TextChanged != null)
+            {
+                TextChanged(this, EventArgs.Empty);
+            }
+        }
+
         public PageViewModel(BaseViewModel parent, string name, string filename, Models.PageType type) : base(parent)
         {
             _Model = new Models.Page();
@@ -254,6 +286,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             _Editor.Options = options;
 
             _Editor.TextChanged += Editor_TextChanged;
+            _Editor.TextArea.GotFocus += Editor_GotFocus;
 
             Content = _Editor;
         }
@@ -269,6 +302,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 IsModified = true;
             }
+            RaiseTextChanged();
+        }
+
+        private void Editor_GotFocus(object sender, RoutedEventArgs e)
+        {
+            IsActive = true;
         }
 
         public void Save()

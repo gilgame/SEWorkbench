@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\Commands\AddReferenceCommand.cs" />
     <Compile Include="ViewModels\Commands\RemoveReferenceCommand.cs" />
     <Compile Include="ViewModels\Commands\RenameBlockCommand.cs" />
+    <Compile Include="ViewModels\Commands\UpdateAutoCompleteCommand.cs" />
     <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="ViewModels\FindReplaceViewModel.cs" />

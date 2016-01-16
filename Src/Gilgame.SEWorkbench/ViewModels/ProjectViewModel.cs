@@ -428,6 +428,40 @@ namespace Gilgame.SEWorkbench.ViewModels
             return scripts;
         }
 
+        public Dictionary<string, string> GetImports(string path)
+        {
+            Dictionary<string, string> imports = new Dictionary<string, string>();
+
+            ProjectItemViewModel item = GetItemByPath(path);
+            if (item != null)
+            {
+                string code = File.ReadAllText(item.Path);
+
+                List<string> lines = new List<string>(System.Text.RegularExpressions.Regex.Split(code, Environment.NewLine));
+                foreach (string line in lines)
+                {
+                    System.Text.RegularExpressions.Regex import = new System.Text.RegularExpressions.Regex(@"^#import\s[a-zA-Z0-9\-_()\[\]+~`'.!@#$%^&]+$");
+                    if (import.IsMatch(line))
+                    {
+                        string name = line.Replace("#import ", String.Empty);
+
+                        ProjectItemViewModel reference = GetReferences().FirstOrDefault(i => i.Name == name);
+                        if (reference != null)
+                        {
+                            if (!imports.ContainsKey(name))
+                            {
+                                string content = File.ReadAllText(reference.Path);
+
+                                imports.Add(name, content);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return imports;
+        }
+
         public string ImportReferences(string code)
         {
             List<string> imports = new List<string>();

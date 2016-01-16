@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 using ICSharpCode.CodeCompletion;
+using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -58,22 +59,24 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public EditorViewModel(BaseViewModel parent) : base(parent)
         {
+            _UpdateAutoCompleteCommand = new Commands.UpdateAutoCompleteCommand(this);
+
             _Items.CollectionChanged += OnCollectionChanged;
         }
 
         private void Page_Selected(object sender, FileEventArgs e)
         {
-            // wpf sucks at setting other items in the collection back to IsSelected = false,
-            // so we'll do it quietly as not to trigger all the bindings again
-            //foreach (PageViewModel page in Items)
-            //{
-            //    if (page.Filename != e.Path)
-            //    {
-            //        page.SilentUnselected();
-            //    }
-            //}
-
             UpdateScriptProvider();
+        }
+
+        private void Page_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Page_FileSaved(object sender, EventArgs e)
+        {
+            RaiseFileChanged(SelectedItem.Filename);
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -122,11 +125,15 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void RegisterPage(PageViewModel page)
         {
             page.Selected += Page_Selected;
+            page.TextChanged += Page_TextChanged;
+            page.FileSaved += Page_FileSaved;
         }
 
         private void UnregisterPage(PageViewModel page)
         {
             page.Selected -= Page_Selected;
+            page.TextChanged -= Page_TextChanged;
+            page.FileSaved -= Page_FileSaved;
         }
 
         public void InsertText(string text)
@@ -145,5 +152,27 @@ namespace Gilgame.SEWorkbench.ViewModels
                 RaiseFileChanged(SelectedItem.Filename);
             }
         }
+
+        #region Commands
+
+        #region UpdateAutoCompleteCommand
+
+        private readonly ICommand _UpdateAutoCompleteCommand;
+        public ICommand UpdateAutoCompleteCommand
+        {
+            get
+            {
+                return _UpdateAutoCompleteCommand;
+            }
+        }
+
+        public void PerformUpdateAutoComplete()
+        {
+            RaiseFileChanged(SelectedItem.Filename);
+        }
+
+        #endregion
+
+        #endregion
     }
 }
