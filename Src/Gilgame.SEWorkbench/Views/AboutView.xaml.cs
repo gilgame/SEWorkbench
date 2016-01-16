@@ -60,6 +60,10 @@ namespace Gilgame.SEWorkbench.Views
                         OpenDocument(Path.Combine(path, "readme.txt"));
                         break;
 
+                    case "Change Log":
+                        OpenDocument(Path.Combine(path, "changelog.txt"));
+                        break;
+
                     case "SE Workbench License":
                         OpenDocument(Path.Combine(path, "license-seworkbench.txt"));
                         break;

@@ -24,9 +24,10 @@
 
             <TextBlock Text="Documents:" Margin="15,78,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-            <ListView Name="lvDocuments" SelectionMode="Single" Width="400" Height="120" Margin="15,100,0,0"
+            <ListView Name="lvDocuments" SelectionMode="Single" Width="400" Height="130" Margin="15,100,0,0"
                           HorizontalAlignment="Left" VerticalAlignment="Top">
                 <ListViewItem Content="Readme File" />
+                <ListViewItem Content="Change Log" />
                 <ListViewItem Content="SE Workbench License" />
                 <ListViewItem Content="SharpDevelop License" />
                 <ListViewItem Content="Xceed Extended WPF License" />
