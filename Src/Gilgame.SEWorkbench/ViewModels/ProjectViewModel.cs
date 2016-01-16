@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Input;
 
 using Gilgame.SEWorkbench.Models;
 using Gilgame.SEWorkbench.Services;
+using Gilgame.SEWorkbench.Services.IO;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -233,12 +233,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             string directory = Path.GetDirectoryName(Model.Path);
             string filename = Model.Path;
 
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            Directory.CreateDirectory(directory);
 
-            File.WriteAllText(filename, serialized);
+            File.Write(filename, serialized);
         }
 
         public ProjectItemViewModel GetSelectedFile()
@@ -435,7 +432,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             ProjectItemViewModel item = GetItemByPath(path);
             if (item != null)
             {
-                string code = File.ReadAllText(item.Path);
+                string code = File.Read(item.Path);
 
                 List<string> lines = new List<string>(System.Text.RegularExpressions.Regex.Split(code, Environment.NewLine));
                 foreach (string line in lines)
@@ -450,7 +447,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         {
                             if (!imports.ContainsKey(name))
                             {
-                                string content = File.ReadAllText(reference.Path);
+                                string content = File.Read(reference.Path);
 
                                 imports.Add(name, content);
                             }
@@ -485,7 +482,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 ProjectItemViewModel reference = GetReferences().FirstOrDefault(i => i.Name == import);
                 if (reference != null)
                 {
-                    string content = File.ReadAllText(reference.Path);
+                    string content = File.Read(reference.Path);
                     code = code.Replace("#import " + import, String.Empty);
 
                     code += Environment.NewLine + Environment.NewLine + content;
@@ -504,7 +501,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             if (item.Type == ProjectItemType.File && item.Path != path)
             {
-                string code = File.ReadAllText(item.Path);
+                string code = File.Read(item.Path);
                 scripts.Add(code);
             }
             foreach (ProjectItemViewModel child in item.Children)
@@ -581,10 +578,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             try
             {
                 // TODO Move all IO to a separate class
-                if (!Directory.Exists(initial))
-                {
-                    Directory.CreateDirectory(initial);
-                }
+                Directory.CreateDirectory(initial);
 
                 Views.NewProjectDialog view = new Views.NewProjectDialog()
                 {
@@ -598,10 +592,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     string filename = String.Format("{0}.seproj", name);
                     string fullpath = Path.Combine(initial, name, filename);
 
-                    if (!Directory.Exists(Path.GetDirectoryName(fullpath)))
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(fullpath));
-                    }
+                    Directory.CreateDirectory(Path.GetDirectoryName(fullpath));
 
                     ProjectViewModel project = new ViewModels.ProjectViewModel(null);
                     ProjectItem root = new ProjectItem()
@@ -650,10 +641,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             try
             {
-                if (!Directory.Exists(folderpath))
-                {
-                    Directory.CreateDirectory(folderpath);
-                }
+                Directory.CreateDirectory(folderpath);
                 ProjectItem folder = new ProjectItem()
                 {
                     Name = demofolder,
@@ -662,7 +650,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     Project = this,
                 };
 
-                File.WriteAllText(filepath, Services.NewFile.Contents);
+                File.Write(filepath, Services.NewFile.Contents);
                 ProjectItem file = new ProjectItem()
                 {
                     Name = Path.GetFileNameWithoutExtension(filepath),
@@ -842,7 +830,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformOpenProject()
         {
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string initial = String.Format("{0}{1}{2}", documents, Path.DirectorySeparatorChar, "SEWorkbench");
+            string initial = Path.Combine(documents, "SEWorkbench");
 
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
             {
@@ -858,7 +846,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 try
                 {
                     string fullpath = dialog.FileName;
-                    string serialized = File.ReadAllText(fullpath);
+                    string serialized = File.Read(fullpath);
 
                     Project project = (Project)Serialization.Convert.ToObject(serialized);
                     SetRootItem(project.RootItem);
@@ -1033,7 +1021,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     string starter = Services.NewFile.Contents;
 
-                    File.WriteAllText(fullpath, starter);
+                    File.Write(fullpath, starter);
 
                     ProjectItemViewModel newfile = null;
 
@@ -1129,7 +1117,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                                 File.Copy(source, destination);
                             }
 
-                            string code = File.ReadAllText(destination);
+                            string code = File.Read(destination);
 
                             string name = Path.GetFileNameWithoutExtension(destination);
                             ProjectItem item = new ProjectItem()
@@ -1196,11 +1184,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 try
                 {
-                    if (!Directory.Exists(fullpath))
-                    {
-                        Directory.CreateDirectory(fullpath);
-                    }
-
+                    Directory.CreateDirectory(fullpath);
                     ProjectItem item = new ProjectItem()
                     {
                         Name = name,
@@ -1259,11 +1243,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 try
                 {
-                    if (!Directory.Exists(fullpath))
-                    {
-                        Directory.CreateDirectory(fullpath);
-                    }
-
+                    Directory.CreateDirectory(fullpath);
                     ProjectItem item = new ProjectItem()
                     {
                         Name = name,
@@ -1331,11 +1311,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     string savepath = Path.Combine(Path.GetDirectoryName(rootitem.Path), safename);
                     try
                     {
-                        if (!Directory.Exists(savepath))
-                        {
-                            Directory.CreateDirectory(savepath);
-                        }
-
+                        Directory.CreateDirectory(savepath);
                         ProjectItem item = new ProjectItem()
                         {
                             Name = name,

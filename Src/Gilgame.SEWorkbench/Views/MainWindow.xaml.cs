@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
 
 using Gilgame.SEWorkbench.ViewModels;
-using Gilgame.SEWorkbench.Services;
-
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
-using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Gilgame.SEWorkbench.Views
 {

@@ -1,6 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Text;
+
+using Gilgame.SEWorkbench.Services.IO;
 
 namespace Gilgame.SEWorkbench.Services
 {
@@ -25,7 +26,7 @@ namespace Gilgame.SEWorkbench.Services
             }
             else
             {
-                return File.ReadAllText(filename);
+                return File.Read(filename);
             }
         }
 
@@ -43,7 +44,7 @@ namespace Gilgame.SEWorkbench.Services
 
         private static string GetFilename()
         {
-            return String.Format("{0}{1}{2}", Environment.CurrentDirectory, Path.DirectorySeparatorChar, FILE);
+            return Path.Combine(Directory.GetCurrentDirectory(), FILE);
         }
     }
 }

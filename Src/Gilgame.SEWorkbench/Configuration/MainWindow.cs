@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Gilgame.SEWorkbench.Services.IO;
 
 namespace Gilgame.SEWorkbench.Configuration
 {

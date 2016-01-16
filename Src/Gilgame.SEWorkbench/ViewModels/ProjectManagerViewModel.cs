@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+
+using Gilgame.SEWorkbench.Services.IO;
 
 using ICSharpCode.AvalonEdit.Document;
 
@@ -235,8 +236,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     {
                         ProjectItemViewModel item = _Project.GetItemByPath(page.Filename);
 
-                        FileInfo file = new FileInfo(page.Filename);
-                        if (file.LastWriteTime > page.LastSaved)
+                        if (File.LastWriteTime(page.Filename) > page.LastSaved)
                         {
                             string message = String.Format("{0} has been modified outside SE Workbench. Do you want to reload it?", page.Name);
 
@@ -496,7 +496,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 string tempfile = GetTempFile();
                 string tempname = String.Format("{0} - Results View", page.Header);
 
-                File.WriteAllText(tempfile, code);
+                File.Write(tempfile, code);
 
                 PageViewModel newpage = new PageViewModel(this, tempname, tempfile, Models.PageType.Output);
                 newpage.Content.Text = code;
@@ -572,10 +572,8 @@ namespace Gilgame.SEWorkbench.ViewModels
         private string GetTempFile()
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
+
+            Directory.CreateDirectory(path);
 
             return Path.Combine(path, Path.GetRandomFileName());
         }
@@ -587,7 +585,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             ProjectItemViewModel item = Project.GetItemByPath(path);
             if (item != null)
             {
-                string code = File.ReadAllText(item.Path);
+                string code = File.Read(item.Path);
 
                 List<string> scripts = Project.GetAssociatedScripts(path);
                 if (scripts.Count < 1)
