@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 
 using Gilgame.SEWorkbench.Models;
@@ -469,6 +470,28 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private List<ProjectItemViewModel> GetReferences()
+        {
+            List<ProjectItemViewModel> references = new List<ProjectItemViewModel>();
+            if (_RootItem != null)
+            {
+                foreach(ProjectItemViewModel item in _RootItem.Children)
+                {
+                    if (item.Type == ProjectItemType.References)
+                    {
+                        foreach (ProjectItemViewModel reference in item.Children)
+                        {
+                            if (reference.Type == ProjectItemType.Reference)
+                            {
+                                references.Add(reference);
+                            }
+                        }
+                    }
+                }
+            }
+            return references;
+        }
+
         #region Commands
 
         #region New Project Command
@@ -701,6 +724,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 string path = view.Filename;
                 string name = Path.GetFileNameWithoutExtension(path);
+
+                ProjectItemViewModel existing = GetReferences().FirstOrDefault(i => i.Name == name);
+                if (existing != null)
+                {
+                    Services.MessageBox.ShowMessage(String.Format("A reference with this name already exists ({0}).", name));
+                    return;
+                }
 
                 try
                 {
