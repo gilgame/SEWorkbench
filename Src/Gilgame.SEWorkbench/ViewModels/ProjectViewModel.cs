@@ -428,6 +428,39 @@ namespace Gilgame.SEWorkbench.ViewModels
             return scripts;
         }
 
+        public string ImportReferences(string code)
+        {
+            List<string> imports = new List<string>();
+
+            List<string> lines = new List<string>(System.Text.RegularExpressions.Regex.Split(code, Environment.NewLine));
+            foreach (string line in lines)
+            {
+                System.Text.RegularExpressions.Regex import = new System.Text.RegularExpressions.Regex(@"^#import\s[a-zA-Z0-9\-_()\[\]+~`'.!@#$%^&]+$");
+                if (import.IsMatch(line))
+                {
+                    string name = line.Replace("#import ", String.Empty);
+                    if (!imports.Contains(name))
+                    {
+                        imports.Add(name);
+                    }
+                }
+            }
+
+            foreach (string import in imports)
+            {
+                ProjectItemViewModel reference = GetReferences().FirstOrDefault(i => i.Name == import);
+                if (reference != null)
+                {
+                    string content = File.ReadAllText(reference.Path);
+                    code = code.Replace("#import " + import, String.Empty);
+
+                    code += Environment.NewLine + Environment.NewLine + content;
+                }
+            }
+
+            return code;
+        }
+
         private List<string> CollectScripts(string path, ProjectItemViewModel item, List<string> scripts)
         {
             if (item == null)

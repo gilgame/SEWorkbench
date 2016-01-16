@@ -590,7 +590,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 List<string> scripts = Project.GetAssociatedScripts(path);
                 if (scripts.Count < 1)
                 {
-                    return code;
+                    result += code;
                 }
                 else
                 {
@@ -600,6 +600,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                         result += String.Format("{0}{1}{1}", script, Environment.NewLine);
                     }
                 }
+
+                result = Project.ImportReferences(result);
             }
 
             return result;
