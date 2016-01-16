@@ -189,6 +189,16 @@ namespace Gilgame.SEWorkbench.Views
             System.Diagnostics.Process.Start("http://github.com/gilgame/SEWorkbench");
         }
 
+        private void BugMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/gilgame/SEWorkbench/issues");
+        }
+
+        private void DocMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/gilgame/SEWorkbench/wiki");
+        }
+
         private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
             new AboutView().ShowDialog();
