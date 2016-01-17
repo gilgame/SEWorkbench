@@ -218,6 +218,15 @@ namespace ICSharpCode.CodeCompletion
                     }
 
                     result.CompletionData.Add(cshellCompletionData);
+
+                    // piggyback 'region' preprocessor to add our own
+                    if (cshellCompletionData.DisplayText == "region")
+                    {
+                        DataItems.CompletionData import = new DataItems.CompletionData("import");
+                        import.CompletionCategory = cshellCompletionData.CompletionCategory;
+                        import.Image = cshellCompletionData.Image;
+                        result.CompletionData.Add(import);
+                    }
                 }
             }
 

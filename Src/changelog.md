@@ -1,6 +1,7 @@
 Beta 7
 ================================
  * Added quick find window.
+ * Import preprocessor will now appear in the auto-complete window.
 
 Beta 6
 ================================
