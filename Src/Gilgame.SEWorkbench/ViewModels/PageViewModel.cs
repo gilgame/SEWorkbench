@@ -282,7 +282,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
             {
                 ConvertTabsToSpaces = Configuration.TextEditor.ConvertTabsToSpaces,
-                IndentationSize = Configuration.TextEditor.IndentationSize,
+                IndentationSize = Configuration.TextEditor.TabSize,
                 EnableTextDragDrop = true,
             };
             _Editor.Options = options;

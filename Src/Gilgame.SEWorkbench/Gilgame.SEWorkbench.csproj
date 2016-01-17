@@ -210,6 +210,10 @@
     <Compile Include="ViewModels\Commands\ShowQuickFindCommand.cs" />
     <Compile Include="ViewModels\Commands\UpdateAutoCompleteCommand.cs" />
     <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
+    <Compile Include="ViewModels\Comparers\FontComparer.cs" />
+    <Compile Include="ViewModels\Config\ConfigViewModel.cs" />
+    <Compile Include="ViewModels\Config\FontViewModel.cs" />
+    <Compile Include="ViewModels\Config\TextEditorViewModel.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="ViewModels\FindReplaceViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">

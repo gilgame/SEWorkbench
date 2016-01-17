@@ -200,7 +200,7 @@ namespace Gilgame.SEWorkbench.Views
 
         private void PreferencesItem_Click(object sender, RoutedEventArgs e)
         {
-            Config.EditorView dialog = new Config.EditorView();
+            Config.EditorView dialog = new Config.EditorView(_ProjectManager.Config);
             dialog.Show();
         }
     }

@@ -49,7 +49,7 @@ namespace Gilgame.SEWorkbench.Configuration
             }
         }
 
-        public static int IndentationSize
+        public static int TabSize
         {
             get
             {

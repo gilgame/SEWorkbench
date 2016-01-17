@@ -7,7 +7,9 @@ namespace Gilgame.SEWorkbench.Views.Config
 {
     public partial class EditorView : Window, INotifyPropertyChanged
     {
-        private TextEditorPage _TextEditorPage = new TextEditorPage();
+        private ViewModels.Config.ConfigViewModel _Config;
+
+        private TextEditorPage _TextEditorPage;
 
         private object _ConfigPage;
         public object ConfigPage
@@ -35,9 +37,22 @@ namespace Gilgame.SEWorkbench.Views.Config
             }
         }
 
-        public EditorView()
+        public EditorView(ViewModels.Config.ConfigViewModel config)
         {
             InitializeComponent();
+            SetDataContext(config);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ConfigPage = _TextEditorPage;
+        }
+
+        private void SetDataContext(ViewModels.Config.ConfigViewModel config)
+        {
+            _Config = config;
+
+            _TextEditorPage = new TextEditorPage(_Config.TextEditor);
 
             DataContext = this;
         }

@@ -136,6 +136,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private Config.ConfigViewModel _Config;
+        public Config.ConfigViewModel Config
+        {
+            get
+            {
+                return _Config;
+            }
+            set
+            {
+                _Config = value;
+                OnPropertyChanged("Config");
+            }
+        }
+
         public bool IsModified
         {
             get
@@ -177,6 +191,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             Output = new OutputViewModel(this);
 
             FindReplace = new FindReplaceViewModel(this);
+
+            Config = new Config.ConfigViewModel(this);
 
             _NewProjectCommand = new Commands.NewProjectCommand(this);
             _OpenProjectCommand = new Commands.OpenProjectCommand(this);

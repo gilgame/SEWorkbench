@@ -10,14 +10,24 @@
         <Separator HorizontalAlignment="Left" VerticalAlignment="Top" Width="315" Margin="60,14,0,0" />
 
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="21" Margin="10,31,0,0" Text="Convert Tabs to Spaces:" />
-        <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,32,0,0" />
+        <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,32,0,0" IsChecked="{Binding ConvertTabsToSpaces}" />
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="21" Margin="10,52,0,0" Text="Tab Size:" />
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Height="23" Margin="290,52,0,0" Text="{Binding TabSize}" />
 
         <Separator HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Margin="10,114,0,0" />
         
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="270" Height="21" Margin="10,129,0,0" Text="Font:" />
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="270" Height="23" Margin="10,150,0,0" />
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="270" Height="23" Margin="10,150,0,0"
+                  ItemsSource="{Binding InstalledFonts}" SelectedItem="{Binding FontFamily}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Height="21" Margin="290,129,0,0" Text="Size:" />
-        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Height="23" Margin="290,150,0,0" />
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Height="23" Margin="290,150,0,0" Text="{Binding FontSize}" />
     </Grid>
 </UserControl>
