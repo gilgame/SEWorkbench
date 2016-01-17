@@ -6,7 +6,7 @@ Beta 6
 ================================
  * Updated for Space Engineers 01.117
  * References can now be added and removed from project by right clicking on References in the project view.
- * Files from disk can now be imported from reference (inclusions) using '#import <reference_name>' (auto-completion will be updated by saving the file)
+ * Files from disk can now be imported from reference (inclusions) using '#import reference_name' (auto-completion will be updated by saving the file)
  * Will now detect files changed outside the environment.
  * Will now always use latest code from disk.
  * Note: Auto-completion will be updated by saving the file.
