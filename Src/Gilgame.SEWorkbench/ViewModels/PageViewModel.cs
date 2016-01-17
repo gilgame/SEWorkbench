@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
 using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Search;
 using ICSharpCode.CodeCompletion;
-using System.Collections.Generic;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -294,6 +296,18 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void SilentUnselected()
         {
             _IsSelected = false;
+        }
+
+        public void ShowQuickFind()
+        {
+            foreach (ITextAreaInputHandler handler in _Content.TextArea.DefaultInputHandler.NestedInputHandlers)
+            {
+                if (handler is SearchInputHandler)
+                {
+                    return;
+                }
+            }
+            _Content.TextArea.DefaultInputHandler.NestedInputHandlers.Add(new SearchInputHandler(_Content.TextArea));
         }
 
         private void Editor_TextChanged(object sender, EventArgs e)

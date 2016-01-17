@@ -37,6 +37,8 @@
 
         <KeyBinding Modifiers="Control+Shift" Key="R" Command="{Binding Editor.UpdateAutoCompleteCommand}" />
 
+        <KeyBinding Modifiers="Control" Key="F" Command="{Binding Editor.ShowQuickFindCommand}" />
+
         <KeyBinding Key="F5" Command="{Binding RunScriptCommand}" />
         <KeyBinding Key="F7" Command="{Binding OpenSelectedCommand}" />
         <KeyBinding Key="F9" Command="{Binding Blueprint.EditProgramCommand}" />

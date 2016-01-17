@@ -381,6 +381,7 @@ namespace ICSharpCode.AvalonEdit.Search
 		{
 			if (!IsClosed) return;
 			var layer = AdornerLayer.GetAdornerLayer(textArea);
+            if (adorner.Parent != null) return;
 			if (layer != null)
 				layer.Add(adorner);
 			textArea.TextView.BackgroundRenderers.Add(renderer);

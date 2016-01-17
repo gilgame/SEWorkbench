@@ -60,6 +60,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public EditorViewModel(BaseViewModel parent) : base(parent)
         {
             _UpdateAutoCompleteCommand = new Commands.UpdateAutoCompleteCommand(this);
+            _ShowQuickFindCommand = new Commands.ShowQuickFindCommand(this);
 
             _Items.CollectionChanged += OnCollectionChanged;
         }
@@ -155,7 +156,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #region Commands
 
-        #region UpdateAutoCompleteCommand
+        #region Update Auto-Complete Command
 
         private readonly ICommand _UpdateAutoCompleteCommand;
         public ICommand UpdateAutoCompleteCommand
@@ -169,6 +170,28 @@ namespace Gilgame.SEWorkbench.ViewModels
         public void PerformUpdateAutoComplete()
         {
             RaiseFileChanged(SelectedItem.Filename);
+        }
+
+        #endregion
+
+        #region Show Quick-Find Command
+
+        private readonly ICommand _ShowQuickFindCommand;
+        public ICommand ShowQuickFindCommand
+        {
+            get
+            {
+                return _ShowQuickFindCommand;
+            }
+        }
+
+        public void PerformShowQuickFind()
+        {
+            PageViewModel selected = SelectedItem;
+            if (selected != null)
+            {
+                selected.ShowQuickFind();
+            }
         }
 
         #endregion
