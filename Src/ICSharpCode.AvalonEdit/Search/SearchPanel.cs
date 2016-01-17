@@ -156,7 +156,9 @@ namespace ICSharpCode.AvalonEdit.Search
 			// if results are found by the next run, the message will be hidden inside DoSearch ...
 			if (renderer.CurrentResults.Any())
 				messageView.IsOpen = false;
-			strategy = SearchStrategyFactory.Create(SearchPattern ?? "", !MatchCase, WholeWords, UseRegex ? SearchMode.RegEx : SearchMode.Normal);
+            ISearchStrategy result = SearchStrategyFactory.Create(SearchPattern ?? "", !MatchCase, WholeWords, UseRegex ? SearchMode.RegEx : SearchMode.Normal);
+            if (result == null) return;
+            else strategy = result;
 			OnSearchOptionsChanged(new SearchOptionsChangedEventArgs(SearchPattern, MatchCase, UseRegex, WholeWords));
 			DoSearch(true);
 		}

@@ -37,7 +37,9 @@ namespace ICSharpCode.AvalonEdit.Search
 				Regex pattern = new Regex(searchPattern, options);
 				return new RegexSearchStrategy(pattern, matchWholeWords);
 			} catch (ArgumentException ex) {
-				throw new SearchPatternException(ex.Message, ex);
+                //throw new SearchPatternException(ex.Message, ex);
+                // we don't need exceptions while user is typing out a regex
+                return null;
 			}
 		}
 		

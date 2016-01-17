@@ -456,4 +456,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Highlighting\Resources\PowerShell.xshd" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Search\close.png" />
+    <Resource Include="Search\find_next.png" />
+    <Resource Include="Search\find_previous.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Search\match_case.png" />
+    <Resource Include="Search\match_word.png" />
+    <Resource Include="Search\use_regex.png" />
+  </ItemGroup>
 </Project>

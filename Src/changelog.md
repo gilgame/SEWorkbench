@@ -1,3 +1,7 @@
+Beta 7
+================================
+ * Added quick find window.
+
 Beta 6
 ================================
  * Updated for Space Engineers 01.117

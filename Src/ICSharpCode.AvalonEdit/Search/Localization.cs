@@ -60,5 +60,9 @@ namespace ICSharpCode.AvalonEdit.Search
 		public virtual string NoMatchesFoundText {
 			get { return "No matches found!"; }
 		}
+
+        public virtual string CloseDialog {
+            get { return "Close";  }
+        }
 	}
 }
