@@ -228,6 +228,7 @@
     <Compile Include="Highlighting\HighlightingSpan.cs" />
     <Compile Include="Highlighting\IHighlightingDefinitionReferenceResolver.cs">
     </Compile>
+    <Compile Include="Highlighting\WordHighlighter.cs" />
     <Compile Include="Highlighting\Xshd\HighlightingLoader.cs" />
     <Compile Include="Highlighting\Xshd\IXshdVisitor.cs" />
     <Compile Include="Highlighting\Xshd\SaveXshdVisitor.cs" />

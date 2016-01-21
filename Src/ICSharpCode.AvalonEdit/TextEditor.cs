@@ -46,6 +46,11 @@ namespace ICSharpCode.AvalonEdit
 		public TextEditor() : this(new TextArea())
 		{
 		}
+
+        private void TextArea_SelectionChanged(object sender, EventArgs e)
+        {
+            TextArea.TextView.Redraw();
+        }
 		
 		/// <summary>
 		/// Creates a new TextEditor instance.
@@ -345,6 +350,7 @@ namespace ICSharpCode.AvalonEdit
 				if (colorizer != null)
 					this.TextArea.TextView.LineTransformers.Insert(0, colorizer);
 			}
+            this.TextArea.TextView.LineTransformers.Add(new Highlighting.WordHighlighter(this));
 		}
 		
 		/// <summary>
