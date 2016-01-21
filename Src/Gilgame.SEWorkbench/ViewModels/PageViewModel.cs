@@ -271,26 +271,35 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void BuildEditor()
         {
-            // TODO make text editor settings gui
-            _Editor.FontFamily = new FontFamily(Configuration.TextEditor.FontFamily);
-            _Editor.FontSize = Configuration.TextEditor.FontSize;
-            _Editor.Completion = EditorViewModel.Completion;
-            _Editor.OpenFile(Filename);
-            _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-            _Editor.Margin = new Thickness(0, 6, 0, 6);
-            
-            ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
+            try
             {
-                ConvertTabsToSpaces = Configuration.TextEditor.ConvertTabsToSpaces,
-                IndentationSize = Configuration.TextEditor.TabSize,
-                EnableTextDragDrop = true,
-            };
-            _Editor.Options = options;
+                _Editor.OpenFile(Filename);
 
-            _Editor.TextChanged += Editor_TextChanged;
-            _Editor.TextArea.GotFocus += Editor_GotFocus;
+                // TODO make text editor settings gui
+                _Editor.FontFamily = new FontFamily(Configuration.TextEditor.FontFamily);
+                _Editor.FontSize = Configuration.TextEditor.FontSize;
+                _Editor.Completion = EditorViewModel.Completion;
+                _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+                _Editor.Margin = new Thickness(0, 6, 0, 6);
 
-            Content = _Editor;
+                ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
+                {
+                    ConvertTabsToSpaces = Configuration.TextEditor.ConvertTabsToSpaces,
+                    IndentationSize = Configuration.TextEditor.TabSize,
+                    EnableTextDragDrop = true,
+                };
+                _Editor.Options = options;
+
+                _Editor.TextChanged += Editor_TextChanged;
+                _Editor.TextArea.GotFocus += Editor_GotFocus;
+
+                Content = _Editor;
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format("Unable to open file '{0}'", _Editor.FileName);
+                Services.MessageBox.ShowError(message, ex);
+            }
         }
 
         public void SilentUnselected()
@@ -370,14 +379,22 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             if (!IgnoreUpdates)
             {
-                int start = Content.SelectionStart;
+                try
+                {
+                    int start = Content.SelectionStart;
 
-                Content.OpenFile(Filename);
-                Content.SelectionStart = start;
+                    Content.OpenFile(Filename);
+                    Content.SelectionStart = start;
 
-                _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+                    _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
 
-                IsModified = false;
+                    IsModified = false;
+                }
+                catch (Exception ex)
+                {
+                    string message = String.Format("Unable to open file '{0}'", _Editor.FileName);
+                    Services.MessageBox.ShowError(message, ex);
+                }
             }
         }
 
