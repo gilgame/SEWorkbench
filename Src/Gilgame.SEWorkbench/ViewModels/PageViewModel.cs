@@ -326,14 +326,22 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void Save()
         {
-            if (_Editor.SaveFile())
+            try
             {
-                IsModified = false;
-                IgnoreUpdates = false;
+                if (_Editor.SaveFile())
+                {
+                    IsModified = false;
+                    IgnoreUpdates = false;
 
-                _LastSaved = DateTime.Now;
+                    _LastSaved = DateTime.Now;
 
-                RaiseFileSaved();
+                    RaiseFileSaved();
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = String.Format("Failed to save file '{0}'", _Editor.FileName);
+                Services.MessageBox.ShowError(message, ex);
             }
         }
 
