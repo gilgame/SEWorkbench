@@ -74,6 +74,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public event EventHandler ProjectCreated;
         private void RaiseProjectCreated()
         {
+            OnPropertyChanged("IsClosed");
             if (ProjectCreated != null)
             {
                 ProjectCreated(this, EventArgs.Empty);
@@ -83,15 +84,25 @@ namespace Gilgame.SEWorkbench.ViewModels
         public event EventHandler ProjectOpened;
         private void RaiseProjectOpened()
         {
+            OnPropertyChanged("IsClosed");
             if (ProjectOpened != null)
             {
                 ProjectOpened(this, EventArgs.Empty);
             }
         }
 
+        public bool IsClosed
+        {
+            get
+            {
+                return _RootItem == null;
+            }
+        }
+
         public event EventHandler ProjectClosed;
         private void RaiseProjectClosed()
         {
+            OnPropertyChanged("IsClosed");
             if (ProjectClosed != null)
             {
                 ProjectClosed(this, EventArgs.Empty);
@@ -571,6 +582,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformNewProject()
         {
+            if (!IsClosed)
+            {
+                return;
+            }
+
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string initial = Path.Combine(documents, "SEWorkbench");
 
@@ -829,6 +845,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformOpenProject()
         {
+            if (!IsClosed)
+            {
+                return;
+            }
+
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string initial = Path.Combine(documents, "SEWorkbench");
 
@@ -899,11 +920,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformCloseProject()
         {
-            // TODO check for unsaved files
+            if (_RootItem != null)
+            {
+                SetRootItem(null);
 
-            SetRootItem(null);
-
-            RaiseProjectClosed();
+                RaiseProjectClosed();
+            }
         }
 
         #endregion
@@ -1378,7 +1400,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return;
             }
-            if (selected.Type != ProjectItemType.Folder && selected.Type != ProjectItemType.File)
+            //if (selected.Type != ProjectItemType.Folder && selected.Type != ProjectItemType.File)
+            //{
+            //    return;
+            //}
+            if (selected.Type != ProjectItemType.File)
             {
                 return;
             }
@@ -1404,6 +1430,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                         selected.Name = view.ItemName;
                         selected.Path = destination;
+
+                        SaveProject();
                     }
                     catch (Exception ex)
                     {
@@ -1426,6 +1454,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                         selected.Name = view.ItemName;
                         selected.Path = destination;
+
+                        SaveProject();
                     }
                     catch (Exception ex)
                     {
@@ -1433,8 +1463,6 @@ namespace Gilgame.SEWorkbench.ViewModels
                         return;
                     }
                 }
-
-                SaveProject();
             }
         }
 

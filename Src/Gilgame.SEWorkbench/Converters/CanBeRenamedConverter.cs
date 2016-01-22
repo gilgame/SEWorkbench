@@ -13,15 +13,11 @@ namespace Gilgame.SEWorkbench.Converters
             Models.ProjectItemType type = GetValue(value);
             switch (type)
             {
-                case Models.ProjectItemType.Root:
-                case Models.ProjectItemType.References:
-                case Models.ProjectItemType.Reference:
-                case Models.ProjectItemType.Blueprints:
-                case Models.ProjectItemType.None:
-                    return false;
+                case Models.ProjectItemType.File:
+                    return true;
 
                 default:
-                    return true;
+                    return false;
             }
         }
 

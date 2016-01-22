@@ -346,6 +346,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Project_ProjectClosed(object sender, EventArgs e)
         {
+            _Blueprint.Clear();
+            _Output.Clear();
             ProjectTitle = _ProjectTitlePrefix;
         }
 

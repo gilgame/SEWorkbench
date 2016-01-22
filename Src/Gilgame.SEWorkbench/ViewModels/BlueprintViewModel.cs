@@ -115,6 +115,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public void Clear()
+        {
+            First.Clear();
+        }
+
         private void SetBlueprint(GridItemViewModel root)
         {
             if (root != null)

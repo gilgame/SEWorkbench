@@ -1,8 +1,12 @@
 Beta 7
 ================================
+ * Updated for Space Engineers 08.118
  * Added quick find window.
- * Import preprocessor will now appear in the auto-complete window.
  * Added configuration dialog.
+ * Import preprocessor will now appear in the auto-complete window.
+ * For now, projects cannot be opened or created if an existing project is still open.
+ * Blueprint will now be cleared when a project is closed.
+ * Renaming Folders and Collections is temporarily disabled.
 
 Beta 6
 ================================

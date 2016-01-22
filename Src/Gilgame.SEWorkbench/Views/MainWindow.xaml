@@ -57,11 +57,11 @@
                 <Menu FontSize="11" Padding="1,2,1,0" Background="Transparent">
                     <MenuItem Header="_File">
                         <MenuItem Header="_New">
-                            <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" Command="{Binding NewProjectCommand}" />
+                            <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+N" Command="{Binding NewProjectCommand}" IsEnabled="{Binding Project.IsClosed}" />
                             <MenuItem Header="_File..." InputGestureText="Ctrl+N" Command="{Binding Project.AddCommand}" IsEnabled="{Binding Project.SelectedItemType, Converter={StaticResource FileCanBeAddedToBool}}" />
                         </MenuItem>
                         <MenuItem Header="_Open">
-                            <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" Command="{Binding OpenProjectCommand}" />
+                            <MenuItem Header="_Project..." InputGestureText="Ctrl+Shift+O" Command="{Binding OpenProjectCommand}" IsEnabled="{Binding Project.IsClosed}" />
                         </MenuItem>
                         <Separator />
                         <MenuItem Header="_Close" Command="{Binding CloseProjectCommand}" />
@@ -72,6 +72,8 @@
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Command="{Binding CloseViewCommand}" />
                     </MenuItem>
                     <MenuItem Header="_Edit">
+                        <MenuItem Header="Quick _Find" InputGestureText="Ctrl+F" Command="{Binding Editor.ShowQuickFindCommand}" />
+                        <Separator />
                         <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoCommand}"
                               IsEnabled="{Binding Editor.HasChildren}" />
                         <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Command="{Binding RedoCommand}"
