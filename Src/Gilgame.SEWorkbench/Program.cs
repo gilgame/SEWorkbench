@@ -317,7 +317,8 @@ namespace Gilgame.SEWorkbench
                 "Sandbox.ModAPI.Ingame",
                 "Sandbox.ModAPI.Interfaces",
                 "VRageMath",
-                "VRage.Game"
+                "VRage.Game",
+                "VRage.Game.Entity"
             };
             Interop.Decompiler decompiler = new Interop.Decompiler(namespaces);
 

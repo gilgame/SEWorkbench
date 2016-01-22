@@ -19,6 +19,7 @@ namespace Gilgame.SEWorkbench.Completion
                 "using Sandbox.ModAPI.Interfaces;",
                 "using VRageMath;",
                 "using VRage.Game;",
+                "using VRage.Game.Entity;"
             };
 
             return String.Join(Environment.NewLine, usings.ToArray());

@@ -1,3 +1,8 @@
+Beta 8
+================================
+ * Added missing reference to VRage.Game.Entity namespace.
+ * 
+
 Beta 7
 ================================
  * Updated for Space Engineers 08.118

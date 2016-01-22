@@ -14,6 +14,13 @@ using VRage.Compiler;
 using VRage.ModAPI;
 using VRage.ObjectBuilders;
 using VRageMath;
+using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
+using System.Collections;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 
 namespace Gilgame.SEWorkbench.Interop
@@ -52,54 +59,136 @@ namespace Gilgame.SEWorkbench.Interop
 
         private static void InitIlChecker()
         {
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(TerminalActionExtensions));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Ingame.IMyCubeBlock));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(EnvironmentItemsEntry));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_AdvancedDoor));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_BattleAreaMarker));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_HandTorch));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_AdvancedDoorDefinition));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_Base));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_AirVent));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(Vector3));
-            Type typeFromHandle = typeof(MyObjectBuilderSerializer);
+            IlChecker.AllowedOperands = new Dictionary<Type, List<MemberInfo>>();
+            IlChecker.AllowedNamespacesCommon = new Dictionary<Assembly, List<string>>();
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(IEnumerator));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(IEnumerable<>));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(HashSet<>));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Queue<>));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(ListExtensions));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Enumerable));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(StringBuilder));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Regex));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Calendar));
+            IlChecker.AllowedOperands.Add(typeof(object), null);
+            IlChecker.AllowedOperands.Add(typeof(IDisposable), null);
+            IlChecker.AllowedOperands.Add(typeof(StringBuilder), null);
+            IlChecker.AllowedOperands.Add(typeof(string), null);
+            IlChecker.AllowedOperands.Add(typeof(Math), null);
+            IlChecker.AllowedOperands.Add(typeof(Enum), null);
+            IlChecker.AllowedOperands.Add(typeof(int), null);
+            IlChecker.AllowedOperands.Add(typeof(short), null);
+            IlChecker.AllowedOperands.Add(typeof(long), null);
+            IlChecker.AllowedOperands.Add(typeof(uint), null);
+            IlChecker.AllowedOperands.Add(typeof(ushort), null);
+            IlChecker.AllowedOperands.Add(typeof(ulong), null);
+            IlChecker.AllowedOperands.Add(typeof(double), null);
+            IlChecker.AllowedOperands.Add(typeof(float), null);
+            IlChecker.AllowedOperands.Add(typeof(bool), null);
+            IlChecker.AllowedOperands.Add(typeof(char), null);
+            IlChecker.AllowedOperands.Add(typeof(byte), null);
+            IlChecker.AllowedOperands.Add(typeof(sbyte), null);
+            IlChecker.AllowedOperands.Add(typeof(decimal), null);
+            IlChecker.AllowedOperands.Add(typeof(DateTime), null);
+            IlChecker.AllowedOperands.Add(typeof(TimeSpan), null);
+            IlChecker.AllowedOperands.Add(typeof(Array), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlElementAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlAttributeAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlArrayAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlArrayItemAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlAnyAttributeAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlAnyElementAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlAnyElementAttributes), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlArrayItemAttributes), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlAttributeEventArgs), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlAttributeOverrides), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlAttributes), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlChoiceIdentifierAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlElementAttributes), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlElementEventArgs), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlEnumAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlIgnoreAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlIncludeAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlRootAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlTextAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(XmlTypeAttribute), null);
+            IlChecker.AllowedOperands.Add(typeof(RuntimeHelpers), null);
+            IlChecker.AllowedOperands.Add(typeof(Stream), null);
+            IlChecker.AllowedOperands.Add(typeof(TextWriter), null);
+            IlChecker.AllowedOperands.Add(typeof(TextReader), null);
+            IlChecker.AllowedOperands.Add(typeof(BinaryReader), null);
+            IlChecker.AllowedOperands.Add(typeof(BinaryWriter), null);
+            IlChecker.AllowedOperands.Add(typeof(CompilerHelper), null);
+
+            List<MemberInfo> list = new List<MemberInfo>();
+            list.Add(typeof(MemberInfo).GetProperty("Name").GetGetMethod());
+            IlChecker.AllowedOperands.Add(typeof(MemberInfo), list);
+
+            list = new List<MemberInfo>();
+            list.Add(typeof(Type).GetMethod("GetTypeFromHandle"));
+            IlChecker.AllowedOperands.Add(typeof(Type), list);
+
+            Type type = typeof(Type).Assembly.GetType("System.RuntimeType");
+            IlChecker.AllowedOperands[type] = new List<MemberInfo>
+			{
+				type.GetMethod("op_Inequality"),
+				type.GetMethod("GetFields", new Type[]
+				{
+					typeof(BindingFlags)
+				})
+			};
+            IlChecker.AllowedOperands[typeof(Type)] = new List<MemberInfo>
+			{
+				typeof(Type).GetMethod("GetFields", new Type[]
+				{
+					typeof(BindingFlags)
+				}),
+				typeof(Type).GetMethod("IsEquivalentTo"),
+				typeof(Type).GetMethod("GetTypeFromHandle", BindingFlags.Static | BindingFlags.Public),
+				typeof(Type).GetMethod("op_Equality")
+			};
+            Type type2 = typeof(Type).Assembly.GetType("System.Reflection.RtFieldInfo");
+            IlChecker.AllowedOperands[type2] = new List<MemberInfo>
+			{
+				type2.GetMethod("UnsafeGetValue", BindingFlags.Instance | BindingFlags.NonPublic)
+			};
+            IlChecker.AllowedOperands[typeof(NullReferenceException)] = null;
+            IlChecker.AllowedOperands[typeof(ArgumentException)] = null;
+            IlChecker.AllowedOperands[typeof(ArgumentNullException)] = null;
+            IlChecker.AllowedOperands[typeof(InvalidOperationException)] = null;
+            IlChecker.AllowedOperands[typeof(FormatException)] = null;
+            IlChecker.AllowedOperands.Add(typeof(Exception), null);
+            IlChecker.AllowedOperands.Add(typeof(DivideByZeroException), null);
+            IlChecker.AllowedOperands.Add(typeof(InvalidCastException), null);
+            IlChecker.AllowedOperands.Add(typeof(FileNotFoundException), null);
+            typeof(MethodInfo).Assembly.GetType("System.Reflection.RuntimeMethodInfo");
+            IlChecker.AllowedOperands[typeof(ValueType)] = new List<MemberInfo>
+			{
+				typeof(ValueType).GetMethod("Equals"),
+				typeof(ValueType).GetMethod("GetHashCode"),
+				typeof(ValueType).GetMethod("ToString"),
+				typeof(ValueType).GetMethod("CanCompareBits", BindingFlags.Static | BindingFlags.NonPublic),
+				typeof(ValueType).GetMethod("FastEqualsCheck", BindingFlags.Static | BindingFlags.NonPublic)
+			};
+            Type typeFromHandle = typeof(Environment);
             IlChecker.AllowedOperands[typeFromHandle] = new List<MemberInfo>
-	        {
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(MyObjectBuilderType)
-		        }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(SerializableDefinitionId)
-		        }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(string)
-		        }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(MyObjectBuilderType),
-			        typeof(string)
-		        })
-	        };
-                    IlChecker.AllowedOperands.Add(typeof(IMyEntity), new List<MemberInfo>
-	        {
-		        typeof(IMyEntity).GetMethod("GetPosition"),
-		        typeof(IMyEntity).GetProperty("WorldMatrix").GetGetMethod()
-	        });
-            IlChecker.AllowedOperands.Add(typeof(IWork), null);
-            IlChecker.AllowedOperands.Add(typeof(Task), null);
-            IlChecker.AllowedOperands.Add(typeof(WorkOptions), null);
-            IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction), null);
-            IlChecker.AllowedOperands.Add(typeof(IMyInventoryOwner), null);
-            IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.IMyInventory), null);
-            IlChecker.AllowedOperands.Add(typeof(IMyInventoryItem), null);
-            IlChecker.AllowedOperands.Add(typeof(ITerminalProperty), null);
-            IlChecker.AllowedOperands.Add(typeof(ITerminalProperty<>), null);
-            IlChecker.AllowedOperands.Add(typeof(TerminalPropertyExtensions), null);
-            IlChecker.AllowedOperands.Add(typeof(MyFixedPoint), null);
-            IlChecker.AllowedOperands.Add(typeof(MyTexts), null);
+			{
+				typeFromHandle.GetMethod("GetResourceString", BindingFlags.Static | BindingFlags.NonPublic, null, new Type[]
+				{
+					typeof(string),
+					typeof(object[])
+				}, null),
+				typeFromHandle.GetMethod("GetResourceString", BindingFlags.Static | BindingFlags.NonPublic, null, new Type[]
+				{
+					typeof(string)
+				}, null)
+			};
+            IlChecker.AllowedOperands[typeof(Path)] = null;
+            IlChecker.AllowedOperands[typeof(Random)] = null;
+            IlChecker.AllowedOperands[typeof(Convert)] = null;
+            IlChecker.AllowedOperands.Add(typeof(Nullable<>), null);
+            IlChecker.AllowedOperands.Add(typeof(StringComparer), null);
+            IlChecker.AllowedOperands.Add(typeof(IComparable<>), null);
         }
 
         private static void InitIlCompiler()
