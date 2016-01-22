@@ -1,7 +1,3 @@
-Beta 8
-================================
- * Added missing reference to VRage.Game.Entity namespace.
-
 Beta 7
 ================================
  * Updated for Space Engineers 08.118
@@ -11,6 +7,7 @@ Beta 7
  * For now, projects cannot be opened or created if an existing project is still open.
  * Blueprint will now be cleared when a project is closed.
  * Renaming Folders and Collections is temporarily disabled.
+ * Added missing reference to VRage.Game.Entity namespace.
 
 Beta 6
 ================================
