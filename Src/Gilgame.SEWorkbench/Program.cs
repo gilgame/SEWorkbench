@@ -121,7 +121,7 @@ namespace Gilgame.SEWorkbench
         private static bool SandboxIsCopied(string sepath)
         {
             string local = Directory.GetCurrentDirectory();
-            foreach (string assembly in GetDependenies())
+            foreach (string assembly in Interop.SpaceEngineers.Dependencies)
             {
                 string file = Path.Combine(local, assembly);
                 string sefile = Path.Combine(sepath, assembly);
@@ -150,7 +150,7 @@ namespace Gilgame.SEWorkbench
 
             try
             {
-                foreach (string assembly in GetDependenies())
+                foreach (string assembly in Interop.SpaceEngineers.Dependencies)
                 {
                     CopyFile(Path.Combine(source, assembly), Path.Combine(destination, assembly));
                 }
@@ -232,43 +232,6 @@ namespace Gilgame.SEWorkbench
             }
 
             return String.Empty;
-        }
-
-        private static List<string> GetDependenies()
-        {
-            List<string> assemblies = new List<string>()
-            {
-                "HavokWrapper.dll",
-                "InfinarioSDK.dll",
-                "Sandbox.Common.dll",
-                "Sandbox.Game.dll",
-                "Sandbox.Graphics.dll",
-                "SharpDX.Direct2D1.dll",
-                "SharpDX.Direct3D11.dll",
-                "SharpDX.DirectInput.dll",
-                "SharpDX.dll",
-                "SharpDX.DXGI.dll",
-                "SharpDX.Toolkit.dll",
-                "SharpDX.Toolkit.Graphics.dll",
-                "SharpDX.XAudio2.dll",
-                "SteamSDK.dll",
-                "steam_api.dll",
-                "System.Data.SQLite.dll",
-                "VRage.Audio.dll",
-                "VRage.dll",
-                "VRage.Game.dll",
-                "VRage.Game.XmlSerializers.dll",
-                "VRage.Input.dll",
-                "VRage.Library.dll",
-                "VRage.Math.dll",
-                "VRage.Native.dll",
-                "SpaceEngineers.Game.dll",
-                "SpaceEngineers.ObjectBuilders.dll",
-                "SpaceEngineers.ObjectBuilders.XmlSerializers.dll",
-                "MedievalEngineers.ObjectBuilders.dll",
-                "MedievalEngineers.ObjectBuilders.XmlSerializers.dll",
-            };
-            return assemblies;
         }
     }
 }
