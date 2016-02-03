@@ -46,7 +46,7 @@ namespace Gilgame.SEWorkbench.Interop
             {
                 string directory = Directory.GetCurrentDirectory();
 
-                MyDefaultAssemblyResolver resolver = new MyDefaultAssemblyResolver();
+                AssemblyResolver resolver = new AssemblyResolver();
                 resolver.AddSearchDirectory(directory);
 
                 Mono.Cecil.ReaderParameters parameters = new Mono.Cecil.ReaderParameters

@@ -1,16 +1,14 @@
 ﻿using System;
 
-using Mono.Cecil;
-
 namespace Gilgame.SEWorkbench.Interop
 {
     /// <summary>
     /// Credit to Torston over at Stack Overflow
     /// http://stackoverflow.com/questions/13526519/ilspy-failed-to-resolve-assembly-in-astbuilder
     /// </summary>
-    public class MyDefaultAssemblyResolver : DefaultAssemblyResolver
+    public class AssemblyResolver : Mono.Cecil.DefaultAssemblyResolver
     {
-        public override AssemblyDefinition Resolve(AssemblyNameReference name)
+        public override Mono.Cecil.AssemblyDefinition Resolve(Mono.Cecil.AssemblyNameReference name)
         {
             try
             {
@@ -20,7 +18,7 @@ namespace Gilgame.SEWorkbench.Interop
             return null;
         }
 
-        public override AssemblyDefinition Resolve(AssemblyNameReference name, ReaderParameters parameters)
+        public override Mono.Cecil.AssemblyDefinition Resolve(Mono.Cecil.AssemblyNameReference name, Mono.Cecil.ReaderParameters parameters)
         {
             try
             {
@@ -30,7 +28,7 @@ namespace Gilgame.SEWorkbench.Interop
             return null;
         }
 
-        public override AssemblyDefinition Resolve(string fullName)
+        public override Mono.Cecil.AssemblyDefinition Resolve(string fullName)
         {
             try
             {
@@ -40,7 +38,7 @@ namespace Gilgame.SEWorkbench.Interop
             return null;
         }
 
-        public override AssemblyDefinition Resolve(string fullName, ReaderParameters parameters)
+        public override Mono.Cecil.AssemblyDefinition Resolve(string fullName, Mono.Cecil.ReaderParameters parameters)
         {
             try
             {
