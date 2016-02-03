@@ -220,7 +220,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void BuildClasses()
         {
-            Classes.AddNamespaces(Program.Classes);
+            Classes.AddNamespaces(Interop.Decompiler.Classes);
         }
 
         public event EventHandler CloseViewRequested;
