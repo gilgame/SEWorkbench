@@ -1,5 +1,4 @@
-﻿using Mono.Cecil;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,9 +9,34 @@ namespace Gilgame.SEWorkbench.Interop
     {
         private List<string> _Namespaces;
 
+        public static List<Interop.AssemblyObject> Classes = new List<Interop.AssemblyObject>();
+
         public Decompiler(List<string> namespaces)
         {
             _Namespaces = namespaces;
+        }
+
+        public static void LoadClasses()
+        {
+            List<string> namespaces = new List<string>()
+            {
+                "Sandbox.ModAPI.Ingame",
+                "Sandbox.ModAPI.Interfaces",
+                "VRageMath",
+                "VRage.Game",
+                "VRage.Game.Entity"
+            };
+            Interop.Decompiler decompiler = new Interop.Decompiler(namespaces);
+
+            List<string> assemblies = new List<string>()
+            {
+                "Sandbox.Common.dll",
+                "VRage.Game.dll",
+                "VRage.Math.dll"
+            };
+            List<Interop.AssemblyObject> result = decompiler.Read(assemblies);
+
+            Classes.AddRange(result);
         }
 
         public List<AssemblyObject> Read(List<string> assemblies)
@@ -25,15 +49,15 @@ namespace Gilgame.SEWorkbench.Interop
                 MyDefaultAssemblyResolver resolver = new MyDefaultAssemblyResolver();
                 resolver.AddSearchDirectory(directory);
 
-                ReaderParameters parameters = new ReaderParameters
+                Mono.Cecil.ReaderParameters parameters = new Mono.Cecil.ReaderParameters
                 {
                     AssemblyResolver = resolver,
                 };
 
-                AssemblyDefinition definition = AssemblyDefinition.ReadAssembly(assembly, parameters);
-                foreach (ModuleDefinition module in definition.Modules)
+                Mono.Cecil.AssemblyDefinition definition = Mono.Cecil.AssemblyDefinition.ReadAssembly(assembly, parameters);
+                foreach (Mono.Cecil.ModuleDefinition module in definition.Modules)
                 {
-                    foreach (TypeDefinition type in module.Types)
+                    foreach (Mono.Cecil.TypeDefinition type in module.Types)
                     {
                         string name = type.Name;
 
@@ -63,7 +87,7 @@ namespace Gilgame.SEWorkbench.Interop
                         AssemblyObject o = new AssemblyObject() { Name = name, Namespace = ns };
                         if (type.HasFields)
                         {
-                            foreach (FieldDefinition f in type.Fields)
+                            foreach (Mono.Cecil.FieldDefinition f in type.Fields)
                             {
                                 if (f.IsPublic)
                                 {
@@ -74,7 +98,7 @@ namespace Gilgame.SEWorkbench.Interop
                         }
                         if (type.HasProperties)
                         {
-                            foreach (PropertyDefinition p in type.Properties)
+                            foreach (Mono.Cecil.PropertyDefinition p in type.Properties)
                             {
                                 string pname = p.Name;
                                 o.Properties.Add(new AssemblyObject() { Name = pname });
@@ -82,7 +106,7 @@ namespace Gilgame.SEWorkbench.Interop
                         }
                         if (type.HasMethods)
                         {
-                            foreach (MethodDefinition m in type.Methods)
+                            foreach (Mono.Cecil.MethodDefinition m in type.Methods)
                             {
                                 if (m.IsPublic)
                                 {
@@ -95,7 +119,7 @@ namespace Gilgame.SEWorkbench.Interop
                                     AssemblyObject mo = new AssemblyObject() { Name = mname };
                                     if (m.HasParameters)
                                     {
-                                        foreach (ParameterDefinition r in m.Parameters)
+                                        foreach (Mono.Cecil.ParameterDefinition r in m.Parameters)
                                         {
                                             string rname = r.Name;
                                             mo.Methods.Add(new AssemblyObject() { Name = rname });
@@ -113,83 +137,5 @@ namespace Gilgame.SEWorkbench.Interop
 
             return result;
         }
-
-        //public List<AssemblyObject> Read(string assembly)
-        //{
-        //    string working = Directory.GetCurrentDirectory();
-
-        //    MyDefaultAssemblyResolver resolver = new MyDefaultAssemblyResolver();
-        //    resolver.AddSearchDirectory(working);
-
-        //    ReaderParameters parameters = new ReaderParameters
-        //    {
-        //        AssemblyResolver = resolver,
-        //    };
-
-        //    List<AssemblyObject> namespaces = new List<AssemblyObject>();
-
-        //    AssemblyDefinition definition = AssemblyDefinition.ReadAssembly(assembly, parameters);
-        //    foreach (ModuleDefinition module in definition.Modules)
-        //    {
-        //        foreach (TypeDefinition type in module.Types)
-        //        {
-        //            string name = type.Name;
-        //            string ns = type.Namespace;
-
-        //            if (!_Namespaces.Contains(ns))
-        //            {
-        //                continue;
-        //            }
-
-        //            AssemblyObject found = namespaces.First(a => a.Namespace == ns);
-
-        //            AssemblyObject o = new AssemblyObject() { Name = name, Namespace = ns };
-        //            if (type.HasFields)
-        //            {
-        //                foreach (FieldDefinition f in type.Fields)
-        //                {
-        //                    if (f.IsPublic)
-        //                    {
-        //                        string fname = f.Name;
-        //                        o.Fields.Add(new AssemblyObject() { Name = fname });
-        //                    }
-        //                }
-        //            }
-        //            if (type.HasProperties)
-        //            {
-        //                foreach (PropertyDefinition p in type.Properties)
-        //                {
-        //                    string pname = p.Name;
-        //                    o.Properties.Add(new AssemblyObject() { Name = pname });
-        //                }
-        //            }
-        //            if (type.HasMethods)
-        //            {
-        //                foreach (MethodDefinition m in type.Methods)
-        //                {
-        //                    if (m.IsPublic)
-        //                    {
-        //                        string mname = m.Name;
-
-        //                        AssemblyObject mo = new AssemblyObject() { Name = mname };
-        //                        if (m.HasParameters)
-        //                        {
-        //                            foreach (ParameterDefinition r in m.Parameters)
-        //                            {
-        //                                string rname = r.Name;
-        //                                mo.Methods.Add(new AssemblyObject() { Name = rname });
-        //                            }
-        //                        }
-        //                        o.Methods.Add(mo);
-        //                    }
-        //                }
-        //            }
-
-        //            objects.Add(o);
-        //        }
-        //    }
-
-        //    return objects;
-        //}
     }
 }
