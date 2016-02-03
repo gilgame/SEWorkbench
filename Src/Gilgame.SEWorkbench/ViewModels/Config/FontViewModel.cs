@@ -16,7 +16,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
                 if (_Name != value)
                 {
                     _Name = value;
-                    OnPropertyChanged("Name");
+                    RaisePropertyChanged("Name");
                 }
             }
         }

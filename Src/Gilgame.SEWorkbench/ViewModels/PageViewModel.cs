@@ -51,7 +51,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Name != value)
                 {
                     _Model.Name = value;
-                    OnPropertyChanged("Name");
+                    RaisePropertyChanged("Name");
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Filename != value)
                 {
                     _Model.Filename = value;
-                    OnPropertyChanged("Filename");
+                    RaisePropertyChanged("Filename");
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Header != value)
                 {
                     _Header = value;
-                    OnPropertyChanged("Header");
+                    RaisePropertyChanged("Header");
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Content != value)
                 {
                     _Content = value;
-                    OnPropertyChanged("Content");
+                    RaisePropertyChanged("Content");
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsSelected)
                 {
                     _IsSelected = value;
-                    OnPropertyChanged("IsSelected");
+                    RaisePropertyChanged("IsSelected");
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     {
                         RaiseSelected();
                     }
-                    OnPropertyChanged("IsActive");
+                    RaisePropertyChanged("IsActive");
                 }
             }
         }
@@ -191,7 +191,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsModified)
                 {
                     _IsModified = value;
-                    OnPropertyChanged("IsModified");
+                    RaisePropertyChanged("IsModified");
                 }
             }
         }

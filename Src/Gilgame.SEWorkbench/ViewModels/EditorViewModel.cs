@@ -120,7 +120,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
             }
 
-            OnPropertyChanged("HasChildren");
+            RaisePropertyChanged("HasChildren");
         }
 
         private void RegisterPage(PageViewModel page)
