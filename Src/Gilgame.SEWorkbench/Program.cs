@@ -6,11 +6,6 @@ using System.Security.Principal;
 
 using Gilgame.SEWorkbench.Services;
 
-using Sandbox.Common.ObjectBuilders.Definitions;
-using Sandbox.Game;
-using VRage.ObjectBuilders;
-using VRage.Plugins;
-
 namespace Gilgame.SEWorkbench
 {
     public class Program
