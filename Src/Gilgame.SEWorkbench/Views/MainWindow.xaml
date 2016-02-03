@@ -202,8 +202,7 @@
             <ad:LayoutRoot>
                 <ad:LayoutPanel Orientation="Horizontal">
                     <ad:LayoutAnchorablePane DockWidth="200">
-                        <ad:LayoutAnchorable x:Name="pnProjectExplorer"  ContentId="Project Explorer" Title="Project Explorer"
-                                             ToolTip="Project Explorer" CanHide="True" CanClose="False" >
+                        <ad:LayoutAnchorable x:Name="pnProjectExplorer"  ContentId="Project Explorer" Title="Project Explorer" ToolTip="Project Explorer" >
                             <v:ProjectExplorer x:Name="tvProjectExplorer" />
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>
@@ -230,7 +229,7 @@
                         <ad:LayoutAnchorablePaneGroup>
                             <ad:LayoutAnchorablePane FloatingWidth="300" FloatingHeight="380" DockWidth="300" DockHeight="380"
                                                      FloatingLeft="100" FloatingTop="100">
-                                <ad:LayoutAnchorable x:Name="pnFindReplace" Title="Find and Replace" ContentId="FindReplace">
+                                <ad:LayoutAnchorable x:Name="pnFindReplace" Title="Find and Replace" ContentId="FindReplace" IsVisible="False">
                                     <v:FindReplaceView x:Name="vFindReplace" />
                                 </ad:LayoutAnchorable>
                             </ad:LayoutAnchorablePane>

@@ -2,6 +2,8 @@
 using System.Windows;
 
 using Gilgame.SEWorkbench.ViewModels;
+using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using System.IO;
 
 namespace Gilgame.SEWorkbench.Views
 {
@@ -14,6 +16,7 @@ namespace Gilgame.SEWorkbench.Views
             InitializeComponent();
             RegisterEvents();
             SetDataContext();
+            LoadWindowLayout();
         }
 
         private void RegisterEvents()
@@ -44,6 +47,10 @@ namespace Gilgame.SEWorkbench.Views
             if (!_ProjectManager.HandleClosing())
             {
                 e.Cancel = true;
+            }
+            else
+            {
+                SaveWindowLayout();
             }
 
             base.OnClosing(e);
@@ -80,12 +87,49 @@ namespace Gilgame.SEWorkbench.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadDockLayout();
+        }
+
+        private void LoadWindowLayout()
+        {
             Width = Configuration.MainWindow.Width;
             Height = Configuration.MainWindow.Height;
             Left = Configuration.MainWindow.Left;
             Top = Configuration.MainWindow.Top;
 
             WindowState = Configuration.MainWindow.WindowState;
+        }
+
+        private void LoadDockLayout()
+        {
+            string path = GetDockLayoutPath();
+            if (!File.Exists(path))
+            {
+                return;
+            }
+
+            using (var dispatch = Dispatcher.DisableProcessing())
+            {
+                XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
+                using (var reader = new StreamReader(path))
+                {
+                    layoutSerializer.Deserialize(reader);
+                }
+            }
+        }
+
+        private string GetDockLayoutPath()
+        {
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string workbench = Path.Combine(appdata, "SEWorkbench");
+            string layout = Path.Combine(workbench, "layout.xml");
+
+            if (!Directory.Exists(workbench))
+            {
+                Directory.CreateDirectory(workbench);
+            }
+
+            return layout;
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -103,6 +147,11 @@ namespace Gilgame.SEWorkbench.Views
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
+            SaveDockLayout();
+        }
+
+        private void SaveWindowLayout()
+        {
             if (WindowState == WindowState.Normal)
             {
                 Configuration.MainWindow.Width = Width;
@@ -115,6 +164,16 @@ namespace Gilgame.SEWorkbench.Views
             if (WindowState == WindowState.Maximized)
             {
                 Configuration.MainWindow.WindowState = WindowState;
+            }
+        }
+
+        private void SaveDockLayout()
+        {
+            string path = GetDockLayoutPath();
+            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
+            using (var writer = new StreamWriter(path))
+            {
+                layoutSerializer.Serialize(writer);
             }
         }
 
