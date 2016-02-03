@@ -100,6 +100,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                             RegisterPage(page);
                         }
                     }
+                    PageViewModel last = (PageViewModel)e.NewItems[e.NewItems.Count-1];
+                    last.IsActive = true;
                 }
             }
 
