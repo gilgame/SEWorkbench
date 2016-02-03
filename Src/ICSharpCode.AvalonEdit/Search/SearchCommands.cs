@@ -73,9 +73,7 @@ namespace ICSharpCode.AvalonEdit.Search
 		
 		void ExecuteFind(object sender, ExecutedRoutedEventArgs e)
 		{
-			panel.Open();
-			panel.SearchPattern = TextArea.Selection.GetText();
-			Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Input, (Action)delegate { panel.Reactivate(); });
+            Open();
 		}
 		
 		void ExecuteFindNext(object sender, ExecutedRoutedEventArgs e)
@@ -92,6 +90,13 @@ namespace ICSharpCode.AvalonEdit.Search
 		{
 			panel.Close();
 		}
+
+        public void Open()
+        {
+            panel.Open();
+            panel.SearchPattern = TextArea.Selection.GetText();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Input, (Action)delegate { panel.Reactivate(); });
+        }
 		
 		/// <summary>
 		/// Fired when SearchOptions are modified inside the SearchPanel.

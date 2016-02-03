@@ -307,6 +307,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                 editor.TextChanged += Editor_TextChanged;
                 editor.TextArea.GotFocus += Editor_GotFocus;
 
+                editor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(new SearchInputHandler(editor.TextArea));
+
                 Content = editor;
             }
             catch (Exception ex)
@@ -385,10 +387,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 if (handler is SearchInputHandler)
                 {
-                    return;
+                    IsActive = true;
+                    _Editor.TextArea.Focus();
+
+                    SearchInputHandler search = (SearchInputHandler)handler;
+                    search.Open();
                 }
             }
-            _Editor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(new SearchInputHandler(_Editor.TextArea));
         }
 
         #region Commands
