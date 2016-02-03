@@ -107,7 +107,7 @@
                     <MenuItem Header="_Window">
                         <MenuItem.ItemsSource>
                             <CompositeCollection>
-                                <MenuItem Header="_Close" Command="{Binding CloseCommand}" IsEnabled="{Binding Editor.HasChildren}" />
+                                <MenuItem Header="_Close" Command="{Binding CloseFileCommand}" IsEnabled="{Binding Editor.HasChildren}" />
                                 <MenuItem Header="Close _All" Command="{Binding CloseAllCommand}" IsEnabled="{Binding Editor.HasChildren}" />
                                 <Separator />
                                 <CollectionContainer Collection="{Binding Source={StaticResource wItems}}" />

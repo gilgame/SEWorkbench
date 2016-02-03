@@ -86,7 +86,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public event EventHandler SelectionChanged;
         public void RaiseSelectionChanged()
         {
-            RaisePropertyChanged("SelectedItemType");
+            OnPropertyChanged("SelectedItemType");
         }
 
         public event InsertEventHandler InsertRequested;

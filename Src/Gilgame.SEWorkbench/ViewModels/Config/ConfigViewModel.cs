@@ -14,7 +14,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
             set
             {
                 _TextEditor = value;
-                RaisePropertyChanged("TextEditor");
+                OnPropertyChanged("TextEditor");
             }
         }
 

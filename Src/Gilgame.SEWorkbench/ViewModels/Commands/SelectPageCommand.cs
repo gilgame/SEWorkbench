@@ -3,13 +3,13 @@ using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels.Commands
 {
-    public class SelectFileCommand : ICommand
+    public class SelectPageCommand : ICommand
     {
-        private readonly object _ViewModel;
+        private readonly PageViewModel _Page;
 
-        public SelectFileCommand(object viewmodel)
+        public SelectPageCommand(PageViewModel page)
         {
-            _ViewModel = viewmodel;
+            _Page = page;
         }
 
         public bool CanExecute(object parameter)
@@ -25,10 +25,9 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            if (_ViewModel is PageViewModel)
+            if (_Page != null)
             {
-                PageViewModel vm = (PageViewModel)_ViewModel;
-                vm.PerformSelectFile();
+                _Page.PerformSelectPage();
             }
         }
     }

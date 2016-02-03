@@ -13,7 +13,9 @@ namespace Gilgame.SEWorkbench.ViewModels
 {
     public class PageViewModel : BaseViewModel
     {
-        private CodeTextEditor _Editor = new CodeTextEditor();
+        #region Properties
+
+        private Models.Page _Model;
 
         public Guid Identifier
         {
@@ -23,20 +25,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             private set
             {
-                _Model.Identifier = value;
-            }
-        }
-
-        private Models.Page _Model;
-        public Models.Page Model
-        {
-            get
-            {
-                return _Model;
-            }
-            private set
-            {
-                _Model = value;
+                if (_Model.Identifier != value)
+                {
+                    _Model.Identifier = value;
+                    OnPropertyChanged("Identifier");
+                }
             }
         }
 
@@ -51,7 +44,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Name != value)
                 {
                     _Model.Name = value;
-                    RaisePropertyChanged("Name");
+                    OnPropertyChanged("Name");
                 }
             }
         }
@@ -67,7 +60,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Filename != value)
                 {
                     _Model.Filename = value;
-                    RaisePropertyChanged("Filename");
+                    OnPropertyChanged("Filename");
                 }
             }
         }
@@ -80,7 +73,11 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             set
             {
-                _Model.Type = value;
+                if (_Model.Type != value)
+                {
+                    _Model.Type = value;
+                    OnPropertyChanged("Type");
+                }
             }
         }
 
@@ -96,47 +93,25 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Header != value)
                 {
                     _Header = value;
-                    RaisePropertyChanged("Header");
+                    OnPropertyChanged("Header");
                 }
             }
         }
 
-        private CodeTextEditor _Content;
+        private CodeTextEditor _Editor;
         public CodeTextEditor Content
         {
             get
             {
-                return _Content;
+                return _Editor;
             }
             private set
             {
-                if (_Content != value)
+                if (_Editor != value)
                 {
-                    _Content = value;
-                    RaisePropertyChanged("Content");
+                    _Editor = value;
+                    OnPropertyChanged("Content");
                 }
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                if (_Content != null)
-                {
-                    return _Content.Text;
-                }
-                return String.Empty;
-            }
-        }
-
-        public string Line
-        {
-            get
-            {
-                ICSharpCode.AvalonEdit.Document.DocumentLine line = _Content.Document.GetLineByOffset(_Content.CaretOffset);
-
-                return _Content.Text.Substring(line.Offset, line.Length);
             }
         }
 
@@ -152,7 +127,13 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsSelected)
                 {
                     _IsSelected = value;
-                    RaisePropertyChanged("IsSelected");
+
+                    if (_IsSelected)
+                    {
+                        RaiseSelected();
+                    }
+
+                    OnPropertyChanged("IsSelected");
                 }
             }
         }
@@ -168,13 +149,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 if (value != _IsActive)
                 {
-
                     _IsActive = value;
+
                     if (_IsActive)
                     {
                         RaiseSelected();
                     }
-                    RaisePropertyChanged("IsActive");
+
+                    OnPropertyChanged("IsActive");
                 }
             }
         }
@@ -191,7 +173,28 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsModified)
                 {
                     _IsModified = value;
-                    RaisePropertyChanged("IsModified");
+                    OnPropertyChanged("IsModified");
+                }
+            }
+        }
+
+        private bool _IsReadOnly = false;
+        public bool IsReadOnly
+        {
+            get
+            {
+                return _IsReadOnly;
+            }
+            set
+            {
+                if (_Editor != null)
+                {
+                    _Editor.IsReadOnly = value;
+                }
+                if (value != _IsReadOnly)
+                {
+                    _IsReadOnly = value;
+                    OnPropertyChanged("IsReadOnly");
                 }
             }
         }
@@ -218,21 +221,16 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        #endregion
+
+        #region Events
+
         public event FileEventHandler Selected;
         private void RaiseSelected()
         {
             if (Selected != null)
             {
                 Selected(this, new FileEventArgs(Filename));
-            }
-        }
-
-        public event FileEventHandler FileCloseRequested;
-        private void RaiseFileCloseRequested()
-        {
-            if (FileCloseRequested != null)
-            {
-                FileCloseRequested(this, new FileEventArgs(_Model.Filename));
             }
         }
 
@@ -254,6 +252,19 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event FileEventHandler FileCloseRequested;
+        private void RaiseFileCloseRequested()
+        {
+            if (FileCloseRequested != null)
+            {
+                FileCloseRequested(this, new FileEventArgs(_Model.Filename));
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+
         public PageViewModel(BaseViewModel parent, string name, string filename, Models.PageType type) : base(parent)
         {
             _Model = new Models.Page();
@@ -266,21 +277,22 @@ namespace Gilgame.SEWorkbench.ViewModels
             BuildEditor();
 
             _CloseFileCommand = new Commands.CloseFileCommand(this);
-            _SelectFileCommand = new Commands.SelectFileCommand(this);
+            _SelectPageCommand = new Commands.SelectPageCommand(this);
         }
 
         private void BuildEditor()
         {
+            CodeTextEditor editor = new CodeTextEditor();
+
             try
             {
-                _Editor.OpenFile(Filename);
+                editor.OpenFile(Filename);
 
-                // TODO make text editor settings gui
-                _Editor.FontFamily = new FontFamily(Configuration.TextEditor.FontFamily);
-                _Editor.FontSize = Configuration.TextEditor.FontSize;
-                _Editor.Completion = EditorViewModel.Completion;
-                _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-                _Editor.Margin = new Thickness(0, 6, 0, 6);
+                editor.FontFamily = new FontFamily(Configuration.TextEditor.FontFamily);
+                editor.FontSize = Configuration.TextEditor.FontSize;
+                editor.Completion = EditorViewModel.Completion;
+                editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+                editor.Margin = new Thickness(0, 6, 0, 6);
 
                 ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
                 {
@@ -288,35 +300,20 @@ namespace Gilgame.SEWorkbench.ViewModels
                     IndentationSize = Configuration.TextEditor.TabSize,
                     EnableTextDragDrop = true,
                 };
-                _Editor.Options = options;
+                editor.Options = options;
 
-                _Editor.TextChanged += Editor_TextChanged;
-                _Editor.TextArea.GotFocus += Editor_GotFocus;
+                editor.IsReadOnly = _IsReadOnly;
 
-                Content = _Editor;
+                editor.TextChanged += Editor_TextChanged;
+                editor.TextArea.GotFocus += Editor_GotFocus;
+
+                Content = editor;
             }
             catch (Exception ex)
             {
-                string message = String.Format("Unable to open file '{0}'", _Editor.FileName);
+                string message = String.Format("Unable to open file '{0}'", editor.FileName);
                 Services.MessageBox.ShowError(message, ex);
             }
-        }
-
-        public void SilentUnselected()
-        {
-            _IsSelected = false;
-        }
-
-        public void ShowQuickFind()
-        {
-            foreach (ITextAreaInputHandler handler in _Content.TextArea.DefaultInputHandler.NestedInputHandlers)
-            {
-                if (handler is SearchInputHandler)
-                {
-                    return;
-                }
-            }
-            _Content.TextArea.DefaultInputHandler.NestedInputHandlers.Add(new SearchInputHandler(_Content.TextArea));
         }
 
         private void Editor_TextChanged(object sender, EventArgs e)
@@ -333,46 +330,30 @@ namespace Gilgame.SEWorkbench.ViewModels
             IsActive = true;
         }
 
+        #endregion
+
         public void Save()
         {
-            try
+            if (_IsModified)
             {
-                if (_Editor.SaveFile())
+                try
                 {
-                    IsModified = false;
-                    IgnoreUpdates = false;
+                    if (_Editor.SaveFile())
+                    {
+                        IsModified = false;
+                        IgnoreUpdates = false;
 
-                    _LastSaved = DateTime.Now;
+                        _LastSaved = DateTime.Now;
 
-                    RaiseFileSaved();
+                        RaiseFileSaved();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string message = String.Format("Failed to save file '{0}'", _Editor.FileName);
+                    Services.MessageBox.ShowError(message, ex);
                 }
             }
-            catch (Exception ex)
-            {
-                string message = String.Format("Failed to save file '{0}'", _Editor.FileName);
-                Services.MessageBox.ShowError(message, ex);
-            }
-        }
-
-        public void SetReadonly()
-        {
-            Content.IsReadOnly = true;
-        }
-
-        #region Close File Command
-
-        private ICommand _CloseFileCommand;
-        public ICommand CloseFileCommand
-        {
-            get
-            {
-                return _CloseFileCommand;
-            }
-        }
-
-        public void PerformCloseFile()
-        {
-            RaiseFileCloseRequested();
         }
 
         public void UpdateContent()
@@ -381,10 +362,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 try
                 {
-                    int start = Content.SelectionStart;
+                    int start = _Editor.SelectionStart;
 
-                    Content.OpenFile(Filename);
-                    Content.SelectionStart = start;
+                    _Editor.OpenFile(Filename);
+                    _Editor.SelectionStart = start;
 
                     _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
 
@@ -398,23 +379,59 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        #endregion
+        public void ShowQuickFind()
+        {
+            foreach (ITextAreaInputHandler handler in _Editor.TextArea.DefaultInputHandler.NestedInputHandlers)
+            {
+                if (handler is SearchInputHandler)
+                {
+                    return;
+                }
+            }
+            _Editor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(new SearchInputHandler(_Editor.TextArea));
+        }
 
-        #region Select File Command
+        #region Commands
 
-        private ICommand _SelectFileCommand;
-        public ICommand SelectFileCommand
+        #region Select Page Command
+
+        private ICommand _SelectPageCommand;
+        public ICommand SelectPageCommand
         {
             get
             {
-                return _SelectFileCommand;
+                return _SelectPageCommand;
             }
         }
 
-        public void PerformSelectFile()
+        public void PerformSelectPage()
         {
-            IsSelected = true;
+            IsActive = true;
         }
+
+        #endregion
+
+        #region Close File Command
+
+        private ICommand _CloseFileCommand;
+
+        /// <summary>
+        /// Required for AvalonDock compatability
+        /// </summary>
+        public ICommand CloseFileCommand
+        {
+            get
+            {
+                return _CloseFileCommand;
+            }
+        }
+
+        public void PerformCloseFile()
+        {
+            RaiseFileCloseRequested();
+        }
+
+        #endregion
 
         #endregion
     }

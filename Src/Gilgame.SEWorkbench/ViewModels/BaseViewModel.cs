@@ -17,7 +17,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Parent != value)
                 {
                     _Parent = value;
-                    RaisePropertyChanged("Parent");
+                    OnPropertyChanged("Parent");
                 }
             }
         }
@@ -28,7 +28,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void RaisePropertyChanged(string name)
+        protected void OnPropertyChanged(string name)
         {
             if (PropertyChanged != null)
             {

@@ -74,7 +74,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public event EventHandler ProjectCreated;
         private void RaiseProjectCreated()
         {
-            RaisePropertyChanged("IsClosed");
+            OnPropertyChanged("IsClosed");
             if (ProjectCreated != null)
             {
                 ProjectCreated(this, EventArgs.Empty);
@@ -84,7 +84,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public event EventHandler ProjectOpened;
         private void RaiseProjectOpened()
         {
-            RaisePropertyChanged("IsClosed");
+            OnPropertyChanged("IsClosed");
             if (ProjectOpened != null)
             {
                 ProjectOpened(this, EventArgs.Empty);
@@ -102,7 +102,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public event EventHandler ProjectClosed;
         private void RaiseProjectClosed()
         {
-            RaisePropertyChanged("IsClosed");
+            OnPropertyChanged("IsClosed");
             if (ProjectClosed != null)
             {
                 ProjectClosed(this, EventArgs.Empty);
@@ -112,7 +112,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         public event EventHandler SelectionChanged;
         public void RaiseSelectionChanged()
         {
-            RaisePropertyChanged("SelectedItemType");
+            OnPropertyChanged("SelectedItemType");
 
             ProjectItemViewModel selected = SelectedItem;
             if (selected == null)

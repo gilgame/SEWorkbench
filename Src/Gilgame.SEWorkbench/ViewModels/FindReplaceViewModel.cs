@@ -17,9 +17,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _Mode = value;
 
-                    RaisePropertyChanged("Mode");
-                    RaisePropertyChanged("IsFindMode");
-                    RaisePropertyChanged("IsReplaceMode");
+                    OnPropertyChanged("Mode");
+                    OnPropertyChanged("IsFindMode");
+                    OnPropertyChanged("IsReplaceMode");
                 }
             }
         }
@@ -35,9 +35,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != (Mode == Models.FindMode.Find))
                 {
                     Mode = (Mode == Models.FindMode.Find) ? Models.FindMode.Replace : Models.FindMode.Find;
-                    RaisePropertyChanged("Mode");
-                    RaisePropertyChanged("IsFindMode");
-                    RaisePropertyChanged("IsReplaceMode");
+                    OnPropertyChanged("Mode");
+                    OnPropertyChanged("IsFindMode");
+                    OnPropertyChanged("IsReplaceMode");
                 }
             }
         }
@@ -54,9 +54,9 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     Mode = (Mode == Models.FindMode.Find) ? Models.FindMode.Replace : Models.FindMode.Find;
 
-                    RaisePropertyChanged("Mode");
-                    RaisePropertyChanged("IsFindMode");
-                    RaisePropertyChanged("IsReplaceMode");
+                    OnPropertyChanged("Mode");
+                    OnPropertyChanged("IsFindMode");
+                    OnPropertyChanged("IsReplaceMode");
                 }
             }
         }

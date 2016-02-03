@@ -60,7 +60,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsExpanded)
                 {
                     _IsExpanded = value;
-                    RaisePropertyChanged("IsExpanded");
+                    OnPropertyChanged("IsExpanded");
                 }
 
                 if (_IsExpanded && Parent != null)
@@ -83,7 +83,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsVisible)
                 {
                     _IsVisible = value;
-                    RaisePropertyChanged("IsVisible");
+                    OnPropertyChanged("IsVisible");
                 }
 
                 if (_IsVisible && Parent != null)
@@ -109,7 +109,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsSelected)
                 {
                     _IsSelected = value;
-                    RaisePropertyChanged("IsSelected");
+                    OnPropertyChanged("IsSelected");
                 }
             }
         }

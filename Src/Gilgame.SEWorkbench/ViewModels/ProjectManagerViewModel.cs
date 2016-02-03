@@ -406,11 +406,13 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void RegisterPage(PageViewModel page)
         {
             page.FileSaved += Page_FileSaved;
+            page.FileCloseRequested += Page_CloseFileRequested;
         }
 
         private void UnregisterPage(PageViewModel page)
         {
             page.FileSaved -= Page_FileSaved;
+            page.FileCloseRequested -= Page_CloseFileRequested;
         }
 
         private void Editor_FileChanged(object sender, FileEventArgs e)

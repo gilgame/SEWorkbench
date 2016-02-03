@@ -15,7 +15,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
             set
             {
                 Configuration.TextEditor.ConvertTabsToSpaces = value;
-                RaisePropertyChanged("ConvertTabsToSpaces");
+                OnPropertyChanged("ConvertTabsToSpaces");
             }
         }
 
@@ -28,7 +28,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
             set
             {
                 Configuration.TextEditor.TabSize = value;
-                RaisePropertyChanged("TabSize");
+                OnPropertyChanged("TabSize");
             }
         }
 
@@ -46,7 +46,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
             set
             {
                 Configuration.TextEditor.FontFamily = value.Name;
-                RaisePropertyChanged("FontFamily");
+                OnPropertyChanged("FontFamily");
             }
         }
 
@@ -59,7 +59,7 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
             set
             {
                 Configuration.TextEditor.FontSize = value;
-                RaisePropertyChanged("FontSize");
+                OnPropertyChanged("FontSize");
             }
         }
 

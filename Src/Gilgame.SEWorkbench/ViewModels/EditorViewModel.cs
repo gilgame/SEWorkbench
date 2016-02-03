@@ -34,9 +34,9 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             get
             {
-                foreach(PageViewModel page in Items)
+                foreach (PageViewModel page in Items)
                 {
-                    if (page.IsActive)
+                    if (page.IsSelected)
                     {
                         return page;
                     }
@@ -68,11 +68,6 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void Page_Selected(object sender, FileEventArgs e)
         {
             UpdateScriptProvider();
-        }
-
-        private void Page_TextChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void Page_FileSaved(object sender, EventArgs e)
@@ -120,20 +115,18 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
             }
 
-            RaisePropertyChanged("HasChildren");
+            OnPropertyChanged("HasChildren");
         }
 
         private void RegisterPage(PageViewModel page)
         {
             page.Selected += Page_Selected;
-            page.TextChanged += Page_TextChanged;
             page.FileSaved += Page_FileSaved;
         }
 
         private void UnregisterPage(PageViewModel page)
         {
             page.Selected -= Page_Selected;
-            page.TextChanged -= Page_TextChanged;
             page.FileSaved -= Page_FileSaved;
         }
 

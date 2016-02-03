@@ -291,7 +291,7 @@
     <Compile Include="ViewModels\Commands\SaveFileCommand.cs" />
     <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\SelectAllCommand.cs" />
-    <Compile Include="ViewModels\Commands\SelectFileCommand.cs" />
+    <Compile Include="ViewModels\Commands\SelectPageCommand.cs" />
     <Compile Include="ViewModels\Commands\UndoCommand.cs" />
     <Compile Include="ViewModels\Commands\ViewCodeCommand.cs" />
     <Compile Include="ViewModels\Comparers\GridItemComparer.cs" />
