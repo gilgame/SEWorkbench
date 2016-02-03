@@ -28,9 +28,9 @@ namespace Gilgame.SEWorkbench.Interop
             {
                 string text = "using System;\nusing System.Collections.Generic;\nusing VRageMath;\nusing VRage.Game;\nusing System.Text;\nusing Sandbox.ModAPI.Interfaces;\nusing Sandbox.ModAPI.Ingame;\npublic class Program: MyGridProgram\n{\n" + program + "\n}";
                 if (VRage.Compiler.IlCompiler.CompileStringIngame(Path.Combine(VRage.FileSystem.MyFileSystem.UserDataPath, "IngameScript.dll"), new string[]
-				{
-					text
-				}, out assembly, errors))
+		        {
+			        text
+		        }, out assembly, errors))
                 {
                     return true;
                 }
