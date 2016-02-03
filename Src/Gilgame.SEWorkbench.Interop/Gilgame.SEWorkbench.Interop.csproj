@@ -112,13 +112,12 @@
   <ItemGroup>
     <Compile Include="AssemblyObject.cs" />
     <Compile Include="Blueprint.cs" />
-    <Compile Include="ILChecker.cs" />
     <Compile Include="Decompiler.cs" />
     <Compile Include="Grid.cs" />
-    <Compile Include="ILCompiler.cs" />
     <Compile Include="InGameScript.cs" />
     <Compile Include="MyDefaultAssemblyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpaceEngineers.cs" />
     <Compile Include="TerminalBlock.cs" />
   </ItemGroup>
   <ItemGroup>
