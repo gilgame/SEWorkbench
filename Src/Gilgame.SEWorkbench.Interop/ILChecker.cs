@@ -5,66 +5,28 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Timers;
 using System.Xml.Serialization;
-
 
 namespace Gilgame.SEWorkbench.Interop
 {
-    public class InGameScript
+    public class IlChecker
     {
-        private static bool _Initialized = false;
+        public static Dictionary<Type, List<MemberInfo>> AllowedOperands;
 
-        private List<String> _CompileErrors = new List<string>();
-        public List<String> CompileErrors
-        {
-            get
-            {
-                return _CompileErrors;
-            }
-        }
+        public static Dictionary<Assembly, List<string>> AllowedNamespacesCommon;
 
-        public InGameScript(string program)
-        {
-            if (!_Initialized)
-            {
-                Init();
-            }
+        public static Dictionary<Assembly, List<string>> AllowedNamespacesModAPI;
 
-            Assembly temp = null;
-            CompileProgram(program, _CompileErrors, ref temp);
-        }
-
-        public static bool CompileProgram(string program, List<string> errors, ref Assembly assembly)
-        {
-            if (program != null && program.Length > 0)
-            {
-                string text = "using System;\nusing System.Collections.Generic;\nusing VRageMath;\nusing VRage.Game;\nusing System.Text;\nusing Sandbox.ModAPI.Interfaces;\nusing Sandbox.ModAPI.Ingame;\npublic class Program: MyGridProgram\n{\n" + program + "\n}";
-                if (IlCompiler.CompileStringIngame(Path.Combine(VRage.FileSystem.MyFileSystem.UserDataPath, "IngameScript.dll"), new string[]
-				{
-					text
-				}, out assembly, errors))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static void Init()
-        {
-            //InitIlChecker();
-            //InitIlCompiler();
-
-            _Initialized = true;
-        }
-
-        private static void InitIlChecker()
+        static IlChecker()
         {
             IlChecker.AllowedOperands = new Dictionary<Type, List<MemberInfo>>();
             IlChecker.AllowedNamespacesCommon = new Dictionary<Assembly, List<string>>();
+            IlChecker.AllowedNamespacesModAPI = new Dictionary<Assembly, List<string>>();
             IlChecker.AllowedOperands.Add(typeof(object), null);
             IlChecker.AllowedOperands.Add(typeof(IDisposable), null);
             IlChecker.AllowNamespaceOfTypeCommon(typeof(IEnumerator));
@@ -75,6 +37,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Enumerable));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(StringBuilder));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Regex));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(Timer));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Calendar));
             IlChecker.AllowedOperands.Add(typeof(StringBuilder), null);
             IlChecker.AllowedOperands.Add(typeof(string), null);
@@ -192,24 +155,127 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowedOperands.Add(typeof(IComparable<>), null);
         }
 
-        private static void InitIlCompiler()
+        public static void AllowNamespaceOfTypeModAPI(Type type)
         {
-            Func<string, string> func = (string x) => Path.Combine(VRage.FileSystem.MyFileSystem.ExePath, x);
-            IlCompiler.Options = new System.CodeDom.Compiler.CompilerParameters(new string[]
-			{
-				func("SpaceEngineers.ObjectBuilders.dll"),
-				func("MedievalEngineers.ObjectBuilders.dll"),
-				func("Sandbox.Game.dll"),
-				func("Sandbox.Common.dll"),
-				func("Sandbox.Graphics.dll"),
-				func("VRage.dll"),
-				func("VRage.Library.dll"),
-				func("VRage.Math.dll"),
-				func("VRage.Game.dll"),
-				"System.Xml.dll",
-				"System.Core.dll",
-				"System.dll"
-			});
+            if (!IlChecker.AllowedNamespacesModAPI.ContainsKey(type.Assembly))
+            {
+                IlChecker.AllowedNamespacesModAPI.Add(type.Assembly, new List<string>());
+            }
+            IlChecker.AllowedNamespacesModAPI[type.Assembly].Add(type.Namespace);
+        }
+
+        public static void AllowNamespaceOfTypeCommon(Type type)
+        {
+            if (!IlChecker.AllowedNamespacesCommon.ContainsKey(type.Assembly))
+            {
+                IlChecker.AllowedNamespacesCommon.Add(type.Assembly, new List<string>());
+            }
+            IlChecker.AllowedNamespacesCommon[type.Assembly].Add(type.Namespace);
+        }
+
+        /// <summary>
+        /// Checks list of IL instructions against dangerous types
+        /// </summary>
+        /// <param name="dangerousTypeNames">Full names of dangerous types</param>
+        public static bool CheckIl(List<VRage.Compiler.IlReader.IlInstruction> instructions, out Type failed, bool isIngameScript, Dictionary<Type, List<MemberInfo>> allowedTypes = null)
+        {
+            failed = null;
+            foreach (KeyValuePair<Type, List<MemberInfo>> current in allowedTypes)
+            {
+                if (!IlChecker.AllowedOperands.Contains(current))
+                {
+                    IlChecker.AllowedOperands.Add(current.Key, current.Value);
+                }
+            }
+            foreach (VRage.Compiler.IlReader.IlInstruction current2 in instructions)
+            {
+                MethodInfo methodInfo = current2.Operand as MethodInfo;
+                if (methodInfo != null && IlChecker.HasMethodInvalidAtrributes(methodInfo.Attributes))
+                {
+                    bool result = false;
+                    return result;
+                }
+                if (!IlChecker.CheckMember(current2.Operand as MemberInfo, isIngameScript) || current2.OpCode == OpCodes.Calli)
+                {
+                    failed = ((MemberInfo)current2.Operand).DeclaringType;
+                    bool result = false;
+                    return result;
+                }
+            }
+            return true;
+        }
+
+        private static bool CheckMember(MemberInfo memberInfo, bool isIngameScript)
+        {
+            return memberInfo == null || IlChecker.CheckTypeAndMember(memberInfo.DeclaringType, isIngameScript, memberInfo);
+        }
+
+        public static bool CheckTypeAndMember(Type type, bool isIngameScript, MemberInfo memberInfo = null)
+        {
+            return type == null || IlChecker.IsDelegate(type) || (!type.IsGenericTypeDefinition && type.IsGenericType && IlChecker.CheckGenericType(type.GetGenericTypeDefinition(), memberInfo, isIngameScript)) || (IlChecker.CheckNamespace(type, isIngameScript) || IlChecker.CheckOperand(type, memberInfo, IlChecker.AllowedOperands));
+        }
+
+        private static bool IsDelegate(Type type)
+        {
+            Type typeFromHandle = typeof(MulticastDelegate);
+            return typeFromHandle.IsAssignableFrom(type.BaseType) || type == typeFromHandle || type == typeFromHandle.BaseType;
+        }
+
+        private static bool CheckNamespace(Type type, bool isIngameScript)
+        {
+            if (type == null)
+            {
+                return false;
+            }
+            bool flag = IlChecker.AllowedNamespacesCommon.ContainsKey(type.Assembly) && IlChecker.AllowedNamespacesCommon[type.Assembly].Contains(type.Namespace);
+            if (!flag && !isIngameScript)
+            {
+                flag = (IlChecker.AllowedNamespacesModAPI.ContainsKey(type.Assembly) && IlChecker.AllowedNamespacesModAPI[type.Assembly].Contains(type.Namespace));
+            }
+            return flag;
+        }
+
+        private static bool CheckOperand(Type type, MemberInfo memberInfo, Dictionary<Type, List<MemberInfo>> op)
+        {
+            return op != null && op.ContainsKey(type) && (memberInfo == null || op[type] == null || op[type].Contains(memberInfo));
+        }
+
+        private static bool CheckGenericType(Type declType, MemberInfo memberInfo, bool isIngameScript)
+        {
+            if (IlChecker.CheckTypeAndMember(declType, isIngameScript, memberInfo))
+            {
+                if (memberInfo != null)
+                {
+                    Type[] genericArguments = memberInfo.DeclaringType.GetGenericArguments();
+                    for (int i = 0; i < genericArguments.Length; i++)
+                    {
+                        Type type = genericArguments[i];
+                        if (!type.IsGenericParameter && !IlChecker.CheckTypeAndMember(type, isIngameScript, null))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public static bool HasMethodInvalidAtrributes(MethodAttributes Attributes)
+        {
+            return (Attributes & (MethodAttributes.PinvokeImpl | MethodAttributes.UnmanagedExport)) != MethodAttributes.PrivateScope;
+        }
+
+        public static bool IsMethodFromParent(Type classType, MethodBase method)
+        {
+            return classType.IsSubclassOf(method.DeclaringType);
+        }
+
+        public static void Clear()
+        {
+            IlChecker.AllowedOperands.Clear();
+            IlChecker.AllowedNamespacesCommon.Clear();
+            IlChecker.AllowedNamespacesModAPI.Clear();
         }
     }
 }

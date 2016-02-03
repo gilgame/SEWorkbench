@@ -1,3 +1,7 @@
+Beta 8
+================================
+ * Projects will still open if blueprints failed to load.
+
 Beta 7
 ================================
  * Updated for Space Engineers 08.118

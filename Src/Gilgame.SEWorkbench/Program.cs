@@ -291,6 +291,7 @@ namespace Gilgame.SEWorkbench
 
         private static void RegisterPlugins()
         {
+            MyPlugins.RegisterGameAssemblyFile("SpaceEngineers.Game.dll");
             MyPlugins.RegisterGameObjectBuildersAssemblyFile("SpaceEngineers.ObjectBuilders.dll");
             MyPlugins.RegisterSandboxAssemblyFile("Sandbox.Common.dll");
             MyPlugins.RegisterSandboxGameAssemblyFile("Sandbox.Game.dll");

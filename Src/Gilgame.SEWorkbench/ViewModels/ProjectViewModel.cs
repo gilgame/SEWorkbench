@@ -265,10 +265,16 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void LoadBlueprints()
         {
-            LoadBlueprints(_RootItem);
+            bool failed = false;
+
+            LoadBlueprints(_RootItem, failed);
+            if (failed)
+            {
+                Services.MessageBox.ShowMessage("Failed to load one or more blueprints.");
+            }
         }
 
-        private void LoadBlueprints(ProjectItemViewModel item)
+        private void LoadBlueprints(ProjectItemViewModel item, bool failed)
         {
             if (item.Type == ProjectItemType.Blueprints)
             {
@@ -277,11 +283,18 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 Interop.Blueprint.Import(item.Blueprint, out name, out grid);
 
-                item.SetGrid(grid);
+                if (grid == null)
+                {
+                    failed = true;
+                }
+                else
+                {
+                    item.SetGrid(grid);
+                }
             }
             foreach (ProjectItemViewModel child in item.Children)
             {
-                LoadBlueprints(child);
+                LoadBlueprints(child, failed);
             }
         }
 
