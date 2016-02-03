@@ -10,21 +10,6 @@ namespace Gilgame.SEWorkbench.Interop
 {
     public class Blueprint
     {
-        private static bool Initialized = false;
-
-        public static void RunInit()
-        {
-            if (!Initialized)
-            {
-                string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string sepath = Path.Combine(appdata, "SpaceEngineers");
-
-                VRage.FileSystem.MyFileSystem.Init(sepath, sepath);
-
-                Initialized = true;
-            }
-        }
-
         public static void Import(string filename, out string name, out Interop.Grid grid)
         {
             name = string.Empty;
