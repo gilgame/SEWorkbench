@@ -15,8 +15,6 @@ namespace Gilgame.SEWorkbench
 {
     public class Program
     {
-        public static List<Interop.AssemblyObject> Classes = new List<Interop.AssemblyObject>();
-
         public static bool IsAdmin
         {
             get
@@ -65,18 +63,8 @@ namespace Gilgame.SEWorkbench
             Views.SplashScreenView splash = new Views.SplashScreenView();
             splash.Show();
 
-            // TODO separate sandbox init from blueprint init
-            Interop.Blueprint.RunInit();
-
-            Interop.InGameScript.Init();
-
-            #if DEBUG
-                EnableLogging();
-            #endif
-
-            RegisterPlugins();
-            LoadClasses();
-            LoadSerializers();
+            Interop.SpaceEngineers.Initialize();
+            Interop.Decompiler.LoadClasses();
 
             splash.Close();
 
@@ -138,7 +126,7 @@ namespace Gilgame.SEWorkbench
         private static bool SandboxIsCopied(string sepath)
         {
             string local = Directory.GetCurrentDirectory();
-            foreach (string assembly in GetDependencyNames())
+            foreach (string assembly in GetDependenies())
             {
                 string file = Path.Combine(local, assembly);
                 string sefile = Path.Combine(sepath, assembly);
@@ -167,7 +155,7 @@ namespace Gilgame.SEWorkbench
 
             try
             {
-                foreach (string assembly in GetDependencyNames())
+                foreach (string assembly in GetDependenies())
                 {
                     CopyFile(Path.Combine(source, assembly), Path.Combine(destination, assembly));
                 }
@@ -251,7 +239,7 @@ namespace Gilgame.SEWorkbench
             return String.Empty;
         }
 
-        private static List<string> GetDependencyNames()
+        private static List<string> GetDependenies()
         {
             List<string> assemblies = new List<string>()
             {
@@ -269,6 +257,7 @@ namespace Gilgame.SEWorkbench
                 "SharpDX.Toolkit.Graphics.dll",
                 "SharpDX.XAudio2.dll",
                 "SteamSDK.dll",
+                "steam_api.dll",
                 "System.Data.SQLite.dll",
                 "VRage.Audio.dll",
                 "VRage.dll",
@@ -286,54 +275,5 @@ namespace Gilgame.SEWorkbench
             };
             return assemblies;
         }
-
-        #region Init
-
-        private static void RegisterPlugins()
-        {
-            MyPlugins.RegisterGameAssemblyFile("SpaceEngineers.Game.dll");
-            MyPlugins.RegisterGameObjectBuildersAssemblyFile("SpaceEngineers.ObjectBuilders.dll");
-            MyPlugins.RegisterSandboxAssemblyFile("Sandbox.Common.dll");
-            MyPlugins.RegisterSandboxGameAssemblyFile("Sandbox.Game.dll");
-        }
-
-        private static void EnableLogging()
-        {
-            VRage.Utils.MyLog.Default = new VRage.Utils.MyLog();
-            VRage.Utils.MyLog.Default.Init("test.log", new System.Text.StringBuilder());
-        }
-
-        private static void LoadSerializers()
-        {
-            MyObjectBuilder_Base loaded = null;
-
-            try { MyObjectBuilderSerializer.DeserializeXML(String.Empty, out loaded); }
-            catch { }
-        }
-
-        private static void LoadClasses()
-        {
-            List<string> namespaces = new List<string>()
-            {
-                "Sandbox.ModAPI.Ingame",
-                "Sandbox.ModAPI.Interfaces",
-                "VRageMath",
-                "VRage.Game",
-                "VRage.Game.Entity"
-            };
-            Interop.Decompiler decompiler = new Interop.Decompiler(namespaces);
-
-            List<string> assemblies = new List<string>()
-            {
-                "Sandbox.Common.dll",
-                "VRage.Game.dll",
-                "VRage.Math.dll"
-            };
-            List<Interop.AssemblyObject> result = decompiler.Read(assemblies);
-
-            Classes.AddRange(result);
-        }
-
-        #endregion
     }
 }
