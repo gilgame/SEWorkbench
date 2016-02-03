@@ -48,7 +48,7 @@
 
     <Grid Background="#FF2B3B58">
         <Grid.RowDefinitions>
-            <RowDefinition Height="42" />
+            <RowDefinition Height="44" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -130,7 +130,7 @@
                     </MenuItem>
                 </Menu>
 
-                <StackPanel Margin="4,2,4,2" Orientation="Horizontal">
+                <StackPanel Margin="4,0,4,2" Orientation="Horizontal">
                     <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="21" Height="21"
                             IsEnabled="{Binding Editor.HasChildren}" Command="{Binding SaveFileCommand}">
                         <Image Source="/Gilgame.SEWorkbench;component/Icons/Save.png" />
