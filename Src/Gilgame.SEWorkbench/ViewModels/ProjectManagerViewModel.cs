@@ -39,7 +39,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _ProjectTitle = value;
-                RaisePropertyChanged("ProjectTitle");
+                OnPropertyChanged("ProjectTitle");
             }
         }
 
@@ -62,7 +62,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Project = value;
-                RaisePropertyChanged("Project");
+                OnPropertyChanged("Project");
             }
         }
 
@@ -76,7 +76,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Blueprint = value;
-                RaisePropertyChanged("Blueprint");
+                OnPropertyChanged("Blueprint");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Editor = value;
-                RaisePropertyChanged("Editor");
+                OnPropertyChanged("Editor");
             }
         }
 
@@ -104,7 +104,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Classes = value;
-                RaisePropertyChanged("Classes");
+                OnPropertyChanged("Classes");
             }
         }
 
@@ -118,7 +118,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Output = value;
-                RaisePropertyChanged("Output");
+                OnPropertyChanged("Output");
             }
         }
 
@@ -132,7 +132,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _FindReplace = value;
-                RaisePropertyChanged("FindReplace");
+                OnPropertyChanged("FindReplace");
             }
         }
 
@@ -146,7 +146,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _Config = value;
-                RaisePropertyChanged("Config");
+                OnPropertyChanged("Config");
             }
         }
 
@@ -377,7 +377,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         PageViewModel page = (PageViewModel)o;
                         RegisterPage(page);
 
-                        WindowMenuItems.Add(new MenuItemViewModel(this, page.Name, page.SelectFileCommand) { Identifier = page.Identifier });
+                        WindowMenuItems.Add(new MenuItemViewModel(this, page.Name, page.SelectPageCommand) { Identifier = page.Identifier });
                     }
                 }
             }
@@ -405,13 +405,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void RegisterPage(PageViewModel page)
         {
-            page.FileCloseRequested += Page_CloseFileRequested;
             page.FileSaved += Page_FileSaved;
         }
 
         private void UnregisterPage(PageViewModel page)
         {
-            page.FileCloseRequested -= Page_CloseFileRequested;
             page.FileSaved -= Page_FileSaved;
         }
 
@@ -516,9 +514,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 File.Write(tempfile, code);
 
-                PageViewModel newpage = new PageViewModel(this, tempname, tempfile, Models.PageType.Output);
+                PageViewModel newpage = new PageViewModel(this, tempname, tempfile, Models.PageType.Output)
+                {
+                    IsReadOnly = true
+                };
                 newpage.Content.Text = code;
-                newpage.SetReadonly();
 
                 Editor.Items.Add(newpage);
 
@@ -689,21 +689,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             PageViewModel page = Editor.SelectedItem;
             if (page != null)
             {
-                if (page.IsModified)
-                {
-                    MessageBoxResult result = Services.MessageBox.ShowQuestion("this file has been modified. Would you like to save it now?");
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        page.Save();
-                    }
-                    if (result == MessageBoxResult.Cancel)
-                    {
-                        return;
-                    }
-                }
-                page.FileCloseRequested -= Page_CloseFileRequested;
-
-                Editor.Items.Remove(page);
+                PerformCloseFile(page.Filename);
             }
         }
 
@@ -724,7 +710,6 @@ namespace Gilgame.SEWorkbench.ViewModels
                         return;
                     }
                 }
-                page.FileCloseRequested -= Page_CloseFileRequested;
 
                 Editor.Items.Remove(page);
             }
