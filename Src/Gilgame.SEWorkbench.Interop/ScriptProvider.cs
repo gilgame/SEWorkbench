@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using ICSharpCode.CodeCompletion;
 
-namespace Gilgame.SEWorkbench.Completion
+namespace Gilgame.SEWorkbench.Interop
 {
     public class ScriptProvider : ICSharpScriptProvider
     {

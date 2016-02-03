@@ -163,7 +163,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Completion\ScriptProvider.cs" />
     <Compile Include="Configuration\MainWindow.cs" />
     <Compile Include="Configuration\Program.cs" />
     <Compile Include="Configuration\TextEditor.cs" />

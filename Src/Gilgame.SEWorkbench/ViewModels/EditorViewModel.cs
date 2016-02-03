@@ -45,7 +45,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public static Completion.ScriptProvider ScriptProvider = new Completion.ScriptProvider();
+        public static Interop.ScriptProvider ScriptProvider = new Interop.ScriptProvider();
         public static CSharpCompletion Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(ScriptProvider);
 
         public event FileEventHandler FileChanged;
