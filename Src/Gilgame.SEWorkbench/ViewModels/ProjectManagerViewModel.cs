@@ -297,7 +297,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
             }
             PerformCloseAll();
-            PerformCloseProject();
+
+            Project.SaveProject();
 
             return true;
         }

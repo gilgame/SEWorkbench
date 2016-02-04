@@ -236,6 +236,11 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void SaveProject()
         {
+            if (_RootItem == null)
+            {
+                return;
+            }
+
             string serialized = Serialization.Convert.ToSerialized(Model);
 
             // make it human readable
