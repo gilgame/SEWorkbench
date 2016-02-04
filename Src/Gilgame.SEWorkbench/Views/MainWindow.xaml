@@ -202,7 +202,7 @@
             <ad:LayoutRoot>
                 <ad:LayoutPanel Orientation="Horizontal">
                     <ad:LayoutAnchorablePane DockWidth="200">
-                        <ad:LayoutAnchorable x:Name="pnProjectExplorer"  ContentId="Project Explorer" Title="Project Explorer" ToolTip="Project Explorer" >
+                        <ad:LayoutAnchorable x:Name="pnProjectExplorer"  ContentId="Project" Title="Project Explorer" ToolTip="Project Explorer" >
                             <v:ProjectExplorer x:Name="tvProjectExplorer" />
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 
 using Gilgame.SEWorkbench.ViewModels;
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 using System.IO;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Gilgame.SEWorkbench.Views
 {
@@ -102,20 +104,23 @@ namespace Gilgame.SEWorkbench.Views
 
         private void LoadDockLayout()
         {
-            //string path = GetDockLayoutPath();
-            //if (!File.Exists(path))
-            //{
-            //    return;
-            //}
+            string path = GetDockLayoutPath();
+            if (File.Exists(path))
+            {
+                using (var dispatch = Dispatcher.DisableProcessing())
+                {
+                    XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
+                    layoutSerializer.LayoutSerializationCallback += (s, args) =>
+                    {
+                        args.Content = args.Content;
+                    };
 
-            //using (var dispatch = Dispatcher.DisableProcessing())
-            //{
-            //    XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
-            //    using (var reader = new StreamReader(path))
-            //    {
-            //        layoutSerializer.Deserialize(reader);
-            //    }
-            //}
+                    using (var reader = new StreamReader(path))
+                    {
+                        layoutSerializer.Deserialize(reader);
+                    }
+                }
+            }
         }
 
         private string GetDockLayoutPath()
@@ -169,61 +174,49 @@ namespace Gilgame.SEWorkbench.Views
 
         private void SaveDockLayout()
         {
-            //string path = GetDockLayoutPath();
-            //XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
-            //using (var writer = new StreamWriter(path))
-            //{
-            //    layoutSerializer.Serialize(writer);
-            //}
+            string path = GetDockLayoutPath();
+            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
+            using (var writer = new StreamWriter(path))
+            {
+                layoutSerializer.Serialize(writer);
+            }
         }
 
         private void ProjectExplorerMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (pnProjectExplorer.IsHidden)
-            {
-                pnProjectExplorer.Show();
-                if (pnProjectExplorer.IsAutoHidden)
-                {
-                    pnProjectExplorer.ToggleAutoHide();
-                }
-            }
+            ShowAnchorable("Project", AnchorableShowStrategy.Left);
         }
 
         private void BlueprintsViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (pnBlueprints.IsHidden)
-            {
-                pnBlueprints.Show();
-                if (pnBlueprints.IsAutoHidden)
-                {
-                    pnBlueprints.ToggleAutoHide();
-                }
-            }
+            ShowAnchorable("Blueprints", AnchorableShowStrategy.Right);
         }
 
         private void ClassesViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (pnClasses.IsHidden)
-            {
-                pnClasses.Show();
-                if (pnClasses.IsAutoHidden)
-                {
-                    pnClasses.ToggleAutoHide();
-                }
-            }
+            ShowAnchorable("Classes", AnchorableShowStrategy.Right);
         }
 
         private void OutputViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (pnOutput.IsHidden)
+            ShowAnchorable("Output", AnchorableShowStrategy.Bottom);
+        }
+
+        private void ShowAnchorable(string id, AnchorableShowStrategy strategy)
+        {
+            var anchorable = DockManager.Layout.Descendents().OfType<LayoutAnchorable>().Single(a => a.ContentId == id);
+            if (anchorable.IsHidden)
             {
-                pnOutput.Show();
-                if (pnOutput.IsAutoHidden)
-                {
-                    pnOutput.ToggleAutoHide();
-                }
+                anchorable.Show();
             }
-            pnOutput.Show();
+            else if (anchorable.IsVisible)
+            {
+                anchorable.IsActive = true;
+            }
+            else
+            {
+                anchorable.AddToLayout(DockManager, strategy | AnchorableShowStrategy.Most);
+            }
         }
 
         private void FindReplaceMenuItem_Click(object sender, RoutedEventArgs e)
