@@ -79,22 +79,21 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private bool _IsExpanded = false;
         public bool IsExpanded
         {
             get
             {
-                return _IsExpanded;
+                return _Model.IsExpanded;
             }
             set
             {
-                if (value != _IsExpanded)
+                if (value != _Model.IsExpanded)
                 {
-                    _IsExpanded = value;
+                    _Model.IsExpanded = value;
                     OnPropertyChanged("IsExpanded");
                 }
 
-                if (_IsExpanded && Parent != null)
+                if (_Model.IsExpanded && Parent != null)
                 {
                     ProjectItemViewModel parent = (ProjectItemViewModel)Parent;
                     parent.IsExpanded = true;

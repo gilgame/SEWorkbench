@@ -20,6 +20,9 @@ namespace Gilgame.SEWorkbench.Models
         [XmlElement("Blueprint")]
         public string Blueprint { get; set; }
 
+        [XmlElement("IsExpanded")]
+        public bool IsExpanded { get; set; }
+
         [XmlIgnore]
         public ViewModels.ProjectViewModel Project { get; set; }
 

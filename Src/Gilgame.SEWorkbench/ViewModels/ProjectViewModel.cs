@@ -933,6 +933,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformCloseProject()
         {
+            SaveProject();
+
             if (_RootItem != null)
             {
                 SetRootItem(null);
