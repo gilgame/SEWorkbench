@@ -95,7 +95,6 @@
                     <MenuItem Header="_View">
                         <MenuItem Header="Project Explorer" Click="ProjectExplorerMenuItem_Click" />
                         <MenuItem Header="Blueprints" Click="BlueprintsViewMenuItem_Click" />
-                        <Separator />
                         <MenuItem Header="Classes" Click="ClassesViewMenuItem_Click" />
                         <MenuItem Header="Output" Click="OutputViewMenuItem_Click" />
                         <!--<Separator />

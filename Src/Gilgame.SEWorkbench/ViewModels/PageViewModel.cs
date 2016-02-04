@@ -410,7 +410,9 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformSelectPage()
         {
+            IsSelected = true;
             IsActive = true;
+            _Editor.TextArea.Focus();
         }
 
         #endregion

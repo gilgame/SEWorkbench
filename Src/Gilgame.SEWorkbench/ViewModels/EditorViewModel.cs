@@ -36,6 +36,13 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 foreach (PageViewModel page in Items)
                 {
+                    if (page.IsActive)
+                    {
+                        return page;
+                    }
+                }
+                foreach (PageViewModel page in Items)
+                {
                     if (page.IsSelected)
                     {
                         return page;
