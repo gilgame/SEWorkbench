@@ -1,6 +1,13 @@
 Beta 8
 ================================
+ * Updated for 01.120
  * Projects will still open if blueprints failed to load.
+ * Project Explorer panel will now will now remember which nodes are expanded between sessions.
+ * Panel layout will now persist between sessions.
+ * Added keyboard shortcut to remove trailing whitespace (ctrl+shift+k).
+ * Quick Find window will now get focus the first time it is opened.
+ * Fixed broken Close menu item.
+ * Removed phantom button from Class View panel.
 
 Beta 7
 ================================

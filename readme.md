@@ -13,16 +13,6 @@ These are just a few of the features that have been implemented so far. I think 
  * Basic integrated IL viewer for allowed namespaces
  * Script Organization using a directory structure
 
-Missing Features
-=================================
-This is not an exhaustive list:
- * Find/Replace dialog
- * Text area context menu (keyboard shortcuts are working)
- * Remember panel layout for each project between sessions
- * Enable Drag and Drop support for Project Explorer
- * Configurable settings for the text area
- * Code reformatting
-
 Screenshots
 =================================
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
