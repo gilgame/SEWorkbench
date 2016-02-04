@@ -67,8 +67,7 @@ namespace Gilgame.SEWorkbench.Views
         {
             if (_ProjectManager.Output.Items.Count > 0)
             {
-                pnOutput.IsActive = true;
-                pnOutput.Show();
+                ShowAnchorable("Output", AnchorableShowStrategy.Bottom);
             }
         }
 
