@@ -31,9 +31,12 @@ namespace ICSharpCode.AvalonEdit
 		/// <summary>
 		/// Removes trailing whitespace from the selected lines (or the whole document if the selection is empty).
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Whitespace",
-		                                                 Justification = "WPF uses 'Whitespace'")]
-		public static readonly RoutedCommand RemoveTrailingWhitespace = new RoutedCommand("RemoveTrailingWhitespace", typeof(TextEditor));
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Whitespace",
+                                                         Justification = "WPF uses 'Whitespace'")]
+        public static readonly RoutedCommand RemoveTrailingWhitespace = new RoutedCommand("RemoveTrailingWhitespace", typeof(TextEditor),
+            new InputGestureCollection{
+                new KeyGesture(Key.K, ModifierKeys.Control | ModifierKeys.Shift)
+            });
 		
 		/// <summary>
 		/// Converts the selected text to upper case.
@@ -58,17 +61,17 @@ namespace ICSharpCode.AvalonEdit
 		/// <summary>
 		/// Converts tabs to spaces in the selected text.
 		/// </summary>
-		public static readonly RoutedCommand ConvertTabsToSpaces = new RoutedCommand("ConvertTabsToSpaces", typeof(TextEditor));
+        public static readonly RoutedCommand ConvertTabsToSpaces = new RoutedCommand("ConvertTabsToSpaces", typeof(TextEditor));
 		
 		/// <summary>
 		/// Converts spaces to tabs in the selected text.
 		/// </summary>
-		public static readonly RoutedCommand ConvertSpacesToTabs = new RoutedCommand("ConvertSpacesToTabs", typeof(TextEditor));
+        public static readonly RoutedCommand ConvertSpacesToTabs = new RoutedCommand("ConvertSpacesToTabs", typeof(TextEditor));
 		
 		/// <summary>
 		/// Converts leading tabs to spaces in the selected lines (or the whole document if the selection is empty).
 		/// </summary>
-		public static readonly RoutedCommand ConvertLeadingTabsToSpaces = new RoutedCommand("ConvertLeadingTabsToSpaces", typeof(TextEditor));
+        public static readonly RoutedCommand ConvertLeadingTabsToSpaces = new RoutedCommand("ConvertLeadingTabsToSpaces", typeof(TextEditor));
 		
 		/// <summary>
 		/// Converts leading spaces to tabs in the selected lines (or the whole document if the selection is empty).
