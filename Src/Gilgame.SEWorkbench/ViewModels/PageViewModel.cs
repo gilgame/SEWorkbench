@@ -275,7 +275,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             Type = type;
 
             BuildEditor();
-
+            
             _CloseFileCommand = new Commands.CloseFileCommand(this);
             _SelectPageCommand = new Commands.SelectPageCommand(this);
         }
