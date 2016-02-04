@@ -102,20 +102,20 @@ namespace Gilgame.SEWorkbench.Views
 
         private void LoadDockLayout()
         {
-            string path = GetDockLayoutPath();
-            if (!File.Exists(path))
-            {
-                return;
-            }
+            //string path = GetDockLayoutPath();
+            //if (!File.Exists(path))
+            //{
+            //    return;
+            //}
 
-            using (var dispatch = Dispatcher.DisableProcessing())
-            {
-                XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
-                using (var reader = new StreamReader(path))
-                {
-                    layoutSerializer.Deserialize(reader);
-                }
-            }
+            //using (var dispatch = Dispatcher.DisableProcessing())
+            //{
+            //    XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
+            //    using (var reader = new StreamReader(path))
+            //    {
+            //        layoutSerializer.Deserialize(reader);
+            //    }
+            //}
         }
 
         private string GetDockLayoutPath()
@@ -169,12 +169,12 @@ namespace Gilgame.SEWorkbench.Views
 
         private void SaveDockLayout()
         {
-            string path = GetDockLayoutPath();
-            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
-            using (var writer = new StreamWriter(path))
-            {
-                layoutSerializer.Serialize(writer);
-            }
+            //string path = GetDockLayoutPath();
+            //XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
+            //using (var writer = new StreamWriter(path))
+            //{
+            //    layoutSerializer.Serialize(writer);
+            //}
         }
 
         private void ProjectExplorerMenuItem_Click(object sender, RoutedEventArgs e)
@@ -223,6 +223,7 @@ namespace Gilgame.SEWorkbench.Views
                     pnOutput.ToggleAutoHide();
                 }
             }
+            pnOutput.Show();
         }
 
         private void FindReplaceMenuItem_Click(object sender, RoutedEventArgs e)
