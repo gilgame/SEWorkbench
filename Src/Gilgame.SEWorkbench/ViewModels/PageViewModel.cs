@@ -387,7 +387,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 if (handler is SearchInputHandler)
                 {
-                    IsActive = true;
                     _Editor.TextArea.Focus();
 
                     SearchInputHandler search = (SearchInputHandler)handler;

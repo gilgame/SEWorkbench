@@ -22,13 +22,13 @@
                                     </TextBox.Text>
                                 </TextBox>
                                 <ToggleButton Margin="3,5,0,5" IsChecked="{Binding MatchCase, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16" Stretch="Fill" Source="match_case.png" />
+                                    <Image Width="16" Height="16" Stretch="Fill" Source="match_case.png" ToolTip="Match Case" />
                                 </ToggleButton>
                                 <ToggleButton Margin="3,5,0,5" IsChecked="{Binding WholeWords, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16" Stretch="Fill" Source="match_word.png" />
+                                    <Image Width="16" Height="16" Stretch="Fill" Source="match_word.png" ToolTip="Match Whole Word" />
                                 </ToggleButton>
                                 <ToggleButton Margin="3,5,0,5" IsChecked="{Binding UseRegex, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Image Width="16" Height="16" Stretch="Fill" Source="use_regex.png" />
+                                    <Image Width="16" Height="16" Stretch="Fill" Source="use_regex.png" ToolTip="Use Regular Expressions" />
                                 </ToggleButton>
                                 <Button Margin="3,5,0,5" Height="22" Width="22" Command="search:SearchCommands.FindPrevious"
                                     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
