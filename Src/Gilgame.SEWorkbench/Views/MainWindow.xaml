@@ -72,7 +72,7 @@
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Command="{Binding CloseViewCommand}" />
                     </MenuItem>
                     <MenuItem Header="_Edit">
-                        <MenuItem Header="Quick _Find" InputGestureText="Ctrl+F" Command="{Binding Editor.ShowQuickFindCommand}" />
+                        <MenuItem Header="Quick _Find" InputGestureText="Ctrl+F" Command="{Binding Editor.ShowQuickFindCommand}" IsEnabled="{Binding Editor.HasChildren}" />
                         <Separator />
                         <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoCommand}"
                               IsEnabled="{Binding Editor.HasChildren}" />
@@ -114,6 +114,12 @@
                         </MenuItem.ItemsSource>
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="MenuItem">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Foreground" Value="Gray" />
+                                    </Trigger>
+                                </Style.Triggers>
+                                
                                 <Setter Property="Command" Value="{Binding Command}"/>
                                 <Setter Property="Header" Value="{Binding Header}"/>
                                 <Setter Property="InputGestureText" Value="{Binding InputGestureText}" />
