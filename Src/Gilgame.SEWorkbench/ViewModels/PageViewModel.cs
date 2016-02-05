@@ -265,12 +265,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public PageViewModel(BaseViewModel parent, string name, string path) : base(parent)
         {
-            ProjectItemViewModel item = new ProjectItemViewModel(null)
+            ProjectItemViewModel vm = new ProjectItemViewModel(new Models.ProjectItem())
             {
                 Name = name,
                 Path = path
             };
-            Initialize(parent, item, Models.PageType.Output);
+            Initialize(parent, vm, Models.PageType.Output);
         }
 
         private void Initialize(BaseViewModel parent, ProjectItemViewModel item, Models.PageType type)
