@@ -13,8 +13,12 @@
         </Grid.RowDefinitions>
 
         <Grid Background="#FFCFD6E5" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-            <TextBox Margin="5,5,5,5" Text="{Binding Program, Mode=TwoWay}" Name="ProgramTextBox" FontFamily="Consolas" FontSize="11"
-                     AcceptsReturn="True"/>
+            <ScrollViewer>
+                <TextBox Margin="5,5,5,5" Text="{Binding Program, Mode=TwoWay}" Name="ProgramTextBox"
+                         FontFamily="Consolas" FontSize="11" AcceptsReturn="True"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            </ScrollViewer>
         </Grid>
 
         <Button Margin="5,5,92,7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Height="23"
