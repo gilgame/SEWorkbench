@@ -167,7 +167,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public ProjectManagerViewModel(BaseViewModel parent) : base(parent)
         {
-            // create project object first
+            Config = new Config.ConfigViewModel(this);
+
             Project = new ProjectViewModel(this);
             Project.FileRequested += Project_FileRequested;
             Project.SelectionChanged += Project_SelectionChanged;
@@ -191,8 +192,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             Output = new OutputViewModel(this);
 
             FindReplace = new FindReplaceViewModel(this);
-
-            Config = new Config.ConfigViewModel(this);
 
             _NewProjectCommand = new Commands.NewProjectCommand(this);
             _OpenProjectCommand = new Commands.OpenProjectCommand(this);

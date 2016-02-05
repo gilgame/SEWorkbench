@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Windows.Input;
 
 using ICSharpCode.CodeCompletion;
-using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -70,6 +71,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             _ShowQuickFindCommand = new Commands.ShowQuickFindCommand(this);
 
             _Items.CollectionChanged += OnCollectionChanged;
+
+            if (parent != null && parent is ProjectManagerViewModel)
+            {
+                ProjectManagerViewModel manager = (ProjectManagerViewModel)parent;
+                manager.Config.TextEditor.PropertyChanged += Config_PropertyChanged;
+            }
+        }
+
+        private void Config_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            foreach(PageViewModel page in Items)
+            {
+                page.UpdateEditorConfig();
+            }
         }
 
         private void Page_Selected(object sender, FileEventArgs e)

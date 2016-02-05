@@ -288,19 +288,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 editor.OpenFile(Filename);
 
-                editor.FontFamily = new FontFamily(Configuration.TextEditor.FontFamily);
-                editor.FontSize = Configuration.TextEditor.FontSize;
-                editor.Completion = EditorViewModel.Completion;
                 editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
                 editor.Margin = new Thickness(0, 6, 0, 6);
-
-                ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
-                {
-                    ConvertTabsToSpaces = Configuration.TextEditor.ConvertTabsToSpaces,
-                    IndentationSize = Configuration.TextEditor.TabSize,
-                    EnableTextDragDrop = true,
-                };
-                editor.Options = options;
 
                 editor.IsReadOnly = _IsReadOnly;
 
@@ -310,12 +299,29 @@ namespace Gilgame.SEWorkbench.ViewModels
                 editor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(new SearchInputHandler(editor.TextArea));
 
                 Content = editor;
+
+                UpdateEditorConfig();
             }
             catch (Exception ex)
             {
                 string message = String.Format("Unable to open file '{0}'", editor.FileName);
                 Services.MessageBox.ShowError(message, ex);
             }
+        }
+
+        public void UpdateEditorConfig()
+        {
+            _Editor.FontFamily = new FontFamily(Configuration.TextEditor.FontFamily);
+            _Editor.FontSize = Configuration.TextEditor.FontSize;
+            _Editor.Completion = EditorViewModel.Completion;
+
+            ICSharpCode.AvalonEdit.TextEditorOptions options = new ICSharpCode.AvalonEdit.TextEditorOptions()
+            {
+                ConvertTabsToSpaces = Configuration.TextEditor.ConvertTabsToSpaces,
+                IndentationSize = Configuration.TextEditor.TabSize,
+                EnableTextDragDrop = true,
+            };
+            _Editor.Options = options;
         }
 
         private void Editor_TextChanged(object sender, EventArgs e)
