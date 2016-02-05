@@ -269,6 +269,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 }
                 EndVerify();
             }
+            VerifyPaths();
         }
 
         private void BeginVerify()
@@ -279,6 +280,14 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void EndVerify()
         {
             _Verifying = false;
+        }
+
+        public void VerifyPaths()
+        {
+            foreach (ProjectItemViewModel child in Project.First)
+            {
+                child.VerifyPath();
+            }
         }
 
         public bool HandleClosing()
@@ -469,6 +478,11 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             if (item != null)
             {
+                if (!File.Exists(item.Path))
+                {
+                    return;
+                }
+
                 foreach (PageViewModel page in Editor.Items)
                 {
                     if (page.Filename == item.Path)

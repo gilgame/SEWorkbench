@@ -14,6 +14,8 @@
                 <ResourceDictionary Source="/Gilgame.SEWorkbench;component/Styles/TreeViewItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
             <conv:ItemTypeImageConverter x:Key="ItemTypeToImage" />
             <conv:FileSelectedConverter x:Key="FileSelectedToBool" />
 
@@ -61,7 +63,10 @@
                                     <ei:ChangePropertyAction PropertyName="IsSelected" Value="True" TargetObject="{Binding}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <Image Width="12" Height="12" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" Grid.Column="0"/>
+                            <Grid>
+                                <Image Width="16" Height="16" Source="{Binding Type, Converter={StaticResource ItemTypeToImage}, Mode=OneWay}" Grid.Column="0" />
+                                <Image Width="10" Height="10" Margin="4,4,0,0" Source="/Gilgame.SEWorkbench;component/Icons/MissingX.png" Visibility="{Binding FileMissing, Converter={StaticResource BoolToVis}}" />
+                            </Grid>
                             <TextBlock Text="{Binding Name}" Margin="5,0,0,0" Grid.Column="1" />
                         </StackPanel>
                     </HierarchicalDataTemplate>

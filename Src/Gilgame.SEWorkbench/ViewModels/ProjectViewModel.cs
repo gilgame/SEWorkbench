@@ -907,6 +907,11 @@ namespace Gilgame.SEWorkbench.ViewModels
                     SetRootItem(null);
                     MessageBox.ShowError("Unable to open project", ex);
                 }
+
+                foreach (ProjectItemViewModel child in First)
+                {
+                    child.VerifyPath();
+                }
             }
         }
 

@@ -531,6 +531,12 @@
   <ItemGroup>
     <Resource Include="Icons\Reference.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\MissingItem.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\MissingX.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>(if exist "$(TargetDir)*old.pdb" del "$(TargetDir)*old.pdb") &amp; (if exist "$(TargetDir)*.pdb" ren "$(TargetDir)*.pdb" *.old.pdb)</PreBuildEvent>

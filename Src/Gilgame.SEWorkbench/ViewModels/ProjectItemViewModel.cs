@@ -5,6 +5,7 @@ using System.Windows.Input;
 
 using Gilgame.SEWorkbench.Models;
 using Gilgame.SEWorkbench.Services;
+using Gilgame.SEWorkbench.Services.IO;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
@@ -59,6 +60,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 _Model.Path = value;
                 RaisePropertyChanged("Path");
+            }
+        }
+
+        private bool _FileMissing = false;
+        public bool FileMissing
+        {
+            get
+            {
+                return _FileMissing;
+            }
+            set
+            {
+                _FileMissing = value;
+                RaisePropertyChanged("FileMissing");
             }
         }
 
@@ -195,6 +210,30 @@ namespace Gilgame.SEWorkbench.ViewModels
             foreach(ProjectItemViewModel child in Children)
             {
                 child.UpdatePath(source, destination);
+            }
+        }
+
+        public void VerifyPath()
+        {
+            switch (_Model.Type)
+            {
+                case ProjectItemType.Blueprints:
+                    FileMissing = (!Directory.Exists(_Model.Path) || !File.Exists(Blueprint));
+                    break;
+
+                case ProjectItemType.Collection:
+                case ProjectItemType.Folder:
+                    FileMissing = !Directory.Exists(_Model.Path);
+                    break;
+
+                case ProjectItemType.File:
+                case ProjectItemType.Reference:
+                    FileMissing = !File.Exists(_Model.Path);
+                    break;
+            }
+            foreach (ProjectItemViewModel child in Children)
+            {
+                child.VerifyPath();
             }
         }
 
