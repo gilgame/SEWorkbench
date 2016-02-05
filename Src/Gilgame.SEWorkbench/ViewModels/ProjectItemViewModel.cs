@@ -37,7 +37,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _Model.Name = value;
-                OnPropertyChanged("Name");
+                RaisePropertyChanged("Name");
             }
         }
 
@@ -58,7 +58,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _Model.Path = value;
-                OnPropertyChanged("Path");
+                RaisePropertyChanged("Path");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _Model.IsExpanded)
                 {
                     _Model.IsExpanded = value;
-                    OnPropertyChanged("IsExpanded");
+                    RaisePropertyChanged("IsExpanded");
                 }
 
                 if (_Model.IsExpanded && Parent != null)
@@ -113,7 +113,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsVisible)
                 {
                     _IsVisible = value;
-                    OnPropertyChanged("IsVisible");
+                    RaisePropertyChanged("IsVisible");
                 }
 
                 ProjectItemViewModel parent = (ProjectItemViewModel)Parent;
@@ -140,7 +140,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsSelected)
                 {
                     _IsSelected = value;
-                    OnPropertyChanged("IsSelected");
+                    RaisePropertyChanged("IsSelected");
 
                     if (_Model.Project != null)
                     {

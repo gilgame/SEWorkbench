@@ -28,7 +28,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Identifier != value)
                 {
                     _Model.Identifier = value;
-                    OnPropertyChanged("Identifier");
+                    RaisePropertyChanged("Identifier");
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Name != value)
                 {
                     _Model.Name = value;
-                    OnPropertyChanged("Name");
+                    RaisePropertyChanged("Name");
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Filename != value)
                 {
                     _Model.Filename = value;
-                    OnPropertyChanged("Filename");
+                    RaisePropertyChanged("Filename");
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Type != value)
                 {
                     _Model.Type = value;
-                    OnPropertyChanged("Type");
+                    RaisePropertyChanged("Type");
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Header != value)
                 {
                     _Header = value;
-                    OnPropertyChanged("Header");
+                    RaisePropertyChanged("Header");
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Editor != value)
                 {
                     _Editor = value;
-                    OnPropertyChanged("Content");
+                    RaisePropertyChanged("Content");
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         RaiseSelected();
                     }
 
-                    OnPropertyChanged("IsSelected");
+                    RaisePropertyChanged("IsSelected");
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         RaiseSelected();
                     }
 
-                    OnPropertyChanged("IsActive");
+                    RaisePropertyChanged("IsActive");
                 }
             }
         }
@@ -173,7 +173,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsModified)
                 {
                     _IsModified = value;
-                    OnPropertyChanged("IsModified");
+                    RaisePropertyChanged("IsModified");
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (value != _IsReadOnly)
                 {
                     _IsReadOnly = value;
-                    OnPropertyChanged("IsReadOnly");
+                    RaisePropertyChanged("IsReadOnly");
                 }
             }
         }

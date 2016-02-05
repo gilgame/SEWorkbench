@@ -39,7 +39,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _ProjectTitle = value;
-                OnPropertyChanged("ProjectTitle");
+                RaisePropertyChanged("ProjectTitle");
             }
         }
 
@@ -62,7 +62,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Project = value;
-                OnPropertyChanged("Project");
+                RaisePropertyChanged("Project");
             }
         }
 
@@ -76,7 +76,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Blueprint = value;
-                OnPropertyChanged("Blueprint");
+                RaisePropertyChanged("Blueprint");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Editor = value;
-                OnPropertyChanged("Editor");
+                RaisePropertyChanged("Editor");
             }
         }
 
@@ -104,7 +104,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Classes = value;
-                OnPropertyChanged("Classes");
+                RaisePropertyChanged("Classes");
             }
         }
 
@@ -118,7 +118,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Output = value;
-                OnPropertyChanged("Output");
+                RaisePropertyChanged("Output");
             }
         }
 
@@ -132,7 +132,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _FindReplace = value;
-                OnPropertyChanged("FindReplace");
+                RaisePropertyChanged("FindReplace");
             }
         }
 
@@ -146,7 +146,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             set
             {
                 _Config = value;
-                OnPropertyChanged("Config");
+                RaisePropertyChanged("Config");
             }
         }
 

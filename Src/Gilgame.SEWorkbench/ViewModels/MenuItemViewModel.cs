@@ -37,7 +37,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             private set
             {
                 _Model = value;
-                OnPropertyChanged("Model");
+                RaisePropertyChanged("Model");
             }
         }
 
@@ -52,7 +52,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.Name != value)
                 {
                     _Model.Name = value;
-                    OnPropertyChanged("Name");
+                    RaisePropertyChanged("Name");
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Command != value)
                 {
                     _Command = value;
-                    OnPropertyChanged("Command");
+                    RaisePropertyChanged("Command");
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_Model.InputGestureText != value)
                 {
                     _Model.InputGestureText = value;
-                    OnPropertyChanged("InputGestureText");
+                    RaisePropertyChanged("InputGestureText");
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 if (_IsEnabled != value)
                 {
                     _IsEnabled = value;
-                    OnPropertyChanged("IsEnabled");
+                    RaisePropertyChanged("IsEnabled");
                 }
             }
         }
