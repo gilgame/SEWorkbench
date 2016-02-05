@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -33,34 +34,17 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public string Name
-        {
-            get
-            {
-                return _Model.Name;
-            }
-            private set
-            {
-                if (_Model.Name != value)
-                {
-                    _Model.Name = value;
-                    RaisePropertyChanged("Name");
-                }
-            }
-        }
-
         public string Filename
         {
             get
             {
-                return _Model.Filename;
-            }
-            set
-            {
-                if (_Model.Filename != value)
+                if (ProjectItem != null)
                 {
-                    _Model.Filename = value;
-                    RaisePropertyChanged("Filename");
+                    return ProjectItem.Path;
+                }
+                else
+                {
+                    return String.Empty;
                 }
             }
         }
@@ -95,6 +79,15 @@ namespace Gilgame.SEWorkbench.ViewModels
                     _Header = value;
                     RaisePropertyChanged("Header");
                 }
+            }
+        }
+
+        private ProjectItemViewModel _ProjectItem;
+        public ProjectItemViewModel ProjectItem
+        {
+            get
+            {
+                return _ProjectItem;
             }
         }
 
@@ -230,7 +223,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             if (Selected != null)
             {
-                Selected(this, new FileEventArgs(Filename));
+                Selected(this, new FileEventArgs(ProjectItem.Path));
             }
         }
 
@@ -239,7 +232,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             if (FileSaved != null)
             {
-                FileSaved(this, new FileEventArgs(_Model.Filename));
+                FileSaved(this, new FileEventArgs(ProjectItem.Path));
             }
         }
 
@@ -257,7 +250,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             if (FileCloseRequested != null)
             {
-                FileCloseRequested(this, new FileEventArgs(_Model.Filename));
+                FileCloseRequested(this, new FileEventArgs(ProjectItem.Path));
             }
         }
 
@@ -265,19 +258,48 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         #region Constructor
 
-        public PageViewModel(BaseViewModel parent, string name, string filename, Models.PageType type) : base(parent)
+        public PageViewModel(BaseViewModel parent, ProjectItemViewModel item) : base(parent)
         {
+            Initialize(parent, item, Models.PageType.Page);
+        }
+
+        public PageViewModel(BaseViewModel parent, string name, string path) : base(parent)
+        {
+            ProjectItemViewModel item = new ProjectItemViewModel(null)
+            {
+                Name = name,
+                Path = path
+            };
+            Initialize(parent, item, Models.PageType.Output);
+        }
+
+        private void Initialize(BaseViewModel parent, ProjectItemViewModel item, Models.PageType type)
+        {
+            _ProjectItem = item;
+
             _Model = new Models.Page();
-            Name = name;
-            Header = name;
-            Filename = filename;
+            Header = item.Name;
             Identifier = Guid.NewGuid();
             Type = type;
 
+            item.PropertyChanged += ProjectItem_PropertyChanged;
+
             BuildEditor();
-            
+
             _CloseFileCommand = new Commands.CloseFileCommand(this);
             _SelectPageCommand = new Commands.SelectPageCommand(this);
+        }
+
+        private void ProjectItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Path")
+            {
+                _Editor.FileName = ProjectItem.Path;
+            }
+            if (e.PropertyName == "Name")
+            {
+                Header = ProjectItem.Name;
+            }
         }
 
         private void BuildEditor()
@@ -286,7 +308,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             try
             {
-                editor.OpenFile(Filename);
+                editor.OpenFile(ProjectItem.Path);
 
                 editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
                 editor.Margin = new Thickness(0, 6, 0, 6);
@@ -372,7 +394,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     int start = _Editor.SelectionStart;
 
-                    _Editor.OpenFile(Filename);
+                    _Editor.OpenFile(ProjectItem.Path);
                     _Editor.SelectionStart = start;
 
                     _Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");

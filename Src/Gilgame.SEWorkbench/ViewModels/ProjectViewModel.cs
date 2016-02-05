@@ -1420,11 +1420,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return;
             }
-            //if (selected.Type != ProjectItemType.Folder && selected.Type != ProjectItemType.File)
-            //{
-            //    return;
-            //}
-            if (selected.Type != ProjectItemType.File)
+            if (selected.Type != ProjectItemType.Collection && selected.Type != ProjectItemType.Folder && selected.Type != ProjectItemType.File)
             {
                 return;
             }
@@ -1460,7 +1456,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     }
                 }
 
-                if (selected.Type == ProjectItemType.Folder)
+                if (selected.Type == ProjectItemType.Collection || selected.Type == ProjectItemType.Folder)
                 {
                     destination = Path.Combine(Directory.GetParent(source).FullName, view.ItemName);
                     if (Directory.Exists(destination))
@@ -1474,6 +1470,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                         selected.Name = view.ItemName;
                         selected.Path = destination;
+
+                        selected.UpdatePath(source, destination);
 
                         SaveProject();
                     }

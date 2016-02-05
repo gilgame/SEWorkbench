@@ -13,6 +13,8 @@ namespace Gilgame.SEWorkbench.Converters
             Models.ProjectItemType type = GetValue(value);
             switch (type)
             {
+                case Models.ProjectItemType.Collection:
+                case Models.ProjectItemType.Folder:
                 case Models.ProjectItemType.File:
                     return true;
 

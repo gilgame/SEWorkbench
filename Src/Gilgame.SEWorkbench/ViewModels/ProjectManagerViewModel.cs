@@ -253,7 +253,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                         if (File.LastWriteTime(page.Filename) > page.LastSaved)
                         {
-                            string message = String.Format("{0} has been modified outside SE Workbench. Do you want to reload it?", page.Name);
+                            string message = String.Format("{0} has been modified outside SE Workbench. Do you want to reload it?", page.ProjectItem.Name);
 
                             MessageBoxResult result = Services.MessageBox.ShowQuestion(message);
                             if (result == MessageBoxResult.Yes)
@@ -381,7 +381,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                         PageViewModel page = (PageViewModel)o;
                         RegisterPage(page);
 
-                        WindowMenuItems.Add(new MenuItemViewModel(this, page.Name, page.SelectPageCommand) { Identifier = page.Identifier });
+                        WindowMenuItems.Add(new MenuItemViewModel(this, page.ProjectItem.Name, page.SelectPageCommand) { Identifier = page.Identifier });
                     }
                 }
             }
@@ -478,7 +478,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     }
                 }
 
-                PageViewModel newpage = new PageViewModel(this, item.Name, item.Path, Models.PageType.Page);
+                PageViewModel newpage = new PageViewModel(this, item);
                 Editor.Items.Add(newpage);
             }
         }
@@ -520,7 +520,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
                 File.Write(tempfile, code);
 
-                PageViewModel newpage = new PageViewModel(this, tempname, tempfile, Models.PageType.Output)
+                PageViewModel newpage = new PageViewModel(this, tempname, tempfile)
                 {
                     IsReadOnly = true
                 };

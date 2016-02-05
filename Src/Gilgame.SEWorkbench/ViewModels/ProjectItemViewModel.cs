@@ -189,6 +189,15 @@ namespace Gilgame.SEWorkbench.ViewModels
             return vm;
         }
 
+        public void UpdatePath(string source, string destination)
+        {
+            Path = Path.Replace(source, destination);
+            foreach(ProjectItemViewModel child in Children)
+            {
+                child.UpdatePath(source, destination);
+            }
+        }
+
         public void Remove()
         {
             ProjectItemViewModel parent = (ProjectItemViewModel)Parent;
