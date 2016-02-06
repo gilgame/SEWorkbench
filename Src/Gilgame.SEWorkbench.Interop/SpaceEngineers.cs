@@ -124,6 +124,7 @@ namespace Gilgame.SEWorkbench.Interop
             MyLog.Default = new MyLog();
             MyLog.Default.Init("test.log", new System.Text.StringBuilder());
         }
+
         private static void LoadSerializers()
         {
             MyObjectBuilder_Base loaded = null;

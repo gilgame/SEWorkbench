@@ -274,6 +274,18 @@
 		[\d\w_]+  # an identifier
 		(?=\s*\() # followed by (
 		</Rule>
+    
+    <Rule color="MethodCall">
+      \b
+      [\d\w_]+  # an identifier
+      (?=\s*&lt;) # followed by &lt;
+    </Rule>
+
+    <Rule color="MethodCall">
+      \b
+      [\d\w_&lt;]+  # an identifier
+      (?=\s*&gt;) # followed by &gt;
+    </Rule>
 		
 		<!-- Digits -->
 		<Rule color="NumberLiteral">
@@ -284,9 +296,9 @@
 			)
 			([eE][+-]?[0-9]+)? # optional exponent
 		</Rule>
-		
-		<Rule color="Punctuation">
-			[?,.;()\[\]{}+\-/%*&lt;&gt;^+~!|&amp;]+
-		</Rule>
+
+    <Rule color="Punctuation">
+      [?,.;()\[\]{}+\-/%*&lt;&gt;^+~!|&amp;]+
+    </Rule>
 	</RuleSet>
 </SyntaxDefinition>
