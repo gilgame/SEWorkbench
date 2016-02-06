@@ -165,6 +165,23 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private string _Unsaved = String.Empty;
+        public string Unsaved
+        {
+            get
+            {
+                return _Unsaved;
+            }
+            set
+            {
+                if (value != _Unsaved)
+                {
+                    _Unsaved = value;
+                    RaisePropertyChanged("Unsaved");
+                }
+            }
+        }
+
         public ProjectItemViewModel(ProjectItem item) : this(item, null)
         {
             _FileRequestedCommand = new Commands.FileRequestedCommand(this);

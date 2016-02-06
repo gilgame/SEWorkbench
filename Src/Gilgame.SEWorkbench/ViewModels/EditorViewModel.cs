@@ -57,11 +57,11 @@ namespace Gilgame.SEWorkbench.ViewModels
         public static CSharpCompletion Completion = new ICSharpCode.CodeCompletion.CSharpCompletion(ScriptProvider);
 
         public event FileEventHandler FileChanged;
-        private void RaiseFileChanged(string path)
+        private void RaiseFileChanged(string path, bool unsaved)
         {
             if (FileChanged != null)
             {
-                FileChanged(this, new FileEventArgs(path));
+                FileChanged(this, new FileEventArgs(path, unsaved));
             }
         }
 
@@ -94,7 +94,26 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void Page_FileSaved(object sender, EventArgs e)
         {
-            RaiseFileChanged(SelectedItem.Filename);
+            RaiseFileChanged(SelectedItem.Filename, false);
+        }
+
+        private void Page_TextChanged(object sender, EventArgs e)
+        {
+            //var currentLine = _editor.Document.GetLineByOffset(_editor.CaretOffset);
+
+            //PageViewModel page = SelectedItem;
+            //if (page != null)
+            //{
+            //    var line = page.Content.Document.GetLineByOffset(page.Content.CaretOffset);
+            //    if (line != null)
+            //    {
+            //        string text = page.Content.Text.Substring(line.Offset, line.Length).TrimStart();
+            //        if (text.StartsWith("#import "))
+            //        {
+                        PerformUpdateAutoComplete(true);
+            //        }
+            //    }
+            //}
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -146,12 +165,14 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             page.Selected += Page_Selected;
             page.FileSaved += Page_FileSaved;
+            page.TextChanged += Page_TextChanged;
         }
 
         private void UnregisterPage(PageViewModel page)
         {
             page.Selected -= Page_Selected;
             page.FileSaved -= Page_FileSaved;
+            page.TextChanged -= Page_TextChanged;
         }
 
         public void InsertText(string text)
@@ -167,7 +188,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             if (SelectedItem != null)
             {
-                RaiseFileChanged(SelectedItem.Filename);
+                RaiseFileChanged(SelectedItem.Filename, false);
             }
         }
 
@@ -184,9 +205,9 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformUpdateAutoComplete()
+        public void PerformUpdateAutoComplete(bool unsaved = false)
         {
-            RaiseFileChanged(SelectedItem.Filename);
+            RaiseFileChanged(SelectedItem.Filename, unsaved);
         }
 
         #endregion

@@ -454,7 +454,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             return scripts;
         }
 
-        public Dictionary<string, string> GetImports(string path)
+        public Dictionary<string, string> GetImports(string path, bool unsaved = false)
         {
             Dictionary<string, string> imports = new Dictionary<string, string>();
 
@@ -462,6 +462,10 @@ namespace Gilgame.SEWorkbench.ViewModels
             if (item != null)
             {
                 string code = File.Read(item.Path);
+                if (unsaved)
+                {
+                    code = item.Unsaved;
+                }
 
                 List<string> lines = new List<string>(System.Text.RegularExpressions.Regex.Split(code, Environment.NewLine));
                 foreach (string line in lines)

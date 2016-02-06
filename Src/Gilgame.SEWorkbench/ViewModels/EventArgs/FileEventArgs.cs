@@ -15,9 +15,24 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private bool _Unsaved = false;
+        public bool Unsaved
+        {
+            get
+            {
+                return _Unsaved;
+            }
+        }
+
         public FileEventArgs(string path)
         {
             _Path = path;
+        }
+
+        public FileEventArgs(string path, bool unsaved)
+        {
+            _Path = path;
+            _Unsaved = unsaved;
         }
     }
 }

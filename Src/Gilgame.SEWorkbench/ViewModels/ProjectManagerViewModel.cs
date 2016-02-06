@@ -431,7 +431,7 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void Editor_FileChanged(object sender, FileEventArgs e)
         {
             List<string> scripts = Project.GetAssociatedScripts(e.Path);
-            scripts.AddRange(Project.GetImports(e.Path).Values);
+            scripts.AddRange(Project.GetImports(e.Path, e.Unsaved).Values);
 
             EditorViewModel.Completion.ScriptProvider.UpdateVars(scripts);
         }

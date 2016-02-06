@@ -352,6 +352,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 IsModified = true;
             }
+            ProjectItem.Unsaved = _Editor.Text;
             RaiseTextChanged();
         }
 
