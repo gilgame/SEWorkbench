@@ -92,6 +92,7 @@ namespace Gilgame.SEWorkbench.Interop
             #endif
 
             RegisterPlugins();
+            LoadSerializers();
             InitIlChecker();
             InitIlCompiler();
 
@@ -122,6 +123,13 @@ namespace Gilgame.SEWorkbench.Interop
         {
             MyLog.Default = new MyLog();
             MyLog.Default.Init("test.log", new System.Text.StringBuilder());
+        }
+        private static void LoadSerializers()
+        {
+            MyObjectBuilder_Base loaded = null;
+
+            try { MyObjectBuilderSerializer.DeserializeXML(String.Empty, out loaded); }
+            catch { }
         }
 
         private static void InitIlChecker()
