@@ -10,8 +10,6 @@ using ParallelTasks;
 using Sandbox.Common.Components;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Common.ObjectBuilders.Definitions;
-using Sandbox.Common.ObjectBuilders.Voxels;
-using Sandbox.Common.ObjectBuilders.VRageData;
 using Sandbox.Definitions;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
@@ -32,6 +30,8 @@ using VRage.Plugins;
 using VRage.Utils;
 using VRage.Voxels;
 using VRageMath;
+using VRage.Game;
+using VRage.ModAPI.Ingame;
 
 namespace Gilgame.SEWorkbench.Interop
 {
@@ -195,7 +195,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowedOperands.Add(typeof(WorkOptions), null);
             IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryOwner), null);
-            IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.IMyInventory), null);
+            IlChecker.AllowedOperands.Add(typeof(VRage.ModAPI.Ingame.IMyInventory), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryItem), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty<>), null);
