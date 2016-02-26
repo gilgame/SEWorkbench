@@ -2,8 +2,8 @@
 using System.IO;
 
 using Sandbox.Common.ObjectBuilders;
-using Sandbox.Common.ObjectBuilders.Definitions;
 using VRage.ObjectBuilders;
+using VRage.Game;
 
 
 namespace Gilgame.SEWorkbench.Interop

@@ -2,7 +2,7 @@
 using System.Linq;
 
 using Gilgame.SEWorkbench.Models;
-using Sandbox.Common.ObjectBuilders.Definitions;
+using VRage.Game;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {
