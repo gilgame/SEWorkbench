@@ -1,6 +1,7 @@
-﻿using Sandbox.Common.ObjectBuilders.Definitions;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using VRage.Game;
 
 namespace Gilgame.SEWorkbench.Interop
 {

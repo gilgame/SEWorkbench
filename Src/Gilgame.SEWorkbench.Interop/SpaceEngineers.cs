@@ -7,11 +7,10 @@ using System.Reflection;
 using Medieval.ObjectBuilders;
 using Medieval.ObjectBuilders.Definitions;
 using ParallelTasks;
+using Sandbox.Common;
 using Sandbox.Common.Components;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Common.ObjectBuilders.Definitions;
-using Sandbox.Common.ObjectBuilders.Voxels;
-using Sandbox.Common.ObjectBuilders.VRageData;
 using Sandbox.Definitions;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
@@ -22,6 +21,7 @@ using VRage;
 using VRage.Collections;
 using VRage.Compiler;
 using VRage.FileSystem;
+using VRage.Game;
 using VRage.Game.Components;
 using VRage.Game.Entity;
 using VRage.Game.ObjectBuilders;
@@ -135,6 +135,8 @@ namespace Gilgame.SEWorkbench.Interop
 
         private static void InitIlChecker()
         {
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyFactionMember));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyFontEnum));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_SessionSettings));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(TerminalActionExtensions));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(SerializableBlockOrientation));
@@ -161,6 +163,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_AdvancedDoorDefinition));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_BarbarianWaveEventDefinition));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_Base));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyDefinitionBase));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_AirVent));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_VoxelMap));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyStatLogic));
@@ -171,6 +174,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(SerializableVector3));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyDefinitionId));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyDefinitionManager));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyDefinitionManagerBase));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(Vector3));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyFixedPoint));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(ListReader<>));
@@ -180,10 +184,23 @@ namespace Gilgame.SEWorkbench.Interop
             Type typeFromHandle = typeof(MyObjectBuilderSerializer);
             IlChecker.AllowedOperands[typeFromHandle] = new List<MemberInfo>
 	        {
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[] { typeof(MyObjectBuilderType) }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[] { typeof(SerializableDefinitionId) }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[] { typeof(string) }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[] { typeof(MyObjectBuilderType), typeof(string) })
+		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
+		        {
+			        typeof(MyObjectBuilderType)
+		        }),
+		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
+		        {
+			        typeof(SerializableDefinitionId)
+		        }),
+		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
+		        {
+			        typeof(string)
+		        }),
+		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
+		        {
+			        typeof(MyObjectBuilderType),
+			        typeof(string)
+		        })
 	        };
             IlChecker.AllowedOperands.Add(typeof(IMyEntity), new List<MemberInfo>
 	        {
@@ -195,7 +212,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowedOperands.Add(typeof(WorkOptions), null);
             IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryOwner), null);
-            IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.IMyInventory), null);
+            IlChecker.AllowedOperands.Add(typeof(VRage.ModAPI.IMyInventory), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryItem), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty<>), null);
@@ -222,6 +239,7 @@ namespace Gilgame.SEWorkbench.Interop
 		        "System.Core.dll",
 		        "System.dll"
 	        });
+            IlCompiler.Options.CompilerOptions = String.Format("/debug {0}", IlCompiler.Options.CompilerOptions);
         }
     }
 }

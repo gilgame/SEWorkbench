@@ -1,11 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 
 using Gilgame.SEWorkbench.ViewModels;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
-using System.IO;
 using Xceed.Wpf.AvalonDock.Layout;
+using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 namespace Gilgame.SEWorkbench.Views
 {
