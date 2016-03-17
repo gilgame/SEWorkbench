@@ -193,28 +193,28 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             FindReplace = new FindReplaceViewModel(this);
 
-            _NewProjectCommand = new Commands.NewProjectCommand(this);
-            _OpenProjectCommand = new Commands.OpenProjectCommand(this);
-            _CloseProjectCommand = new Commands.CloseProjectCommand(this);
+            _NewProjectCommand = new Commands.DelegateCommand(PerformNewProject);
+            _OpenProjectCommand = new Commands.DelegateCommand(PerformOpenProject);
+            _CloseProjectCommand = new Commands.DelegateCommand(PerformCloseProject);
 
-            _SaveFileCommand = new Commands.SaveFileCommand(this);
-            _SaveAllCommand = new Commands.SaveAllCommand(this);
+            _SaveFileCommand = new Commands.DelegateCommand(PerformSaveFile);
+            _SaveAllCommand = new Commands.DelegateCommand(PerformSaveAll);
 
-            _RunScriptCommand = new Commands.RunScriptCommand(this);
-            _OpenSelectedCommand = new Commands.OpenSelectedCommand(this);
+            _RunScriptCommand = new Commands.DelegateCommand(PerformRunScript);
+            _OpenSelectedCommand = new Commands.DelegateCommand(PerformOpenSelected);
 
-            _CloseFileCommand = new Commands.CloseFileCommand(this);
-            _CloseAllCommand = new Commands.CloseAllCommand(this);
+            _CloseFileCommand = new Commands.DelegateCommand(PerformCloseFile);
+            _CloseAllCommand = new Commands.DelegateCommand(PerformCloseAll);
 
-            _UndoCommand = new Commands.UndoCommand(this);
-            _RedoCommand = new Commands.RedoCommand(this);
-            _CutCommand = new Commands.CutCommand(this);
-            _CopyCommand = new Commands.CopyCommand(this);
-            _PasteCommand = new Commands.PasteCommand(this);
-            _DeleteCommand = new Commands.DeleteCommand(this);
-            _SelectAllCommand = new Commands.SelectAllCommand(this);
+            _UndoCommand = new Commands.DelegateCommand(PerformUndo);
+            _RedoCommand = new Commands.DelegateCommand(PerformRedo);
+            _CutCommand = new Commands.DelegateCommand(PerformCut);
+            _CopyCommand = new Commands.DelegateCommand(PerformCopy);
+            _PasteCommand = new Commands.DelegateCommand(PerformPaste);
+            _DeleteCommand = new Commands.DelegateCommand(PerformDelete);
+            _SelectAllCommand = new Commands.DelegateCommand(PerformSelectAll);
 
-            _CloseViewCommand = new Commands.CloseViewCommand(this);
+            _CloseViewCommand = new Commands.DelegateCommand(PerformCloseView);
         }
 
         private void BuildClasses()
@@ -704,18 +704,17 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformCloseFile()
-        {
-            PageViewModel page = Editor.SelectedItem;
-            if (page != null)
-            {
-                PerformCloseFile(page.Filename);
-            }
-        }
-
         public void PerformCloseFile(string path)
         {
-            PageViewModel page = Editor.Items.Where(i => i.Filename == path).Single();
+            PageViewModel page;
+            if (String.IsNullOrEmpty(path))
+            {
+                page = Editor.SelectedItem;
+            }
+            else
+            {
+                page = Editor.Items.Where(i => i.Filename == path).Single();
+            }
             if (page != null)
             {
                 if (page.IsModified)

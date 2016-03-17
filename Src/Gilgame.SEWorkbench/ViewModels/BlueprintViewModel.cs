@@ -77,10 +77,10 @@ namespace Gilgame.SEWorkbench.ViewModels
                 new Comparers.GridItemComparer()
             );
 
-            _SearchCommand = new Commands.SearchCommand(this);
-            _InsertNameCommand = new Commands.InsertNameCommand(this);
-            _EditProgramCommand = new Commands.EditProgramCommand(this);
-            _RenameBlockCommand = new Commands.RenameBlockCommand(this);
+            _SearchCommand = new Commands.DelegateCommand(PerformSearch);
+            _InsertNameCommand = new Commands.DelegateCommand(PerformInsertName);
+            _EditProgramCommand = new Commands.DelegateCommand(PerformEditProgram);
+            _RenameBlockCommand = new Commands.DelegateCommand(PerformRenameBlock);
         }
         
         public event EventHandler SelectionChanged;

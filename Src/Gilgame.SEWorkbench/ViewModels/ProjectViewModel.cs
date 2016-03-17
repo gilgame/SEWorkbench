@@ -186,25 +186,25 @@ namespace Gilgame.SEWorkbench.ViewModels
                 new Comparers.ProjectItemComparer()
             );
 
-            _SearchCommand = new Commands.SearchCommand(this);
+            _SearchCommand = new Commands.DelegateCommand(PerformSearch);
 
-            _AddCommand = new Commands.AddFileCommand(this);
-            _AddReferenceCommand = new Commands.AddReferenceCommand(this);
-            _AddBlueprintsCommand = new Commands.AddBlueprintsCommand(this);
-            _AddExistingCommand = new Commands.AddExistingFileCommand(this);
-            _AddFolderCommand = new Commands.AddFolderCommand(this);
-            _AddCollectionCommand = new Commands.AddCollectionCommand(this);
+            _AddCommand = new Commands.DelegateCommand(PerformAddFile);
+            _AddReferenceCommand = new Commands.DelegateCommand(PerformAddReference);
+            _AddBlueprintsCommand = new Commands.DelegateCommand(PerformAddBlueprints);
+            _AddExistingCommand = new Commands.DelegateCommand(PerformAddExistingFile);
+            _AddFolderCommand = new Commands.DelegateCommand(PerformAddFolder);
+            _AddCollectionCommand = new Commands.DelegateCommand(PerformAddCollection);
 
-            _RemoveReferenceCommand = new Commands.RemoveReferenceCommand(this);
+            _RemoveReferenceCommand = new Commands.DelegateCommand(PerformRemoveReference);
 
-            _OpenProjectCommand = new Commands.OpenProjectCommand(this);
-            _NewProjectCommand = new Commands.NewProjectCommand(this);
-            _CloseProjectCommand = new Commands.CloseProjectCommand(this);
+            _OpenProjectCommand = new Commands.DelegateCommand(PerformOpenProject);
+            _NewProjectCommand = new Commands.DelegateCommand(PerformNewProject);
+            _CloseProjectCommand = new Commands.DelegateCommand(PerformCloseProject);
 
-            _ViewCodeCommand = new Commands.ViewCodeCommand(this);
+            _ViewCodeCommand = new Commands.DelegateCommand(PerformViewCode);
 
-            _RenameCommand = new Commands.RenameCommand(this);
-            _DeleteCommand = new Commands.DeleteItemCommand(this);
+            _RenameCommand = new Commands.DelegateCommand(PerformRename);
+            _DeleteCommand = new Commands.DelegateCommand(PerformDelete);
         }
 
         private ProjectItemViewModel _RootItem;

@@ -184,7 +184,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public ProjectItemViewModel(ProjectItem item) : this(item, null)
         {
-            _FileRequestedCommand = new Commands.FileRequestedCommand(this);
+            _FileRequestedCommand = new Commands.DelegateCommand(RaiseFileRequested);
         }
 
         public ProjectItemViewModel(ProjectItem item, ProjectItemViewModel parent) : base(parent)

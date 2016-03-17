@@ -286,8 +286,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
             BuildEditor();
 
-            _CloseFileCommand = new Commands.CloseFileCommand(this);
-            _SelectPageCommand = new Commands.SelectPageCommand(this);
+            _CloseFileCommand = new Commands.DelegateCommand(PerformCloseFile);
+            _SelectPageCommand = new Commands.DelegateCommand(PerformSelectPage);
         }
 
         private void ProjectItem_PropertyChanged(object sender, PropertyChangedEventArgs e)

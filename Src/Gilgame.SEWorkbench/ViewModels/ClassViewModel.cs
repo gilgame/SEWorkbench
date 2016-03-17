@@ -77,7 +77,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                 new Comparers.ClassItemComparer()
             );
 
-            _SearchCommand = new Commands.SearchCommand(this);
+            _SearchCommand = new Commands.DelegateCommand(PerformSearch);
 
             StartTree();
         }

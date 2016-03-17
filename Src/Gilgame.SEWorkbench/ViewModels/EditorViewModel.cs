@@ -67,8 +67,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public EditorViewModel(BaseViewModel parent) : base(parent)
         {
-            _UpdateAutoCompleteCommand = new Commands.UpdateAutoCompleteCommand(this);
-            _ShowQuickFindCommand = new Commands.ShowQuickFindCommand(this);
+            _UpdateAutoCompleteCommand = new Commands.DelegateCommand(PerformUpdateAutoComplete);
+            _ShowQuickFindCommand = new Commands.DelegateCommand(PerformShowQuickFind);
 
             _Items.CollectionChanged += OnCollectionChanged;
 
