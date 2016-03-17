@@ -2,10 +2,9 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
-using Medieval.ObjectBuilders;
-using Medieval.ObjectBuilders.Definitions;
 using ParallelTasks;
 using Sandbox.Common;
 using Sandbox.Common.Components;
@@ -14,7 +13,9 @@ using Sandbox.Common.ObjectBuilders.Definitions;
 using Sandbox.Definitions;
 using Sandbox.Game;
 using Sandbox.Game.Entities;
+using Sandbox.Game.EntityComponents;
 using Sandbox.Game.Gui;
+using Sandbox.Game.Lights;
 using Sandbox.ModAPI;
 using Sandbox.ModAPI.Interfaces;
 using VRage;
@@ -25,8 +26,10 @@ using VRage.Game;
 using VRage.Game.Components;
 using VRage.Game.Entity;
 using VRage.Game.ObjectBuilders;
+using VRage.Input;
 using VRage.Library.Utils;
 using VRage.ModAPI;
+using VRage.ModAPI.Ingame;
 using VRage.ObjectBuilders;
 using VRage.Plugins;
 using VRage.Utils;
@@ -70,14 +73,19 @@ namespace Gilgame.SEWorkbench.Interop
                     "SpaceEngineers.Game.dll",
                     "SpaceEngineers.ObjectBuilders.dll",
                     "SpaceEngineers.ObjectBuilders.XmlSerializers.dll",
-                    "MedievalEngineers.ObjectBuilders.dll",
-                    "MedievalEngineers.ObjectBuilders.XmlSerializers.dll",
                 };
                 return assemblies;
             }
         }
 
         private static bool _Initialized = false;
+        public static bool Initialized
+        {
+            get
+            {
+                return _Initialized;
+            }
+        }
         public static void Initialize()
         {
             if (_Initialized)
@@ -153,11 +161,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMyComponentBase));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MySessionComponentBase));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_AdvancedDoor));
-            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_BattleAreaMarker));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_AdvancedDoor));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_BattleAreaMarker));
-            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_HandTorch));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_HandTorch));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_AdvancedDoorDefinition));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_BarbarianWaveEventDefinition));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(MyObjectBuilder_AdvancedDoorDefinition));
@@ -181,6 +185,8 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyStorageData));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyEventArgs));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyGameTimer));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(IMyInventoryItem));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyLight));
             Type typeFromHandle = typeof(MyObjectBuilderSerializer);
             IlChecker.AllowedOperands[typeFromHandle] = new List<MemberInfo>
 	        {
@@ -205,20 +211,83 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowedOperands.Add(typeof(IMyEntity), new List<MemberInfo>
 	        {
 		        typeof(IMyEntity).GetMethod("GetPosition"),
-		        typeof(IMyEntity).GetProperty("WorldMatrix").GetGetMethod()
+		        typeof(IMyEntity).GetProperty("WorldMatrix").GetGetMethod(),
+		        typeof(IMyEntity).GetProperty("Components").GetGetMethod()
 	        });
             IlChecker.AllowedOperands.Add(typeof(IWork), null);
             IlChecker.AllowedOperands.Add(typeof(Task), null);
             IlChecker.AllowedOperands.Add(typeof(WorkOptions), null);
             IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryOwner), null);
-            IlChecker.AllowedOperands.Add(typeof(VRage.ModAPI.IMyInventory), null);
+            IlChecker.AllowedOperands.Add(typeof(VRage.ModAPI.Ingame.IMyInventory), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryItem), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty<>), null);
             IlChecker.AllowedOperands.Add(typeof(TerminalPropertyExtensions), null);
             IlChecker.AllowedOperands.Add(typeof(MyFixedPoint), null);
             IlChecker.AllowedOperands.Add(typeof(MyTexts), null);
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(VRage.ModAPI.IMyInput));
+            IlChecker.AllowedOperands.Add(typeof(MyInputExtensions), null);
+            IlChecker.AllowedOperands.Add(typeof(MyKeys), null);
+            IlChecker.AllowedOperands.Add(typeof(MyJoystickAxesEnum), null);
+            IlChecker.AllowedOperands.Add(typeof(MyJoystickButtonsEnum), null);
+            IlChecker.AllowedOperands.Add(typeof(MyMouseButtonsEnum), null);
+            IlChecker.AllowedOperands.Add(typeof(MySharedButtonsEnum), null);
+            IlChecker.AllowedOperands.Add(typeof(MyGuiControlTypeEnum), null);
+            IlChecker.AllowedOperands.Add(typeof(MyGuiInputDeviceEnum), null);
+            IEnumerable<MethodInfo> source = from method in typeof(MyComponentContainer).GetMethods()
+                                             where method.Name == "TryGet" && method.ContainsGenericParameters && method.GetParameters().Length == 1
+                                             select method;
+            IlChecker.AllowedOperands.Add(typeof(MyComponentContainer), new List<MemberInfo>
+	        {
+		        typeof(MyComponentContainer).GetMethod("Has").MakeGenericMethod(new Type[]
+		        {
+			        typeof(MyResourceSourceComponent)
+		        }),
+		        typeof(MyComponentContainer).GetMethod("Get").MakeGenericMethod(new Type[]
+		        {
+			        typeof(MyResourceSourceComponent)
+		        }),
+		        typeof(MyComponentContainer).GetMethod("TryGet", new Type[]
+		        {
+			        typeof(Type),
+			        typeof(MyResourceSourceComponent)
+		        }),
+		        source.FirstOrDefault<MethodInfo>().MakeGenericMethod(new Type[]
+		        {
+			        typeof(MyResourceSourceComponent)
+		        }),
+		        typeof(MyComponentContainer).GetMethod("Has").MakeGenericMethod(new Type[]
+		        {
+			        typeof(MyResourceSinkComponent)
+		        }),
+		        typeof(MyComponentContainer).GetMethod("Get").MakeGenericMethod(new Type[]
+		        {
+			        typeof(MyResourceSinkComponent)
+		        }),
+		        typeof(MyComponentContainer).GetMethod("TryGet", new Type[]
+		        {
+			        typeof(Type),
+			        typeof(MyResourceSinkComponent)
+		        }),
+		        source.FirstOrDefault<MethodInfo>().MakeGenericMethod(new Type[]
+		        {
+			        typeof(MyResourceSinkComponent)
+		        })
+	        });
+            IlChecker.AllowedOperands.Add(typeof(MyResourceSourceComponentBase), null);
+            IlChecker.AllowedOperands.Add(typeof(MyResourceSinkComponentBase), new List<MemberInfo>
+	        {
+		        typeof(MyResourceSinkComponentBase).GetProperty("AcceptedResources").GetGetMethod(),
+		        typeof(MyResourceSinkComponentBase).GetMethod("CurrentInputByType"),
+		        typeof(MyResourceSinkComponentBase).GetMethod("IsPowerAvailable"),
+		        typeof(MyResourceSinkComponentBase).GetMethod("IsPoweredByType"),
+		        typeof(MyResourceSinkComponentBase).GetMethod("MaxRequiredInputByType"),
+		        typeof(MyResourceSinkComponentBase).GetMethod("RequiredInputByType"),
+		        typeof(MyResourceSinkComponentBase).GetMethod("SuppliedRatioByType")
+	        });
+            IlChecker.AllowedOperands.Add(typeof(ListReader<MyDefinitionId>), null);
+            IlChecker.AllowedOperands.Add(typeof(MyDefinitionId), null);
         }
 
         private static void InitIlCompiler()
@@ -227,7 +296,6 @@ namespace Gilgame.SEWorkbench.Interop
             IlCompiler.Options = new CompilerParameters(new string[]
 	        {
 		        func("SpaceEngineers.ObjectBuilders.dll"),
-		        func("MedievalEngineers.ObjectBuilders.dll"),
 		        func("Sandbox.Game.dll"),
 		        func("Sandbox.Common.dll"),
 		        func("Sandbox.Graphics.dll"),

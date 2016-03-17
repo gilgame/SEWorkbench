@@ -13,13 +13,16 @@ namespace Gilgame.SEWorkbench.Interop
             {
                 "using System;",
                 "using System.Collections.Generic;",
-                "using System.Linq;",
-                "using System.Text;",
-                "using Sandbox.ModAPI.Ingame;",
-                "using Sandbox.ModAPI.Interfaces;",
                 "using VRageMath;",
                 "using VRage.Game;",
-                "using VRage.Game.Entity;"
+                "using VRage.ModAPI.Ingame;",
+                "using System.Text;",
+                "using Sandbox.ModAPI.Interfaces;",
+                "using Sandbox.ModAPI.Ingame;",
+                "using Sandbox.Game.EntityComponents;",
+                "using VRage.Game.Components;",
+                "using VRage.Collections;",
+                "using VRage.Game.ObjectBuilders.Definitions;",
             };
 
             return String.Join(Environment.NewLine, usings.ToArray());

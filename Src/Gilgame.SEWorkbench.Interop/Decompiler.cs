@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+using VRage.Compiler;
 
 namespace Gilgame.SEWorkbench.Interop
 {
@@ -18,21 +22,47 @@ namespace Gilgame.SEWorkbench.Interop
 
         public static void LoadClasses()
         {
-            List<string> namespaces = new List<string>()
+            if (!SpaceEngineers.Initialized)
             {
-                "Sandbox.ModAPI.Ingame",
-                "Sandbox.ModAPI.Interfaces",
-                "VRageMath",
-                "VRage.Game",
-                "VRage.Game.Entity"
-            };
+                throw new Exception("Initialize SpaceEngineers interop first.");
+            }
+
+            List<string> namespaces = new List<string>();
+            foreach(KeyValuePair<Assembly, List<string>> pair in IlChecker.AllowedNamespacesCommon)
+            {
+                foreach (string allowed in pair.Value)
+                {
+                    if (!namespaces.Contains(allowed))
+                    {
+                        namespaces.Add(allowed);
+                    }
+                }
+            }
+            foreach(KeyValuePair<Assembly, List<string>> pair in IlChecker.AllowedNamespacesModAPI)
+            {
+                foreach (string allowed in pair.Value)
+                {
+                    if (!namespaces.Contains(allowed))
+                    {
+                        namespaces.Add(allowed);
+                    }
+                }
+            }
             Interop.Decompiler decompiler = new Interop.Decompiler(namespaces);
 
             List<string> assemblies = new List<string>()
             {
-                "Sandbox.Common.dll",
-                "VRage.Game.dll",
-                "VRage.Math.dll"
+		        "SpaceEngineers.ObjectBuilders.dll",
+		        "Sandbox.Game.dll",
+		        "Sandbox.Common.dll",
+		        "Sandbox.Graphics.dll",
+		        "VRage.dll",
+		        "VRage.Library.dll",
+		        "VRage.Math.dll",
+		        "VRage.Game.dll",
+		        "System.Xml.dll",
+		        "System.Core.dll",
+		        "System.dll",
             };
             List<Interop.AssemblyObject> result = decompiler.Read(assemblies);
 
@@ -45,16 +75,12 @@ namespace Gilgame.SEWorkbench.Interop
             foreach (string assembly in assemblies)
             {
                 string directory = Directory.GetCurrentDirectory();
-
-                AssemblyResolver resolver = new AssemblyResolver();
-                resolver.AddSearchDirectory(directory);
-
-                Mono.Cecil.ReaderParameters parameters = new Mono.Cecil.ReaderParameters
+                if (assembly.StartsWith("System"))
                 {
-                    AssemblyResolver = resolver,
-                };
+                    directory = RuntimeEnvironment.GetRuntimeDirectory();
+                }
 
-                Mono.Cecil.AssemblyDefinition definition = Mono.Cecil.AssemblyDefinition.ReadAssembly(assembly, parameters);
+                Mono.Cecil.AssemblyDefinition definition = Mono.Cecil.AssemblyDefinition.ReadAssembly(System.IO.Path.Combine(directory, assembly));
                 foreach (Mono.Cecil.ModuleDefinition module in definition.Modules)
                 {
                     foreach (Mono.Cecil.TypeDefinition type in module.Types)
