@@ -6,12 +6,13 @@ Features
 =================================
 These are just a few of the features that have been implemented so far. I think the project is beginning to reach a beta stage where additional features will slow down and serious release builds will be deployed. SE Workbench is fairly stable and can be trusted with the file system.
 
- * Syntax Highlighting and Auto-Completion
- * An out-of-game script checker that tests scripts based on the actual parameters and limitations set forth by the game
- * Script collections that allow the developer to separate larger scripts into multiple files and folders
- * Blueprint program importing and editing
- * Basic integrated IL viewer for allowed namespaces
- * Script Organization using a directory structure
+ * Syntax Highlighting and Auto-Completion.
+ * Functions as an out-of-game script checker that builds scripts based on the actual parameters and limitations set forth by the game.
+ * [Script collections](https://github.com/gilgame/SEWorkbench/wiki/Script-Collections) that allow the developer to separate larger scripts into multiple files and folders.
+ * [Inclusions](https://github.com/gilgame/SEWorkbench/wiki/References) allow developers to include the contents of other scripts in their current program.
+ * [Blueprint](https://github.com/gilgame/SEWorkbench/wiki/Blueprints) program importing and editing.
+ * Basic integrated [IL viewer](https://github.com/gilgame/SEWorkbench/wiki/Classes-Explorer) for allowed namespaces.
+ * Script Organization using a directory structure.
 
 Screenshots
 =================================
@@ -20,8 +21,9 @@ Screenshots
 
 Caveats
 =================================
- * Having SE Workbench running while updating Space Engineers through steam may cause Steam to think the installation is corrupt because of files being in use.
- * SE Workbench does require that Space Engineers is installed on the host machine.
+ * Workbench requires that Space Engineers is owned and installed on your computer.
+ * Having Workbench running while updating Space Engineers through Steam could cause Steam to think the installation is corrupt because of files being in use.
+ * Currently, Keen is moving a lot of things around in the Space Engineers libraries that Workbench needs in order to function. This could potentially render Workbench broken every Thursday until they are finished.
 
 Attribution
 =================================
