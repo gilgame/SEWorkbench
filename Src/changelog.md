@@ -1,3 +1,16 @@
+Beta 9
+================================
+ * Updated for Space Engineers 01.126
+ * Gave the program block editor a scrollbar.
+ * Changes to the text editor configuration will now be made immediately.
+ * Fixed renaming folders and collections.
+ * Close and Close All menu items will now be gray when disabled.
+ * Project Explorer will now detect missing files and folders and visibly mark the icon.
+ * Added some highlighting for generics.
+ * Auto Completion will actively refresh when a import reference is added or removed.
+ * Fixed a crash caused by double clicking an error in the Output View when the line number isn't available.
+ * Gave the Class View some love (work in progress).
+
 Beta 8
 ================================
  * Updated for 01.120
@@ -11,7 +24,7 @@ Beta 8
 
 Beta 7
 ================================
- * Updated for Space Engineers 08.118
+ * Updated for Space Engineers 01.118
  * Added quick find window.
  * Added configuration dialog.
  * Import preprocessor will now appear in the auto-complete window.

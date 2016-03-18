@@ -160,7 +160,7 @@ namespace Gilgame.SEWorkbench
             catch (Exception ex)
             {
                 // TODO log errors
-                MessageBox.ShowError("Failed to copy the required libraries", ex);
+                MessageBox.ShowError("Failed to copy the required libraries. This can occur if Space Engineers and/or Steam is currently running", ex);
                 return false;
             }
         }
