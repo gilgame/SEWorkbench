@@ -6,8 +6,6 @@ using System.Linq;
 using System.Reflection;
 
 using ParallelTasks;
-using Sandbox.Common;
-using Sandbox.Common.Components;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Common.ObjectBuilders.Definitions;
 using Sandbox.Definitions;
@@ -25,11 +23,13 @@ using VRage.FileSystem;
 using VRage.Game;
 using VRage.Game.Components;
 using VRage.Game.Entity;
+using VRage.Game.ModAPI;
+using VRage.Game.ModAPI.Ingame;
+using VRage.Game.ModAPI.Interfaces;
 using VRage.Game.ObjectBuilders;
 using VRage.Input;
 using VRage.Library.Utils;
 using VRage.ModAPI;
-using VRage.ModAPI.Ingame;
 using VRage.ObjectBuilders;
 using VRage.Plugins;
 using VRage.Utils;
@@ -148,7 +148,11 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_SessionSettings));
             IlChecker.AllowNamespaceOfTypeCommon(typeof(TerminalActionExtensions));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(SerializableBlockOrientation));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Ingame.IMyCubeBlock));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.Game.ModAPI.Ingame.IMyCubeBlock));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(Sandbox.ModAPI.Ingame.IMyTerminalBlock));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(VRage.Game.ModAPI.IMyCubeBlock));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyFinalBuildConstants));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyAPIGateway));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMySession));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMyCameraController));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMyEntity));
@@ -219,7 +223,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowedOperands.Add(typeof(WorkOptions), null);
             IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryOwner), null);
-            IlChecker.AllowedOperands.Add(typeof(VRage.ModAPI.Ingame.IMyInventory), null);
+            IlChecker.AllowedOperands.Add(typeof(VRage.Game.ModAPI.Ingame.IMyInventory), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryItem), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty<>), null);
@@ -295,17 +299,18 @@ namespace Gilgame.SEWorkbench.Interop
             Func<string, string> func = (string x) => Path.Combine(MyFileSystem.ExePath, x);
             IlCompiler.Options = new CompilerParameters(new string[]
 	        {
-		        func("SpaceEngineers.ObjectBuilders.dll"),
-		        func("Sandbox.Game.dll"),
-		        func("Sandbox.Common.dll"),
-		        func("Sandbox.Graphics.dll"),
-		        func("VRage.dll"),
-		        func("VRage.Library.dll"),
-		        func("VRage.Math.dll"),
-		        func("VRage.Game.dll"),
-		        "System.Xml.dll",
-		        "System.Core.dll",
-		        "System.dll"
+			    func("SpaceEngineers.ObjectBuilders.dll"),
+			    func("SpaceEngineers.Game.dll"),
+			    func("Sandbox.Game.dll"),
+			    func("Sandbox.Common.dll"),
+			    func("Sandbox.Graphics.dll"),
+			    func("VRage.dll"),
+			    func("VRage.Library.dll"),
+			    func("VRage.Math.dll"),
+			    func("VRage.Game.dll"),
+			    "System.Core.dll",
+			    "System.Xml.dll",
+			    "System.dll"
 	        });
             IlCompiler.Options.CompilerOptions = String.Format("/debug {0}", IlCompiler.Options.CompilerOptions);
         }

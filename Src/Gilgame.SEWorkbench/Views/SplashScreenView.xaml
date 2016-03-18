@@ -10,9 +10,6 @@
                     <TextBlock Text="Space Engineers Workbench" HorizontalAlignment="Center" FontSize="16" />
                 </Border>
                 <Border Width="200">
-                    <TextBlock Text="Splash Screen Placeholder" HorizontalAlignment="Center" />
-                </Border>
-                <Border Width="200">
                     <TextBlock Text="Loading, Please Wait..." HorizontalAlignment="Center" />
                 </Border>
             </StackPanel>
