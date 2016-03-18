@@ -77,7 +77,9 @@ namespace Gilgame.SEWorkbench.Interop
                 string directory = Directory.GetCurrentDirectory();
                 if (assembly.StartsWith("System"))
                 {
-                    directory = RuntimeEnvironment.GetRuntimeDirectory();
+                    // TODO: This needs more love before we include .Net modules
+                    //directory = RuntimeEnvironment.GetRuntimeDirectory();
+                    continue;
                 }
 
                 Mono.Cecil.AssemblyDefinition definition = Mono.Cecil.AssemblyDefinition.ReadAssembly(System.IO.Path.Combine(directory, assembly));
