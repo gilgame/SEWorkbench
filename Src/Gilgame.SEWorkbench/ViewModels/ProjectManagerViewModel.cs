@@ -562,7 +562,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                         Match full = _ErrorRegex.Match(error);
                         if (full.Groups.Count > 1)
                         {
-                            int line = Convert.ToInt32(full.Groups[2].Value) - 9;
+                            int diff = Gilgame.SEWorkbench.Interop.InGameScript.HeaderSize;
+                            int line = Convert.ToInt32(full.Groups[2].Value) - diff;
                             int col = Convert.ToInt32(full.Groups[3].Value);
 
                             string errno = full.Groups[4].Value;

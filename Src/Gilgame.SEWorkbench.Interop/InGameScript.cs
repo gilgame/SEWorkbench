@@ -17,6 +17,48 @@ namespace Gilgame.SEWorkbench.Interop
             }
         }
 
+        private static ScriptProvider _Provider;
+        public static ScriptProvider Provider
+        {
+            get
+            {
+                if (_Provider == null)
+                {
+                    _Provider = new ScriptProvider();
+                }
+                return _Provider;
+            }
+        }
+
+        public static int HeaderSize
+        {
+            get
+            {
+                return Header.Split(new char[] { '\n' }).Length;
+            }
+        }
+
+        public static string Header
+        {
+            get
+            {
+                StringBuilder header = new StringBuilder();
+                header.AppendLine(Provider.GetUsing());
+                header.AppendLine("public class Program : MyGridProgram {");
+                header.AppendLine(Provider.GetVars());
+
+                return header.ToString();
+            }
+        }
+
+        public static string Footer
+        {
+            get
+            {
+                return "}";
+            }
+        }
+
         public InGameScript(string program)
         {
             Assembly temp = null;
@@ -30,15 +72,14 @@ namespace Gilgame.SEWorkbench.Interop
                 ScriptProvider provider = new ScriptProvider();
 
                 StringBuilder program = new StringBuilder();
-                program.AppendLine(provider.GetUsing());
-                program.AppendLine("public class Program : MyGridProgram {");
+                program.AppendLine(Header);
                 program.AppendLine(script);
-                program.AppendLine("}");
-                
+                program.AppendLine(Footer);
+
                 if (VRage.Compiler.IlCompiler.CompileStringIngame(Path.Combine(VRage.FileSystem.MyFileSystem.UserDataPath, "IngameScript.dll"), new string[]
-		        {
-			        program.ToString()
-		        },
+                {
+                    program.ToString()
+                },
                 out assembly, errors))
                 {
                     return true;
