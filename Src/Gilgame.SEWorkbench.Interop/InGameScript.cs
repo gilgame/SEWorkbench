@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace Gilgame.SEWorkbench.Interop
 {
@@ -22,15 +23,23 @@ namespace Gilgame.SEWorkbench.Interop
             CompileProgram(program, _CompileErrors, ref temp);
         }
 
-        private static bool CompileProgram(string program, List<string> errors, ref Assembly assembly)
+        private static bool CompileProgram(string script, List<string> errors, ref Assembly assembly)
         {
-            if (program != null && program.Length > 0)
+            if (script != null && script.Length > 0)
             {
-                string text = "using System;\nusing System.Collections.Generic;\nusing VRageMath;\nusing VRage.Game;\nusing System.Text;\nusing Sandbox.ModAPI.Interfaces;\nusing Sandbox.ModAPI.Ingame;\nusing Sandbox.Game.EntityComponents;\nusing VRage.Game.Components;\nusing VRage.Collections;\nusing VRage.Game.ObjectBuilders.Definitions;\nusing VRage.Game.ModAPI.Ingame;\nusing SpaceEngineers.Game.ModAPI.Ingame;\npublic class Program: MyGridProgram\n{\n" + program + "\n}";
+                ScriptProvider provider = new ScriptProvider();
+
+                StringBuilder program = new StringBuilder();
+                program.AppendLine(provider.GetUsing());
+                program.AppendLine("public class Program : MyGridProgram {");
+                program.AppendLine(script);
+                program.AppendLine("}");
+                
                 if (VRage.Compiler.IlCompiler.CompileStringIngame(Path.Combine(VRage.FileSystem.MyFileSystem.UserDataPath, "IngameScript.dll"), new string[]
 		        {
-			        text
-		        }, out assembly, errors))
+			        program.ToString()
+		        },
+                out assembly, errors))
                 {
                     return true;
                 }
