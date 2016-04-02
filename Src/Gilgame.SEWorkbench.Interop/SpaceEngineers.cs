@@ -312,6 +312,7 @@ namespace Gilgame.SEWorkbench.Interop
 			    "System.Xml.dll",
 			    "System.dll"
 	        });
+            IlCompiler.Options.GenerateInMemory = true;
             IlCompiler.Options.CompilerOptions = String.Format("/debug {0}", IlCompiler.Options.CompilerOptions);
         }
     }

@@ -52,8 +52,9 @@ namespace Gilgame.SEWorkbench.Interop
 
             List<string> assemblies = new List<string>()
             {
-		        "SpaceEngineers.ObjectBuilders.dll",
-		        "Sandbox.Game.dll",
+                "SpaceEngineers.Game.dll",
+                "SpaceEngineers.ObjectBuilders.dll",
+                "Sandbox.Game.dll",
 		        "Sandbox.Common.dll",
 		        "Sandbox.Graphics.dll",
 		        "VRage.dll",
