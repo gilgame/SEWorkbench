@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 
 using ParallelTasks;
+using Sandbox;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Common.ObjectBuilders.Definitions;
 using Sandbox.Definitions;
@@ -35,10 +36,11 @@ using VRage.Plugins;
 using VRage.Utils;
 using VRage.Voxels;
 using VRageMath;
+using SpaceEngineers.Game.ModAPI.Ingame;
 
 namespace Gilgame.SEWorkbench.Interop
 {
-    public class SpaceEngineers
+    public class SEngineers
     {
         public static List<string> Dependencies
         {
@@ -143,6 +145,9 @@ namespace Gilgame.SEWorkbench.Interop
 
         private static void InitIlChecker()
         {
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(SpaceEngineers.Game.ModAPI.IMyButtonPanel));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(SpaceEngineers.Game.ModAPI.Ingame.IMyButtonPanel));
+
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyFactionMember));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyFontEnum));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyObjectBuilder_SessionSettings));
@@ -193,31 +198,31 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyLight));
             Type typeFromHandle = typeof(MyObjectBuilderSerializer);
             IlChecker.AllowedOperands[typeFromHandle] = new List<MemberInfo>
-	        {
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(MyObjectBuilderType)
-		        }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(SerializableDefinitionId)
-		        }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(string)
-		        }),
-		        typeFromHandle.GetMethod("CreateNewObject", new Type[]
-		        {
-			        typeof(MyObjectBuilderType),
-			        typeof(string)
-		        })
-	        };
+            {
+                typeFromHandle.GetMethod("CreateNewObject", new Type[]
+                {
+                    typeof(MyObjectBuilderType)
+                }),
+                typeFromHandle.GetMethod("CreateNewObject", new Type[]
+                {
+                    typeof(SerializableDefinitionId)
+                }),
+                typeFromHandle.GetMethod("CreateNewObject", new Type[]
+                {
+                    typeof(string)
+                }),
+                typeFromHandle.GetMethod("CreateNewObject", new Type[]
+                {
+                    typeof(MyObjectBuilderType),
+                    typeof(string)
+                })
+            };
             IlChecker.AllowedOperands.Add(typeof(IMyEntity), new List<MemberInfo>
-	        {
-		        typeof(IMyEntity).GetMethod("GetPosition"),
-		        typeof(IMyEntity).GetProperty("WorldMatrix").GetGetMethod(),
-		        typeof(IMyEntity).GetProperty("Components").GetGetMethod()
-	        });
+            {
+                typeof(IMyEntity).GetMethod("GetPosition"),
+                typeof(IMyEntity).GetProperty("WorldMatrix").GetGetMethod(),
+                typeof(IMyEntity).GetProperty("Components").GetGetMethod()
+            });
             IlChecker.AllowedOperands.Add(typeof(IWork), null);
             IlChecker.AllowedOperands.Add(typeof(Task), null);
             IlChecker.AllowedOperands.Add(typeof(WorkOptions), null);
@@ -243,53 +248,53 @@ namespace Gilgame.SEWorkbench.Interop
                                              where method.Name == "TryGet" && method.ContainsGenericParameters && method.GetParameters().Length == 1
                                              select method;
             IlChecker.AllowedOperands.Add(typeof(MyComponentContainer), new List<MemberInfo>
-	        {
-		        typeof(MyComponentContainer).GetMethod("Has").MakeGenericMethod(new Type[]
-		        {
-			        typeof(MyResourceSourceComponent)
-		        }),
-		        typeof(MyComponentContainer).GetMethod("Get").MakeGenericMethod(new Type[]
-		        {
-			        typeof(MyResourceSourceComponent)
-		        }),
-		        typeof(MyComponentContainer).GetMethod("TryGet", new Type[]
-		        {
-			        typeof(Type),
-			        typeof(MyResourceSourceComponent)
-		        }),
-		        source.FirstOrDefault<MethodInfo>().MakeGenericMethod(new Type[]
-		        {
-			        typeof(MyResourceSourceComponent)
-		        }),
-		        typeof(MyComponentContainer).GetMethod("Has").MakeGenericMethod(new Type[]
-		        {
-			        typeof(MyResourceSinkComponent)
-		        }),
-		        typeof(MyComponentContainer).GetMethod("Get").MakeGenericMethod(new Type[]
-		        {
-			        typeof(MyResourceSinkComponent)
-		        }),
-		        typeof(MyComponentContainer).GetMethod("TryGet", new Type[]
-		        {
-			        typeof(Type),
-			        typeof(MyResourceSinkComponent)
-		        }),
-		        source.FirstOrDefault<MethodInfo>().MakeGenericMethod(new Type[]
-		        {
-			        typeof(MyResourceSinkComponent)
-		        })
-	        });
+            {
+                typeof(MyComponentContainer).GetMethod("Has").MakeGenericMethod(new Type[]
+                {
+                    typeof(MyResourceSourceComponent)
+                }),
+                typeof(MyComponentContainer).GetMethod("Get").MakeGenericMethod(new Type[]
+                {
+                    typeof(MyResourceSourceComponent)
+                }),
+                typeof(MyComponentContainer).GetMethod("TryGet", new Type[]
+                {
+                    typeof(Type),
+                    typeof(MyResourceSourceComponent)
+                }),
+                source.FirstOrDefault<MethodInfo>().MakeGenericMethod(new Type[]
+                {
+                    typeof(MyResourceSourceComponent)
+                }),
+                typeof(MyComponentContainer).GetMethod("Has").MakeGenericMethod(new Type[]
+                {
+                    typeof(MyResourceSinkComponent)
+                }),
+                typeof(MyComponentContainer).GetMethod("Get").MakeGenericMethod(new Type[]
+                {
+                    typeof(MyResourceSinkComponent)
+                }),
+                typeof(MyComponentContainer).GetMethod("TryGet", new Type[]
+                {
+                    typeof(Type),
+                    typeof(MyResourceSinkComponent)
+                }),
+                source.FirstOrDefault<MethodInfo>().MakeGenericMethod(new Type[]
+                {
+                    typeof(MyResourceSinkComponent)
+                })
+            });
             IlChecker.AllowedOperands.Add(typeof(MyResourceSourceComponentBase), null);
             IlChecker.AllowedOperands.Add(typeof(MyResourceSinkComponentBase), new List<MemberInfo>
-	        {
-		        typeof(MyResourceSinkComponentBase).GetProperty("AcceptedResources").GetGetMethod(),
-		        typeof(MyResourceSinkComponentBase).GetMethod("CurrentInputByType"),
-		        typeof(MyResourceSinkComponentBase).GetMethod("IsPowerAvailable"),
-		        typeof(MyResourceSinkComponentBase).GetMethod("IsPoweredByType"),
-		        typeof(MyResourceSinkComponentBase).GetMethod("MaxRequiredInputByType"),
-		        typeof(MyResourceSinkComponentBase).GetMethod("RequiredInputByType"),
-		        typeof(MyResourceSinkComponentBase).GetMethod("SuppliedRatioByType")
-	        });
+            {
+                typeof(MyResourceSinkComponentBase).GetProperty("AcceptedResources").GetGetMethod(),
+                typeof(MyResourceSinkComponentBase).GetMethod("CurrentInputByType"),
+                typeof(MyResourceSinkComponentBase).GetMethod("IsPowerAvailable"),
+                typeof(MyResourceSinkComponentBase).GetMethod("IsPoweredByType"),
+                typeof(MyResourceSinkComponentBase).GetMethod("MaxRequiredInputByType"),
+                typeof(MyResourceSinkComponentBase).GetMethod("RequiredInputByType"),
+                typeof(MyResourceSinkComponentBase).GetMethod("SuppliedRatioByType")
+            });
             IlChecker.AllowedOperands.Add(typeof(ListReader<MyDefinitionId>), null);
             IlChecker.AllowedOperands.Add(typeof(MyDefinitionId), null);
         }

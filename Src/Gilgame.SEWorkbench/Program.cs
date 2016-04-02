@@ -38,6 +38,9 @@ namespace Gilgame.SEWorkbench
             {
                 if (!IsAdmin)
                 {
+                    string message = "SE Workbench needs to copy the sandbox files. Make sure Space Engineers and Steam are closed and then press OK to continue.";
+                    MessageBox.ShowMessage(message);
+
                     Restart(true);
                 }
 
@@ -58,7 +61,7 @@ namespace Gilgame.SEWorkbench
             Views.SplashScreenView splash = new Views.SplashScreenView();
             splash.Show();
 
-            Interop.SpaceEngineers.Initialize();
+            Interop.SEngineers.Initialize();
             Interop.Decompiler.LoadClasses();
 
             splash.Close();
@@ -97,31 +100,10 @@ namespace Gilgame.SEWorkbench
             }
         }
 
-        private static void Elevate()
-        {
-            ProcessStartInfo info = new ProcessStartInfo()
-            {
-                WorkingDirectory = Environment.CurrentDirectory,
-                FileName = Process.GetCurrentProcess().MainModule.FileName,
-                UseShellExecute = true,
-                Verb = "runas",
-                Arguments = "--pid " + Process.GetCurrentProcess().Id.ToString()
-            };
-
-            try
-            {
-                Process.Start(info);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.ShowError("Failed to start the program with elevated privileges", ex);
-            }
-        }
-
         private static bool SandboxIsCopied(string sepath)
         {
             string local = Directory.GetCurrentDirectory();
-            foreach (string assembly in Interop.SpaceEngineers.Dependencies)
+            foreach (string assembly in Interop.SEngineers.Dependencies)
             {
                 string file = Path.Combine(local, assembly);
                 string sefile = Path.Combine(sepath, assembly);
@@ -150,7 +132,7 @@ namespace Gilgame.SEWorkbench
 
             try
             {
-                foreach (string assembly in Interop.SpaceEngineers.Dependencies)
+                foreach (string assembly in Interop.SEngineers.Dependencies)
                 {
                     CopyFile(Path.Combine(source, assembly), Path.Combine(destination, assembly));
                 }
@@ -206,19 +188,26 @@ namespace Gilgame.SEWorkbench
             }
             else
             {
-                sepath = Path.Combine(sepath, "Bin");
+                if (Environment.Is64BitProcess)
+                {
+                    sepath = Path.Combine(sepath, "Bin64");
+                }
+                else
+                {
+                    sepath = Path.Combine(sepath, "Bin");
+                }
             }
             return sepath;
         }
 
         private static string UserGetPath()
         {
-            Services.MessageBox.ShowMessage("SE Workbench was unable to locate Space Engineers. You will now be prompted to locate SpaceEngineers.exe manually.");
+            Services.MessageBox.ShowMessage("SE Workbench was unable to locate Space Engineers. You will now be prompted to locate SpaceEngineers.exe manually. Browse to Bin for 32-bit or Bin64 for 64-bit architectures.");
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
             {
                 DefaultExt = ".exe",
                 Filter = "Space Engineers Executable (SpaceEngineers.exe)|SpaceEngineers.exe",
-                InitialDirectory = @"C:\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers\Bin",
+                InitialDirectory = @"C:\Program Files (x86)\Steam\SteamApps\common\SpaceEngineers",
             };
 
             Nullable<bool> result = dialog.ShowDialog();

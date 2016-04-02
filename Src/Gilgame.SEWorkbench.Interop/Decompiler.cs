@@ -22,7 +22,7 @@ namespace Gilgame.SEWorkbench.Interop
 
         public static void LoadClasses()
         {
-            if (!SpaceEngineers.Initialized)
+            if (!SEngineers.Initialized)
             {
                 throw new Exception("Initialize SpaceEngineers interop first.");
             }
