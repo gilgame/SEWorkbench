@@ -61,7 +61,7 @@ namespace Gilgame.SEWorkbench
             Views.SplashScreenView splash = new Views.SplashScreenView();
             splash.Show();
 
-            Interop.SEngineers.Initialize();
+            Interop.Engine.Initialize();
             Interop.Decompiler.LoadClasses();
 
             splash.Close();
@@ -103,7 +103,7 @@ namespace Gilgame.SEWorkbench
         private static bool SandboxIsCopied(string sepath)
         {
             string local = Directory.GetCurrentDirectory();
-            foreach (string assembly in Interop.SEngineers.Dependencies)
+            foreach (string assembly in Interop.Engine.Dependencies)
             {
                 string file = Path.Combine(local, assembly);
                 string sefile = Path.Combine(sepath, assembly);
@@ -132,7 +132,7 @@ namespace Gilgame.SEWorkbench
 
             try
             {
-                foreach (string assembly in Interop.SEngineers.Dependencies)
+                foreach (string assembly in Interop.Engine.Dependencies)
                 {
                     CopyFile(Path.Combine(source, assembly), Path.Combine(destination, assembly));
                 }

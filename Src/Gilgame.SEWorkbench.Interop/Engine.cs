@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 
 using ParallelTasks;
-using Sandbox;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Common.ObjectBuilders.Definitions;
 using Sandbox.Definitions;
@@ -36,11 +35,10 @@ using VRage.Plugins;
 using VRage.Utils;
 using VRage.Voxels;
 using VRageMath;
-using SpaceEngineers.Game.ModAPI.Ingame;
 
 namespace Gilgame.SEWorkbench.Interop
 {
-    public class SEngineers
+    public class Engine
     {
         public static List<string> Dependencies
         {

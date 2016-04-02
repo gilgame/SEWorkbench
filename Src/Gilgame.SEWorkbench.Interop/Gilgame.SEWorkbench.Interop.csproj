@@ -262,7 +262,7 @@
     <Compile Include="AssemblyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptProvider.cs" />
-    <Compile Include="SpaceEngineers.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="TerminalBlock.cs" />
   </ItemGroup>
   <ItemGroup>
