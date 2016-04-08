@@ -28,7 +28,7 @@ namespace Gilgame.SEWorkbench.Interop
             }
 
             List<string> namespaces = new List<string>();
-            foreach(KeyValuePair<Assembly, List<string>> pair in IlChecker.AllowedNamespacesCommon)
+            foreach(KeyValuePair<Assembly, HashSet<string>> pair in IlChecker.AllowedNamespacesCommon)
             {
                 foreach (string allowed in pair.Value)
                 {
@@ -38,7 +38,7 @@ namespace Gilgame.SEWorkbench.Interop
                     }
                 }
             }
-            foreach(KeyValuePair<Assembly, List<string>> pair in IlChecker.AllowedNamespacesModAPI)
+            foreach(KeyValuePair<Assembly, HashSet<string>> pair in IlChecker.AllowedNamespacesModAPI)
             {
                 foreach (string allowed in pair.Value)
                 {

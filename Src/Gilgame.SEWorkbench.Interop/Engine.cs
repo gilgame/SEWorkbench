@@ -195,7 +195,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeCommon(typeof(IMyInventoryItem));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyLight));
             Type typeFromHandle = typeof(MyObjectBuilderSerializer);
-            IlChecker.AllowedOperands[typeFromHandle] = new List<MemberInfo>
+            IlChecker.AllowedOperands[typeFromHandle] = new HashSet<MemberInfo>
             {
                 typeFromHandle.GetMethod("CreateNewObject", new Type[]
                 {
@@ -215,7 +215,7 @@ namespace Gilgame.SEWorkbench.Interop
                     typeof(string)
                 })
             };
-            IlChecker.AllowedOperands.Add(typeof(IMyEntity), new List<MemberInfo>
+            IlChecker.AllowedOperands.Add(typeof(IMyEntity), new HashSet<MemberInfo>
             {
                 typeof(IMyEntity).GetMethod("GetPosition"),
                 typeof(IMyEntity).GetProperty("WorldMatrix").GetGetMethod(),
@@ -245,7 +245,7 @@ namespace Gilgame.SEWorkbench.Interop
             IEnumerable<MethodInfo> source = from method in typeof(MyComponentContainer).GetMethods()
                                              where method.Name == "TryGet" && method.ContainsGenericParameters && method.GetParameters().Length == 1
                                              select method;
-            IlChecker.AllowedOperands.Add(typeof(MyComponentContainer), new List<MemberInfo>
+            IlChecker.AllowedOperands.Add(typeof(MyComponentContainer), new HashSet<MemberInfo>
             {
                 typeof(MyComponentContainer).GetMethod("Has").MakeGenericMethod(new Type[]
                 {
@@ -283,7 +283,7 @@ namespace Gilgame.SEWorkbench.Interop
                 })
             });
             IlChecker.AllowedOperands.Add(typeof(MyResourceSourceComponentBase), null);
-            IlChecker.AllowedOperands.Add(typeof(MyResourceSinkComponentBase), new List<MemberInfo>
+            IlChecker.AllowedOperands.Add(typeof(MyResourceSinkComponentBase), new HashSet<MemberInfo>
             {
                 typeof(MyResourceSinkComponentBase).GetProperty("AcceptedResources").GetGetMethod(),
                 typeof(MyResourceSinkComponentBase).GetMethod("CurrentInputByType"),
