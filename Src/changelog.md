@@ -5,6 +5,7 @@ Beta 11
 Beta 10
 ================================
  * Updated for 01.128
+ * Support for 32-bit operating systems has been dropped.
 
 Beta 9
 ================================

@@ -24,6 +24,7 @@ Caveats
  * Workbench requires that Space Engineers is owned and installed on your computer. Workbench functions as a mod and is subject to the same restrictions.
  * Having Workbench running while updating Space Engineers through Steam could cause Steam to think the installation is corrupt because of files being in use.
  * Currently, Keen is moving a lot of things around in the Space Engineers libraries that Workbench needs in order to function. This could potentially render Workbench broken every Thursday until they are finished.
+ * Support for 32-bit operating systems has been dropped.
 
 Attribution
 =================================
