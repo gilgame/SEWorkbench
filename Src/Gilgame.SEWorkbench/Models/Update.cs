@@ -19,6 +19,9 @@ namespace Gilgame.SEWorkbench.Models
         [XmlElement("Details")]
         public string Details { get; set; }
 
+        [XmlElement("CheckSum")]
+        public string CheckSum { get; set; }
+
         [XmlIgnore]
         public bool IsNewer { get; set; }
     }
