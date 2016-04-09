@@ -22,8 +22,10 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
-            //Views.UpdaterView updater = new Views.UpdaterView();
-            //updater.Show();
+            Views.UpdaterView updater = new Views.UpdaterView();
+            updater.Location.Text = "http://github.com/gilgame/SEWorkbench/releases/download/1012/SEWorkbench-Beta11.zip";
+            updater.Details.Text = "Patch notes [...]";
+            updater.ShowDialog();
 
             Process parent = null;
             if (args.Length > 1 && args[0].ToLower() == "--pid")
@@ -225,5 +227,10 @@ namespace Gilgame.SEWorkbench
 
             return String.Empty;
         }
+
+        //private static Models.Update CheckForUpdate()
+        //{
+
+        //}
     }
 }

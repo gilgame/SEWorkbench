@@ -18,5 +18,8 @@ namespace Gilgame.SEWorkbench.Models
 
         [XmlElement("Details")]
         public string Details { get; set; }
+
+        [XmlIgnore]
+        public bool IsNewer { get; set; }
     }
 }

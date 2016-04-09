@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels.Commands
@@ -22,10 +23,20 @@ namespace Gilgame.SEWorkbench.ViewModels.Commands
             _Action = action;
         }
 
+        public DelegateCommand(Action<Window> action)
+        {
+            _Action = action;
+        }
+
         public void Execute(object parameter)
         {
             if (_Action != null)
             {
+                if (_Action is Action<Window>)
+                {
+                    Action<Window> action = (Action<Window>)_Action;
+                    action((Window)parameter);
+                }
                 if (_Action is Action<string>)
                 {
                     Action<string> action = (Action<string>)_Action;

@@ -6,20 +6,25 @@
         xmlns:local="clr-namespace:Gilgame.SEWorkbench.Views"
         xmlns:vm="clr-namespace:Gilgame.SEWorkbench.ViewModels"
         mc:Ignorable="d" Height="240" Width="425" ResizeMode="NoResize"
-        Title="Updater - Space Engineers Workbench" Icon="/Gilgame.SEWorkbench;component/Icons/app.ico">
+        x:Name="UpdaterWindow" Title="Updater - Space Engineers Workbench"
+        Icon="/Gilgame.SEWorkbench;component/Icons/app.ico"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:UpdaterViewModel />
     </Window.DataContext>
     <Grid>
+        <!-- hidden fields -->
+        <TextBlock x:Name="Location" Visibility="Hidden" Text="{Binding Location}" />
+
         <TextBlock Text="There is a newer version of SE Workbench available." Margin="7" Height="21" VerticalAlignment="Top" />
 
         <ProgressBar Margin="7,33,7,7" Height="13" Value="{Binding Progress}" VerticalAlignment="Top" />
 
         <ScrollViewer Margin="7,56,7,38" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
-            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Details}" />
+            <TextBox x:Name="Details" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Details}" />
         </ScrollViewer>
 
-        <Button Content="Cancel" Margin="7" Width="70" Height="21" IsEnabled="{Binding CanCancel}" IsCancel="True"
+        <Button Content="Cancel" Margin="7" Width="70" Height="21" IsEnabled="{Binding CanCancel}" CommandParameter="{Binding ElementName=UpdaterWindow}"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding CancelCommand}" />
         <Button Content="Download" Margin="7" Width="100" Height="21" IsEnabled="{Binding CanDownload}"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{Binding DownloadCommand}" />

@@ -28,5 +28,10 @@ namespace Gilgame.SEWorkbench.Services.IO
         {
             return System.IO.Path.GetRandomFileName();
         }
+
+        public static string GetTempFileName()
+        {
+            return System.IO.Path.GetTempFileName();
+        }
     }
 }

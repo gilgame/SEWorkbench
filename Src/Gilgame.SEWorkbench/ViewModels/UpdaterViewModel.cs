@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Gilgame.SEWorkbench.ViewModels
@@ -7,6 +8,23 @@ namespace Gilgame.SEWorkbench.ViewModels
     {
         #region Properties
 
+        private string _Location = String.Empty;
+        public string Location
+        {
+            get
+            {
+                return _Location;
+            }
+            set
+            {
+                if (_Location != value)
+                {
+                    _Location = value;
+                    RaisePropertyChanged("Location");
+                }
+            }
+        }
+
         private string _Details = String.Empty;
         public string Details
         {
@@ -14,7 +32,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             {
                 return _Details;
             }
-            private set
+            set
             {
                 if (_Details != value)
                 {
@@ -96,9 +114,16 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformCancel()
+        public void PerformCancel(Window window)
         {
+            if (!CanCancel)
+            {
+                return;
+            }
 
+            // cancel stuff
+
+            window.Close();
         }
 
         #endregion
@@ -116,7 +141,14 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformDownload()
         {
-            
+            if (!CanDownload)
+            {
+                return;
+            }
+
+            string destination = Services.IO.Path.GetTempFileName();
+
+            // download file, unpack
         }
 
         #endregion
