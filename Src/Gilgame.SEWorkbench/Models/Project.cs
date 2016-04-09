@@ -7,7 +7,6 @@ namespace Gilgame.SEWorkbench.Models
     [XmlRoot("Project")]
     public class Project
     {
-        // file missing?
         [XmlElement("Name")]
         public string Name { get; set; }
 

@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:Gilgame.SEWorkbench.Views"
         xmlns:vm="clr-namespace:Gilgame.SEWorkbench.ViewModels"
         mc:Ignorable="d" Height="240" Width="425" ResizeMode="NoResize"
-        Title="Updater - Space Engineers Workbench">
+        Title="Updater - Space Engineers Workbench" Icon="/Gilgame.SEWorkbench;component/Icons/app.ico">
     <Window.DataContext>
         <vm:UpdaterViewModel />
     </Window.DataContext>
     <Grid>
-        <TextBlock Text="There is a new version of SE Workbench available." Margin="7" Height="21" VerticalAlignment="Top" />
+        <TextBlock Text="There is a newer version of SE Workbench available." Margin="7" Height="21" VerticalAlignment="Top" />
 
         <ProgressBar Margin="7,33,7,7" Height="13" Value="{Binding Progress}" VerticalAlignment="Top" />
 
@@ -19,7 +19,7 @@
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Details}" />
         </ScrollViewer>
 
-        <Button Content="Cancel" Margin="7" Width="70" Height="21" IsEnabled="{Binding CanCancel}"
+        <Button Content="Cancel" Margin="7" Width="70" Height="21" IsEnabled="{Binding CanCancel}" IsCancel="True"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding CancelCommand}" />
         <Button Content="Download" Margin="7" Width="100" Height="21" IsEnabled="{Binding CanDownload}"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{Binding DownloadCommand}" />

@@ -22,6 +22,9 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
+            //Views.UpdaterView updater = new Views.UpdaterView();
+            //updater.Show();
+
             Process parent = null;
             if (args.Length > 1 && args[0].ToLower() == "--pid")
             {

@@ -66,6 +66,7 @@ namespace Gilgame.SEWorkbench.Serialization
             {
                 case "Item": return typeof(Models.ProjectItem);
                 case "Project": return typeof(Models.Project);
+                case "Update": return typeof(Models.Update);
 
                 default: return typeof(Object);
             }

@@ -235,16 +235,6 @@
       <HintPath>..\..\Bin\ICSharpCode.NRefactory.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="MedievalEngineers.ObjectBuilders, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SpaceEngineers\Bin64\MedievalEngineers.ObjectBuilders.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MedievalEngineers.ObjectBuilders.XmlSerializers, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SpaceEngineers\Bin64\MedievalEngineers.ObjectBuilders.XmlSerializers.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
@@ -363,6 +353,7 @@
     <Compile Include="Models\ProjectItemType.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Configuration\Convert.cs" />
+    <Compile Include="Models\Update.cs" />
     <Compile Include="Services\Hasher.cs" />
     <Compile Include="Services\IO\Directory.cs" />
     <Compile Include="Services\IO\File.cs" />

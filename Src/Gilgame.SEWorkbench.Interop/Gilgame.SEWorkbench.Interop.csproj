@@ -129,14 +129,6 @@
       <HintPath>..\..\Bin\ICSharpCode.NRefactory.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="MedievalEngineers.ObjectBuilders">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SpaceEngineers\Bin64\MedievalEngineers.ObjectBuilders.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MedievalEngineers.ObjectBuilders.XmlSerializers">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\SpaceEngineers\Bin64\MedievalEngineers.ObjectBuilders.XmlSerializers.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\Mono.Cecil.dll</HintPath>
