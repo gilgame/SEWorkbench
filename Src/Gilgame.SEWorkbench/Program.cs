@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Security.Principal;
 
 using Gilgame.SEWorkbench.Services;
+using System.Reflection;
 
 namespace Gilgame.SEWorkbench
 {
@@ -22,11 +23,27 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
-            Views.UpdaterView updater = new Views.UpdaterView();
-            updater.Location.Text = "http://github.com/gilgame/SEWorkbench/releases/download/1012/SEWorkbench-Beta11.zip";
-            updater.Details.Text = "Patch notes [...]";
-            updater.ShowDialog();
+            //if (Configuration.Program.CheckForUpdates)
+            //{
+            //    Models.Update update = CheckForUpdate();
+            //    if (update.IsNewer)
+            //    {
+            //        Views.UpdaterView updater = new Views.UpdaterView();
 
+            //        ViewModels.UpdaterViewModel context = (ViewModels.UpdaterViewModel)updater.DataContext;
+            //        context.Location = update.Location;
+            //        context.Details = update.Details;
+            //        context.CheckSum = update.CheckSum;
+                    
+            //        if (updater.ShowDialog() == true)
+            //        {
+            //            string filename = context.Filename;
+
+                        
+            //        }
+            //    }
+            //}
+            
             Process parent = null;
             if (args.Length > 1 && args[0].ToLower() == "--pid")
             {
@@ -228,9 +245,41 @@ namespace Gilgame.SEWorkbench
             return String.Empty;
         }
 
-        //private static Models.Update CheckForUpdate()
-        //{
+        private static Models.Update CheckForUpdate()
+        {
+            string source = "https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Src/update.xml";
 
-        //}
+            string contents = String.Empty;
+            using (WebClient client = new WebClient())
+            {
+                contents = client.DownloadString(source);
+            }
+
+            Models.Update update = new Models.Update();
+            if (!String.IsNullOrEmpty(contents))
+            {
+                update = (Models.Update)Serialization.Convert.ToObject(contents);
+
+                Version current = Assembly.GetExecutingAssembly().GetName().Version;
+
+                Version remote = null;
+                Version.TryParse(update.Version, out remote);
+
+                int compared = current.CompareTo(remote);
+                if (compared < 0)
+                {
+                    update.IsNewer = true;
+                }
+                else
+                {
+                    update.IsNewer = false;
+                }
+            }
+            else
+            {
+                update.IsNewer = false;
+            }
+            return update;
+        }
     }
 }

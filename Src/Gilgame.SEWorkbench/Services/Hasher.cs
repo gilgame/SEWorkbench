@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Gilgame.SEWorkbench.Updater
+namespace Gilgame.SEWorkbench.Services
 {
     public static class Hasher
     {

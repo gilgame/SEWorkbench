@@ -13,9 +13,6 @@
         <vm:UpdaterViewModel />
     </Window.DataContext>
     <Grid>
-        <!-- hidden fields -->
-        <TextBlock x:Name="Location" Visibility="Hidden" Text="{Binding Location}" />
-
         <TextBlock Text="There is a newer version of SE Workbench available." Margin="7" Height="21" VerticalAlignment="Top" />
 
         <ProgressBar Margin="7,33,7,7" Height="13" Value="{Binding Progress}" VerticalAlignment="Top" />
@@ -26,7 +23,7 @@
 
         <Button Content="Cancel" Margin="7" Width="70" Height="21" IsEnabled="{Binding CanCancel}" CommandParameter="{Binding ElementName=UpdaterWindow}"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding CancelCommand}" />
-        <Button Content="Download" Margin="7" Width="100" Height="21" IsEnabled="{Binding CanDownload}"
+        <Button Content="Download" Margin="7" Width="100" Height="21" IsEnabled="{Binding CanDownload}" CommandParameter="{Binding ElementName=UpdaterWindow}"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{Binding DownloadCommand}" />
     </Grid>
 </Window>

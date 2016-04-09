@@ -24,5 +24,17 @@ namespace Gilgame.SEWorkbench.Configuration
                 Services.Registry.SetValue(Microsoft.Win32.RegistryHive.CurrentUser, Root, "SEPath", Convert.ToString(value));
             }
         }
+
+        public static bool CheckForUpdates
+        {
+            get
+            {
+                return Convert.ToBoolean(Services.Registry.GetValue(Microsoft.Win32.RegistryHive.CurrentUser, Root, "CheckForUpdates", true));
+            }
+            set
+            {
+                Services.Registry.SetValue(Microsoft.Win32.RegistryHive.CurrentUser, Root, "CheckForUpdates", Convert.ToBoolean(value));
+            }
+        }
     }
 }

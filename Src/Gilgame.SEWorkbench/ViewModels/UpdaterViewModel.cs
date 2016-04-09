@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Net;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,6 +23,40 @@ namespace Gilgame.SEWorkbench.ViewModels
                 {
                     _Location = value;
                     RaisePropertyChanged("Location");
+                }
+            }
+        }
+
+        private string _Filename = String.Empty;
+        public string Filename
+        {
+            get
+            {
+                return _Filename;
+            }
+            set
+            {
+                if (_Filename != value)
+                {
+                    _Filename = value;
+                    RaisePropertyChanged("Filename");
+                }
+            }
+        }
+
+        private string _CheckSum = String.Empty;
+        public string CheckSum
+        {
+            get
+            {
+                return _CheckSum;
+            }
+            set
+            {
+                if (_CheckSum != value)
+                {
+                    _CheckSum = value;
+                    RaisePropertyChanged("CheckSum");
                 }
             }
         }
@@ -121,14 +157,17 @@ namespace Gilgame.SEWorkbench.ViewModels
                 return;
             }
 
-            // cancel stuff
-
+            _WebClient.CancelAsync();
+            
             window.Close();
         }
 
         #endregion
 
         #region DownloadCommand
+
+        private Window _Parent = null;
+        private WebClient _WebClient = new WebClient();
 
         private readonly ICommand _DownloadCommand;
         public ICommand DownloadCommand
@@ -139,16 +178,51 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformDownload()
+        public void PerformDownload(Window window)
         {
             if (!CanDownload)
             {
                 return;
             }
+            CanDownload = false;
 
-            string destination = Services.IO.Path.GetTempFileName();
+            _Parent = window;
 
-            // download file, unpack
+            Filename = Services.IO.Path.GetTempFileName();
+
+            DownloadFile(Location);
+        }
+
+        public void DownloadFile(string url)
+        {
+            Progress = 0;
+
+            _WebClient.DownloadProgressChanged += Client_DownloadProgressChanged;
+            _WebClient.DownloadFileCompleted += Client_DownloadCompleted;
+
+            _WebClient.DownloadFileAsync(new Uri(url), Filename);
+        }
+
+        public void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            Progress = e.ProgressPercentage;
+        }
+
+        public void Client_DownloadCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (!e.Cancelled && e.Error == null)
+            {
+                string hash = String.Empty;
+                if (Services.IO.File.Exists(Filename))
+                {
+                    hash = Services.Hasher.File(Filename);
+                    if (hash == CheckSum)
+                    {
+                        _Parent.DialogResult = true;
+                    }
+                }
+            }
+            _Parent.Close();
         }
 
         #endregion
