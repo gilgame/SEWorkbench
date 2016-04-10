@@ -39,7 +39,7 @@ namespace Gilgame.SEWorkbench
                     if (updater.ShowDialog() == true)
                     {
                         string temp = context.ExtractedPath;
-                        string working = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string working = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
                         UpdateProgram(temp, working);
 

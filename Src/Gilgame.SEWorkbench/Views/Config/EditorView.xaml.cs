@@ -10,6 +10,7 @@ namespace Gilgame.SEWorkbench.Views.Config
         private ViewModels.Config.ConfigViewModel _Config;
 
         private TextEditorPage _TextEditorPage;
+        private UpdaterPage _UpdaterPage;
 
         private object _ConfigPage;
         public object ConfigPage
@@ -53,6 +54,7 @@ namespace Gilgame.SEWorkbench.Views.Config
             _Config = config;
 
             _TextEditorPage = new TextEditorPage(_Config.TextEditor);
+            _UpdaterPage = new UpdaterPage(_Config.Updater);
 
             DataContext = this;
         }
@@ -68,6 +70,10 @@ namespace Gilgame.SEWorkbench.Views.Config
                 {
                     case "Text Editor":
                         ConfigPage = _TextEditorPage;
+                        break;
+
+                    case "Updater":
+                        ConfigPage = _UpdaterPage;
                         break;
                 }
             }

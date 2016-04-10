@@ -312,8 +312,9 @@ namespace Gilgame.SEWorkbench.ViewModels
         private void ExtractFilesTask(string filename)
         {
             ZipArchive zip = ZipFile.OpenRead(filename);
-            
-            SetExtractStart(zip.Entries.Count);
+
+            ExtractProgress = 0;
+            ZippedItems = zip.Entries.Count;
 
             string temp = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
             Directory.CreateDirectory(temp);
@@ -341,32 +342,13 @@ namespace Gilgame.SEWorkbench.ViewModels
                 else
                 {
                     entry.ExtractToFile(Path.Combine(temp, entry.FullName));
-                    
-                    SetExtractProgress(ExtractProgress + 1);
+
+                    ExtractProgress = ExtractProgress + 1;
                 }
             }
 
             ExtractedPath = root;
-            
-            SetExtractComplete();
-        }
 
-        private delegate void SetExtractStart_Callback(int items);
-        public void SetExtractStart(int items)
-        {
-            ExtractProgress = 0;
-            ZippedItems = items;
-        }
-
-        private delegate void SetExtractProgress_Callback(int progress);
-        private void SetExtractProgress(int progress)
-        {
-            ExtractProgress = progress;
-        }
-
-        private delegate void SetExtractComplete_Callback();
-        private void SetExtractComplete()
-        {
             DialogResult = true;
         }
 

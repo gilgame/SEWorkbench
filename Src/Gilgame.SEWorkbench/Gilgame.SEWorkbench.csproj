@@ -371,6 +371,7 @@
     <Compile Include="ViewModels\Config\ConfigViewModel.cs" />
     <Compile Include="ViewModels\Config\FontViewModel.cs" />
     <Compile Include="ViewModels\Config\TextEditorViewModel.cs" />
+    <Compile Include="ViewModels\Config\UpdaterViewModel.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="ViewModels\FindReplaceViewModel.cs" />
     <Compile Include="ViewModels\UpdaterViewModel.cs" />
@@ -389,6 +390,9 @@
     </Compile>
     <Compile Include="Views\Config\TextEditorPage.xaml.cs">
       <DependentUpon>TextEditorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Config\UpdaterPage.xaml.cs">
+      <DependentUpon>UpdaterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FindReplaceView.xaml.cs">
       <DependentUpon>FindReplaceView.xaml</DependentUpon>
@@ -489,6 +493,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Config\TextEditorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Config\UpdaterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

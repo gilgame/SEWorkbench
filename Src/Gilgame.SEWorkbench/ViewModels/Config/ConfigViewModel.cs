@@ -18,9 +18,24 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
             }
         }
 
+        private UpdaterViewModel _Updater;
+        public UpdaterViewModel Updater
+        {
+            get
+            {
+                return _Updater;
+            }
+            set
+            {
+                _Updater = value;
+                RaisePropertyChanged("Updater");
+            }
+        }
+
         public ConfigViewModel(BaseViewModel parent) : base(parent)
         {
             _TextEditor = new TextEditorViewModel(this);
+            _Updater = new UpdaterViewModel(this);
         }
     }
 }
