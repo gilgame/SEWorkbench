@@ -42,7 +42,8 @@ namespace Gilgame.SEWorkbench.Services
             ViewModels.ExceptionViewModel context = (ViewModels.ExceptionViewModel)view.DataContext;
 
             string message = String.Format(
-                "{0}{1}{1}{2}",
+                "({0}) {1}{2}{2}{3}",
+                exception.GetType().ToString(),
                 exception.Message,
                 Environment.NewLine,
                 exception.StackTrace

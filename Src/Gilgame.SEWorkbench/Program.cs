@@ -28,7 +28,7 @@ namespace Gilgame.SEWorkbench
 
             if (Configuration.Program.CheckForUpdates)
             {
-                Models.Update update = CheckForUpdate();
+                Models.Update update = CheckForUpdates();
                 if (update != null && update.IsNewer)
                 {
                     Views.UpdaterView updater = new Views.UpdaterView();
@@ -81,6 +81,11 @@ namespace Gilgame.SEWorkbench
                     Configuration.Program.SEPath = path;
 
                     Restart();
+                }
+                else
+                {
+                    string message = String.Format("Workbench was unable to copy sandbox (path: {0}) and may not function properly.", path);
+                    MessageBox.ShowMessage(message);
                 }
             }
 
@@ -158,6 +163,11 @@ namespace Gilgame.SEWorkbench
 
         private static bool CopySandbox(string path)
         {
+            if (String.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
             string destination = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string source = path;
 
@@ -195,6 +205,11 @@ namespace Gilgame.SEWorkbench
 
         private static bool ValidPath(string path)
         {
+            if (String.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
             string exe = Path.Combine(path, "SpaceEngineers.exe");
 
             return File.Exists(exe);
@@ -219,14 +234,7 @@ namespace Gilgame.SEWorkbench
             }
             else
             {
-                if (Environment.Is64BitProcess)
-                {
-                    sepath = Path.Combine(sepath, "Bin64");
-                }
-                else
-                {
-                    sepath = Path.Combine(sepath, "Bin");
-                }
+                sepath = Path.Combine(sepath, "Bin64");
             }
             return sepath;
         }
@@ -254,7 +262,7 @@ namespace Gilgame.SEWorkbench
             return String.Empty;
         }
 
-        private static Models.Update CheckForUpdate()
+        private static Models.Update CheckForUpdates()
         {
             string source = "https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Src/update.xml";
 
