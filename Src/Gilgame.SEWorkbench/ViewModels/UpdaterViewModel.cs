@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Gilgame.SEWorkbench.Services.IO;
+using System;
 using System.ComponentModel;
+using System.IO.Compression;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -78,19 +80,53 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        private int _Progress = 0;
-        public int Progress
+        private int _DownloadProgress = 0;
+        public int DownloadProgress
         {
             get
             {
-                return _Progress;
+                return _DownloadProgress;
             }
             private set
             {
-                if (_Progress != value)
+                if (_DownloadProgress != value)
                 {
-                    _Progress = value;
-                    RaisePropertyChanged("Progress");
+                    _DownloadProgress = value;
+                    RaisePropertyChanged("DownloadProgress");
+                }
+            }
+        }
+
+        private int _ExtractProgress = 0;
+        public int ExtractProgress
+        {
+            get
+            {
+                return _ExtractProgress;
+            }
+            private set
+            {
+                if (_ExtractProgress != value)
+                {
+                    _ExtractProgress = value;
+                    RaisePropertyChanged("ExtractProgress");
+                }
+            }
+        }
+
+        private int _ZippedItems = 100;
+        public int ZippedItems
+        {
+            get
+            {
+                return _ZippedItems;
+            }
+            private set
+            {
+                if (_ZippedItems != value)
+                {
+                    _ZippedItems = value;
+                    RaisePropertyChanged("ZippedItems");
                 }
             }
         }
@@ -129,6 +165,40 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private string _ExtractedPath = String.Empty;
+        public string ExtractedPath
+        {
+            get
+            {
+                return _ExtractedPath;
+            }
+            private set
+            {
+                if (_ExtractedPath != value)
+                {
+                    _ExtractedPath = value;
+                    RaisePropertyChanged("ExtractedPath");
+                }
+            }
+        }
+
+        private bool? _DialogResult = null;
+        public bool? DialogResult
+        {
+            get
+            {
+                return _DialogResult;
+            }
+            private set
+            {
+                if (_DialogResult != value)
+                {
+                    _DialogResult = value;
+                    RaisePropertyChanged("DialogResult");
+                }
+            }
+        }
+
         #endregion
 
         public UpdaterViewModel() : base(null)
@@ -150,7 +220,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformCancel(Window window)
+        public void PerformCancel()
         {
             if (!CanCancel)
             {
@@ -158,16 +228,17 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
 
             _WebClient.CancelAsync();
+            _CancelExtract = true;
             
-            window.Close();
+            DialogResult = false;
         }
 
         #endregion
 
         #region DownloadCommand
-
-        private Window _Parent = null;
+        
         private WebClient _WebClient = new WebClient();
+        private bool _CancelExtract = false;
 
         private readonly ICommand _DownloadCommand;
         public ICommand DownloadCommand
@@ -178,7 +249,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public void PerformDownload(Window window)
+        public void PerformDownload()
         {
             if (!CanDownload)
             {
@@ -186,16 +257,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
             CanDownload = false;
 
-            _Parent = window;
-
             Filename = Services.IO.Path.GetTempFileName();
 
             DownloadFile(Location);
         }
 
-        public void DownloadFile(string url)
+        private void DownloadFile(string url)
         {
-            Progress = 0;
+            DownloadProgress = 0;
 
             _WebClient.DownloadProgressChanged += Client_DownloadProgressChanged;
             _WebClient.DownloadFileCompleted += Client_DownloadCompleted;
@@ -203,12 +272,12 @@ namespace Gilgame.SEWorkbench.ViewModels
             _WebClient.DownloadFileAsync(new Uri(url), Filename);
         }
 
-        public void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Progress = e.ProgressPercentage;
+            DownloadProgress = e.ProgressPercentage;
         }
 
-        public void Client_DownloadCompleted(object sender, AsyncCompletedEventArgs e)
+        private void Client_DownloadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (!e.Cancelled && e.Error == null)
             {
@@ -218,11 +287,87 @@ namespace Gilgame.SEWorkbench.ViewModels
                     hash = Services.Hasher.File(Filename);
                     if (hash == CheckSum)
                     {
-                        _Parent.DialogResult = true;
+                        ExtractFiles(Filename);
                     }
                 }
             }
-            _Parent.Close();
+        }
+
+        private void ExtractFiles(string filename)
+        {
+            if (Services.IO.File.Exists(filename))
+            {
+                System.Threading.Thread worker = new System.Threading.Thread
+                (
+                    delegate ()
+                    {
+                        ExtractFilesTask(filename);
+                    }
+                );
+                worker.IsBackground = true;
+                worker.Start();
+            }
+        }
+
+        private void ExtractFilesTask(string filename)
+        {
+            ZipArchive zip = ZipFile.OpenRead(filename);
+            
+            SetExtractStart(zip.Entries.Count);
+
+            string temp = Path.Combine(Path.GetDirectoryName(filename), Path.GetRandomFileName());
+            Directory.CreateDirectory(temp);
+
+            string root = String.Empty;
+            foreach (ZipArchiveEntry entry in zip.Entries)
+            {
+                if (_CancelExtract)
+                {
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(entry.Name))
+                {
+                    string dir = Path.Combine(temp, entry.FullName.TrimEnd(new char[] { '/' }));
+                    if (!Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    if (String.IsNullOrEmpty(root))
+                    {
+                        root = dir;
+                    }
+                }
+                else
+                {
+                    entry.ExtractToFile(Path.Combine(temp, entry.FullName));
+                    
+                    SetExtractProgress(ExtractProgress + 1);
+                }
+            }
+
+            ExtractedPath = root;
+            
+            SetExtractComplete();
+        }
+
+        private delegate void SetExtractStart_Callback(int items);
+        public void SetExtractStart(int items)
+        {
+            ExtractProgress = 0;
+            ZippedItems = items;
+        }
+
+        private delegate void SetExtractProgress_Callback(int progress);
+        private void SetExtractProgress(int progress)
+        {
+            ExtractProgress = progress;
+        }
+
+        private delegate void SetExtractComplete_Callback();
+        private void SetExtractComplete()
+        {
+            DialogResult = true;
         }
 
         #endregion

@@ -5,7 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:Gilgame.SEWorkbench.Views"
         xmlns:vm="clr-namespace:Gilgame.SEWorkbench.ViewModels"
-        mc:Ignorable="d" Height="240" Width="425" ResizeMode="NoResize"
+        xmlns:svc="clr-namespace:Gilgame.SEWorkbench.Services"
+        svc:DialogCloser.DialogResult="{Binding DialogResult}"
+        mc:Ignorable="d" Height="280" Width="425" ResizeMode="NoResize"
         x:Name="UpdaterWindow" Title="Updater - Space Engineers Workbench"
         Icon="/Gilgame.SEWorkbench;component/Icons/app.ico"
         WindowStartupLocation="CenterScreen">
@@ -15,9 +17,15 @@
     <Grid>
         <TextBlock Text="There is a newer version of SE Workbench available." Margin="7" Height="21" VerticalAlignment="Top" />
 
-        <ProgressBar Margin="7,33,7,7" Height="13" Value="{Binding Progress}" VerticalAlignment="Top" />
+        <TextBlock Text="Downloading:" Margin="7,30,7,7" Height="21" Width="80"
+                   VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <ProgressBar Margin="90,33,7,7" Height="13" Value="{Binding DownloadProgress}" VerticalAlignment="Top" />
 
-        <ScrollViewer Margin="7,56,7,38" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
+        <TextBlock Text="Extracting:" Margin="7,55,7,7" Height="21" Width="80"
+                   VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <ProgressBar Margin="90,58,7,7" Height="13" Value="{Binding ExtractProgress}" Maximum="{Binding ZippedItems}" VerticalAlignment="Top" />
+
+        <ScrollViewer Margin="7,83,7,38" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
             <TextBox x:Name="Details" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Details}" />
         </ScrollViewer>
 

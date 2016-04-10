@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Security.Principal;
+using System.Text;
 
 using Gilgame.SEWorkbench.Services;
-using System.Reflection;
 
 namespace Gilgame.SEWorkbench
 {
@@ -23,26 +24,29 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
-            //if (Configuration.Program.CheckForUpdates)
-            //{
-            //    Models.Update update = CheckForUpdate();
-            //    if (update.IsNewer)
-            //    {
-            //        Views.UpdaterView updater = new Views.UpdaterView();
+            if (Configuration.Program.CheckForUpdates)
+            {
+                Models.Update update = CheckForUpdate();
+                if (update.IsNewer)
+                {
+                    Views.UpdaterView updater = new Views.UpdaterView();
 
-            //        ViewModels.UpdaterViewModel context = (ViewModels.UpdaterViewModel)updater.DataContext;
-            //        context.Location = update.Location;
-            //        context.Details = update.Details;
-            //        context.CheckSum = update.CheckSum;
+                    ViewModels.UpdaterViewModel context = (ViewModels.UpdaterViewModel)updater.DataContext;
+                    context.Location = update.Location;
+                    context.Details = update.Details;
+                    context.CheckSum = update.CheckSum;
                     
-            //        if (updater.ShowDialog() == true)
-            //        {
-            //            string filename = context.Filename;
+                    if (updater.ShowDialog() == true)
+                    {
+                        string temp = context.ExtractedPath;
+                        string working = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
-                        
-            //        }
-            //    }
-            //}
+                        UpdateProgram(temp, working);
+
+                        return;
+                    }
+                }
+            }
             
             Process parent = null;
             if (args.Length > 1 && args[0].ToLower() == "--pid")
@@ -280,6 +284,24 @@ namespace Gilgame.SEWorkbench
                 update.IsNewer = false;
             }
             return update;
+        }
+
+        private static void UpdateProgram(string temp, string working)
+        {
+            StringBuilder arguments = new StringBuilder();
+
+            arguments.Append("/C Choice /C Y /N /D Y /T 3 & ");
+            arguments.Append(String.Format("del /F /Q /S \"{0}\" & ", working));
+            arguments.Append(String.Format("xcopy /E /C /Y /I \"{0}\" \"{1}\" & ", temp, working));
+            arguments.Append(String.Format("start \"\" /D \"{0}\" \"{1}\"", working, Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location)));
+
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.Arguments = arguments.ToString();
+            info.WindowStyle = ProcessWindowStyle.Hidden;
+            info.CreateNoWindow = true;
+            info.FileName = "cmd.exe";
+
+            Process.Start(info);
         }
     }
 }
