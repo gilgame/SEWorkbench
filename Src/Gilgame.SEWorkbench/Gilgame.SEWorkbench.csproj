@@ -373,6 +373,7 @@
     <Compile Include="ViewModels\Config\TextEditorViewModel.cs" />
     <Compile Include="ViewModels\Config\UpdaterViewModel.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
+    <Compile Include="ViewModels\ExceptionViewModel.cs" />
     <Compile Include="ViewModels\FindReplaceViewModel.cs" />
     <Compile Include="ViewModels\UpdaterViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
@@ -393,6 +394,9 @@
     </Compile>
     <Compile Include="Views\Config\UpdaterPage.xaml.cs">
       <DependentUpon>UpdaterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExceptionView.xaml.cs">
+      <DependentUpon>ExceptionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FindReplaceView.xaml.cs">
       <DependentUpon>FindReplaceView.xaml</DependentUpon>
@@ -497,6 +501,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Config\UpdaterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExceptionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

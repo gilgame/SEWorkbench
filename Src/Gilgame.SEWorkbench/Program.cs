@@ -24,10 +24,12 @@ namespace Gilgame.SEWorkbench
         [STAThread]
         public static void Main(string[] args)
         {
+            System.AppDomain.CurrentDomain.UnhandledException += Program_UnhandledException;
+
             if (Configuration.Program.CheckForUpdates)
             {
                 Models.Update update = CheckForUpdate();
-                if (update.IsNewer)
+                if (update != null && update.IsNewer)
                 {
                     Views.UpdaterView updater = new Views.UpdaterView();
 
@@ -35,7 +37,7 @@ namespace Gilgame.SEWorkbench
                     context.Location = update.Location;
                     context.Details = update.Details;
                     context.CheckSum = update.CheckSum;
-                    
+
                     if (updater.ShowDialog() == true)
                     {
                         string temp = context.ExtractedPath;
@@ -47,16 +49,14 @@ namespace Gilgame.SEWorkbench
                     }
                 }
             }
-            
-            Process parent = null;
+
             if (args.Length > 1 && args[0].ToLower() == "--pid")
             {
-                parent = Process.GetProcessById(Configuration.Convert.ToInteger(args[1]));
-            }
-
-            if (parent != null)
-            {
-                parent.Kill();
+                Process parent = Process.GetProcessById(Configuration.Convert.ToInteger(args[1]));
+                if (parent != null)
+                {
+                    parent.Kill();
+                }
             }
 
             string path = Configuration.Program.SEPath;
@@ -95,6 +95,11 @@ namespace Gilgame.SEWorkbench
             StartApp();
         }
 
+        private static void Program_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.ShowError(e.ExceptionObject);
+        }
+
         private static void StartApp()
         {
             Gilgame.SEWorkbench.App app = new Gilgame.SEWorkbench.App();
@@ -106,7 +111,7 @@ namespace Gilgame.SEWorkbench
         {
             ProcessStartInfo info = new ProcessStartInfo()
             {
-                WorkingDirectory = Environment.CurrentDirectory,
+                WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
                 FileName = Process.GetCurrentProcess().MainModule.FileName,
                 UseShellExecute = true,
                 Arguments = "--pid " + Process.GetCurrentProcess().Id.ToString()
@@ -128,7 +133,7 @@ namespace Gilgame.SEWorkbench
 
         private static bool SandboxIsCopied(string sepath)
         {
-            string local = Directory.GetCurrentDirectory();
+            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             foreach (string assembly in Interop.Engine.Dependencies)
             {
                 string file = Path.Combine(local, assembly);
@@ -153,7 +158,7 @@ namespace Gilgame.SEWorkbench
 
         private static bool CopySandbox(string path)
         {
-            string destination = Directory.GetCurrentDirectory();
+            string destination = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string source = path;
 
             try
@@ -254,34 +259,50 @@ namespace Gilgame.SEWorkbench
             string source = "https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Src/update.xml";
 
             string contents = String.Empty;
-            using (WebClient client = new WebClient())
+            try
             {
-                contents = client.DownloadString(source);
+                using (WebClient client = new WebClient())
+                {
+                    contents = client.DownloadString(source);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.ShowError("Unable to download update.xml: ", ex);
+                return null;
             }
 
             Models.Update update = new Models.Update();
-            if (!String.IsNullOrEmpty(contents))
+            try
             {
-                update = (Models.Update)Serialization.Convert.ToObject(contents);
-
-                Version current = Assembly.GetExecutingAssembly().GetName().Version;
-
-                Version remote = null;
-                Version.TryParse(update.Version, out remote);
-
-                int compared = current.CompareTo(remote);
-                if (compared < 0)
+                if (!String.IsNullOrEmpty(contents))
                 {
-                    update.IsNewer = true;
+                    update = (Models.Update)Serialization.Convert.ToObject(contents);
+
+                    Version current = Assembly.GetExecutingAssembly().GetName().Version;
+
+                    Version remote = null;
+                    Version.TryParse(update.Version, out remote);
+
+                    int compared = current.CompareTo(remote);
+                    if (compared < 0)
+                    {
+                        update.IsNewer = true;
+                    }
+                    else
+                    {
+                        update.IsNewer = false;
+                    }
                 }
                 else
                 {
                     update.IsNewer = false;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                update.IsNewer = false;
+                MessageBox.ShowError("Unable to extract update information. Update file may be invalid or currept: ", ex);
+                return null;
             }
             return update;
         }

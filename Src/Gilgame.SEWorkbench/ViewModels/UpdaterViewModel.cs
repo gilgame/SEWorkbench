@@ -1,10 +1,10 @@
-﻿using Gilgame.SEWorkbench.Services.IO;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.IO.Compression;
 using System.Net;
-using System.Windows;
 using System.Windows.Input;
+
+using Gilgame.SEWorkbench.Services.IO;
 
 namespace Gilgame.SEWorkbench.ViewModels
 {

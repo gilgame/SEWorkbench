@@ -33,6 +33,26 @@ namespace Gilgame.SEWorkbench.Services
             );
         }
 
+        public static void ShowError(object ex)
+        {
+            Exception exception = (Exception)ex;
+
+            Views.ExceptionView view = new Views.ExceptionView();
+
+            ViewModels.ExceptionViewModel context = (ViewModels.ExceptionViewModel)view.DataContext;
+
+            string message = String.Format(
+                "{0}{1}{1}{2}",
+                exception.Message,
+                Environment.NewLine,
+                exception.StackTrace
+            );
+
+            context.Details = message;
+
+            view.ShowDialog();
+        }
+
         public static System.Windows.MessageBoxResult ShowQuestion(string question)
         {
             return System.Windows.MessageBox.Show(

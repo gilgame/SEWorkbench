@@ -29,9 +29,9 @@
             <TextBox x:Name="Details" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Details}" />
         </ScrollViewer>
 
-        <Button Content="Cancel" Margin="7" Width="70" Height="21" IsEnabled="{Binding CanCancel}" CommandParameter="{Binding ElementName=UpdaterWindow}"
+        <Button Content="Cancel" Margin="7" Width="70" Height="21" IsEnabled="{Binding CanCancel}"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Command="{Binding CancelCommand}" />
-        <Button Content="Download" Margin="7" Width="100" Height="21" IsEnabled="{Binding CanDownload}" CommandParameter="{Binding ElementName=UpdaterWindow}"
+        <Button Content="Download" Margin="7" Width="100" Height="21" IsEnabled="{Binding CanDownload}"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{Binding DownloadCommand}" />
     </Grid>
 </Window>
