@@ -1,3 +1,7 @@
+Beta 12
+================================
+ * Added an auto-update feature.
+
 Beta 11
 ================================
  * Updated for 01.129

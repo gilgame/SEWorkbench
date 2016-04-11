@@ -80,6 +80,10 @@ namespace Gilgame.SEWorkbench.Services.IO
 
         public static DateTime? LastWriteTime(string path)
         {
+            if (String.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                return null;
+            }
             try
             {
                 System.IO.FileInfo info = new System.IO.FileInfo(path);

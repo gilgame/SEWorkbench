@@ -356,6 +356,7 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Configuration\Convert.cs" />
     <Compile Include="Models\Update.cs" />
+    <Compile Include="Services\BackupManager.cs" />
     <Compile Include="Services\DialogCloser.cs" />
     <Compile Include="Services\Hasher.cs" />
     <Compile Include="Services\IO\Directory.cs" />

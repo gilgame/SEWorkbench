@@ -25,7 +25,7 @@ namespace Gilgame.SEWorkbench
         public static void Main(string[] args)
         {
             System.AppDomain.CurrentDomain.UnhandledException += Program_UnhandledException;
-
+            
             if (Configuration.Program.CheckForUpdates)
             {
                 Models.Update update = CheckForUpdates();
