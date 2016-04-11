@@ -16,6 +16,7 @@ These are just a few of the features that have been implemented so far. I think 
 
 Screenshots
 =================================
+Click on an image to enlarge.
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-1.png)
 ![Screenshot](https://raw.githubusercontent.com/gilgame/SEWorkbench/master/Doc/seworkbench-2.png)
 
