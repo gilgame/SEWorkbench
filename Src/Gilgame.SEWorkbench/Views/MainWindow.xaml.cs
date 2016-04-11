@@ -1,11 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Windows;
 
 using Gilgame.SEWorkbench.ViewModels;
 using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 namespace Gilgame.SEWorkbench.Views
 {
@@ -36,6 +34,7 @@ namespace Gilgame.SEWorkbench.Views
             tvBlueprint.DataContext = _ProjectManager.Blueprint;
             tvProjectExplorer.DataContext = _ProjectManager.Project;
             tvClasses.DataContext = _ProjectManager.Classes;
+            tvBackups.DataContext = _ProjectManager.Backup;
 
             //vFindReplace.DataContext = _ProjectManager.FindReplace;
 
@@ -67,7 +66,7 @@ namespace Gilgame.SEWorkbench.Views
         {
             if (_ProjectManager.Output.Items.Count > 0)
             {
-                ShowAnchorable("Output", AnchorableShowStrategy.Bottom);
+                ShowAnchorable(pnOutput, AnchorableShowStrategy.Bottom);
             }
         }
 
@@ -103,37 +102,18 @@ namespace Gilgame.SEWorkbench.Views
 
         private void LoadDockLayout()
         {
-            string path = GetDockLayoutPath();
-            if (File.Exists(path))
+            Services.DockLayoutManager layout = new Services.DockLayoutManager();
+
+            layout.AddPanel(pnBackups);
+            layout.AddPanel(pnBlueprints);
+            layout.AddPanel(pnClasses);
+            layout.AddPanel(pnOutput);
+            layout.AddPanel(pnProjectExplorer);
+
+            using (var dispatch = Dispatcher.DisableProcessing())
             {
-                using (var dispatch = Dispatcher.DisableProcessing())
-                {
-                    XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
-                    layoutSerializer.LayoutSerializationCallback += (s, args) =>
-                    {
-                        args.Content = args.Content;
-                    };
-
-                    using (var reader = new StreamReader(path))
-                    {
-                        layoutSerializer.Deserialize(reader);
-                    }
-                }
+                layout.Load(DockManager);
             }
-        }
-
-        private string GetDockLayoutPath()
-        {
-            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string workbench = Path.Combine(appdata, "SEWorkbench");
-            string layout = Path.Combine(workbench, "layout.xml");
-
-            if (!Directory.Exists(workbench))
-            {
-                Directory.CreateDirectory(workbench);
-            }
-
-            return layout;
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -173,48 +153,50 @@ namespace Gilgame.SEWorkbench.Views
 
         private void SaveDockLayout()
         {
-            string path = GetDockLayoutPath();
-            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(DockManager);
-            using (var writer = new StreamWriter(path))
-            {
-                layoutSerializer.Serialize(writer);
-            }
+            Services.DockLayoutManager layout = new Services.DockLayoutManager();
+            layout.Save(DockManager);
         }
 
         private void ProjectExplorerMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ShowAnchorable("Project", AnchorableShowStrategy.Left);
+            ShowAnchorable(pnProjectExplorer, AnchorableShowStrategy.Left);
         }
 
         private void BlueprintsViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ShowAnchorable("Blueprints", AnchorableShowStrategy.Right);
+            ShowAnchorable(pnBlueprints, AnchorableShowStrategy.Right);
         }
 
         private void ClassesViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ShowAnchorable("Classes", AnchorableShowStrategy.Right);
+            ShowAnchorable(pnClasses, AnchorableShowStrategy.Right);
         }
 
         private void OutputViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ShowAnchorable("Output", AnchorableShowStrategy.Bottom);
+            ShowAnchorable(pnOutput, AnchorableShowStrategy.Bottom);
         }
 
-        private void ShowAnchorable(string id, AnchorableShowStrategy strategy)
+        private void BackupViewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var anchorable = DockManager.Layout.Descendents().OfType<LayoutAnchorable>().Single(a => a.ContentId == id);
-            if (anchorable.IsHidden)
+            ShowAnchorable(pnBackups, AnchorableShowStrategy.Right);
+        }
+        
+        private void ShowAnchorable(LayoutAnchorable item, AnchorableShowStrategy strategy)
+        {
+            var obj = DockManager.Layout.Descendents().OfType<LayoutAnchorable>().Single(a => a.ContentId == item.ContentId);
+
+            if (obj.IsHidden)
             {
-                anchorable.Show();
+                obj.Show();
             }
-            else if (anchorable.IsVisible)
+            else if (obj.IsVisible)
             {
-                anchorable.IsActive = true;
+                obj.IsActive = true;
             }
             else
             {
-                anchorable.AddToLayout(DockManager, strategy | AnchorableShowStrategy.Most);
+                obj.AddToLayout(DockManager, strategy | AnchorableShowStrategy.Most);
             }
         }
 

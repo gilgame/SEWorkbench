@@ -122,6 +122,20 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        private BackupViewModel _Backup;
+        public BackupViewModel Backup
+        {
+            get
+            {
+                return _Backup;
+            }
+            set
+            {
+                _Backup = value;
+                RaisePropertyChanged("Backup");
+            }
+        }
+
         private FindReplaceViewModel _FindReplace;
         public FindReplaceViewModel FindReplace
         {
@@ -190,6 +204,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             BuildClasses();
 
             Output = new OutputViewModel(this);
+
+            Backup = new BackupViewModel(this);
 
             FindReplace = new FindReplaceViewModel(this);
 

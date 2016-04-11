@@ -97,6 +97,7 @@
                         <MenuItem Header="Blueprints" Click="BlueprintsViewMenuItem_Click" />
                         <MenuItem Header="Classes" Click="ClassesViewMenuItem_Click" />
                         <MenuItem Header="Output" Click="OutputViewMenuItem_Click" />
+                        <MenuItem Header="Backups" Click="BackupViewMenuItem_Click" />
                         <!--<Separator />
                         <MenuItem Header="Find and Replace" Click="FindReplaceMenuItem_Click" />-->
                     </MenuItem>
@@ -223,6 +224,9 @@
                             </ad:LayoutAnchorable>
                             <ad:LayoutAnchorable x:Name="pnClasses" ContentId="Classes" Title="Classes">
                                 <v:ClassView x:Name="tvClasses" />
+                            </ad:LayoutAnchorable>
+                            <ad:LayoutAnchorable x:Name="pnBackups" ContentId="Backups" Title="Backups">
+                                <v:BackupView x:Name="tvBackups" />
                             </ad:LayoutAnchorable>
                         </ad:LayoutAnchorablePane>
                     </ad:LayoutAnchorablePaneGroup>

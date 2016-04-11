@@ -342,6 +342,7 @@
     <Compile Include="Converters\ProgramCanBeEditedConverter.cs" />
     <Compile Include="Converters\ReferenceCanBeAddedConverter.cs" />
     <Compile Include="Converters\SelectedIsBlockConverter.cs" />
+    <Compile Include="Models\BackupItem.cs" />
     <Compile Include="Models\ClassItem.cs" />
     <Compile Include="Models\ClassItemType.cs" />
     <Compile Include="Models\FindMode.cs" />
@@ -358,15 +359,19 @@
     <Compile Include="Models\Update.cs" />
     <Compile Include="Services\BackupManager.cs" />
     <Compile Include="Services\DialogCloser.cs" />
+    <Compile Include="Services\DockLayoutManager.cs" />
     <Compile Include="Services\Hasher.cs" />
     <Compile Include="Services\IO\Directory.cs" />
     <Compile Include="Services\IO\File.cs" />
     <Compile Include="Services\IO\Path.cs" />
     <Compile Include="Services\Regex.cs" />
     <Compile Include="Services\Windows.cs" />
+    <Compile Include="ViewModels\BackupItemViewModel.cs" />
+    <Compile Include="ViewModels\BackupViewModel.cs" />
     <Compile Include="ViewModels\ClassItemViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModel.cs" />
     <Compile Include="ViewModels\Commands\DelegateCommand.cs" />
+    <Compile Include="ViewModels\Comparers\BackupItemComparer.cs" />
     <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
     <Compile Include="ViewModels\Comparers\FontComparer.cs" />
     <Compile Include="ViewModels\Config\ConfigViewModel.cs" />
@@ -382,6 +387,9 @@
     </Compile>
     <Compile Include="Views\AddReferenceView.xaml.cs">
       <DependentUpon>AddReferenceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BackupView.xaml.cs">
+      <DependentUpon>BackupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
@@ -482,6 +490,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AddReferenceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BackupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
