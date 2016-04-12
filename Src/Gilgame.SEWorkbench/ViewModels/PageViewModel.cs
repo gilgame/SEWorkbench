@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -105,6 +105,19 @@ namespace Gilgame.SEWorkbench.ViewModels
                     _Editor = value;
                     RaisePropertyChanged("Content");
                 }
+            }
+        }
+
+        public string Text
+        {
+            get
+            {
+                string text = String.Empty;
+                if (_Editor != null)
+                {
+                    _Editor.Dispatcher.Invoke(delegate () { text = _Editor.Text; });
+                }
+                return text;
             }
         }
 

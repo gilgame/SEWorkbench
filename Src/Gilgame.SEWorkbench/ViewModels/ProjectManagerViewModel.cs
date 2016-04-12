@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 
@@ -17,6 +18,10 @@ namespace Gilgame.SEWorkbench.ViewModels
     {
         private Regex _LineColRegex = new Regex(@"\(([0-9]+),([0-9]+)\)");
         private Regex _ErrorRegex = new Regex(@"^(.*?)\(([0-9]+),([0-9]+)\)\s:\serror\s(.*?):\s(.*?)$");
+
+        private bool _StopBackupTimer = false;
+
+        private Timer _BackupTimer;
 
         private const string _ProjectTitlePrefix = "Space Engineers Workbench";
 
@@ -231,6 +236,48 @@ namespace Gilgame.SEWorkbench.ViewModels
             _SelectAllCommand = new Commands.DelegateCommand(PerformSelectAll);
 
             _CloseViewCommand = new Commands.DelegateCommand(PerformCloseView);
+
+            StartBackupTimer();
+        }
+
+        private void BackupTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (!_StopBackupTimer)
+            {
+                if (Project != null)
+                {
+                    Services.BackupManager backup = new Services.BackupManager(Project.Model.Path);
+                    foreach (PageViewModel page in Editor.Items)
+                    {
+                        if (page.IsModified)
+                        {
+                            backup.BackupFile(page.Filename, page.Text);
+                        }
+                    }
+                }
+
+                StartBackupTimer();
+            }
+        }
+
+        private void StartBackupTimer()
+        {
+            _StopBackupTimer = false;
+
+            _BackupTimer = new Timer()
+            {
+                Interval = Configuration.Backups.Interval * 60000,
+                AutoReset = false,
+            };
+            _BackupTimer.Elapsed += BackupTimer_Elapsed;
+            _BackupTimer.Start();
+        }
+
+        private void StopBackupTimer()
+        {
+            _StopBackupTimer = true;
+
+            _BackupTimer.Stop();
         }
 
         private void BuildClasses()

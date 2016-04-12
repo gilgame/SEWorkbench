@@ -11,6 +11,7 @@ namespace Gilgame.SEWorkbench.Views.Config
 
         private TextEditorPage _TextEditorPage;
         private UpdaterPage _UpdaterPage;
+        private BackupPage _BackupPage;
 
         private object _ConfigPage;
         public object ConfigPage
@@ -55,6 +56,7 @@ namespace Gilgame.SEWorkbench.Views.Config
 
             _TextEditorPage = new TextEditorPage(_Config.TextEditor);
             _UpdaterPage = new UpdaterPage(_Config.Updater);
+            _BackupPage = new BackupPage(_Config.Backup);
 
             DataContext = this;
         }
@@ -74,6 +76,10 @@ namespace Gilgame.SEWorkbench.Views.Config
 
                     case "Updater":
                         ConfigPage = _UpdaterPage;
+                        break;
+
+                    case "Backups":
+                        ConfigPage = _BackupPage;
                         break;
                 }
             }

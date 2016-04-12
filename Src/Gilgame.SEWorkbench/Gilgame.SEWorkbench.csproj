@@ -323,6 +323,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration\Backups.cs" />
     <Compile Include="Configuration\MainWindow.cs" />
     <Compile Include="Configuration\Program.cs" />
     <Compile Include="Configuration\TextEditor.cs" />
@@ -374,6 +375,7 @@
     <Compile Include="ViewModels\Comparers\BackupItemComparer.cs" />
     <Compile Include="ViewModels\Comparers\ClassItemComparer.cs" />
     <Compile Include="ViewModels\Comparers\FontComparer.cs" />
+    <Compile Include="ViewModels\Config\BackupViewModel.cs" />
     <Compile Include="ViewModels\Config\ConfigViewModel.cs" />
     <Compile Include="ViewModels\Config\FontViewModel.cs" />
     <Compile Include="ViewModels\Config\TextEditorViewModel.cs" />
@@ -395,6 +397,9 @@
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\FileLayoutStrategy.cs" />
+    <Compile Include="Views\Config\BackupPage.xaml.cs">
+      <DependentUpon>BackupPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Config\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
     </Compile>
@@ -502,6 +507,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClassView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Config\BackupPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

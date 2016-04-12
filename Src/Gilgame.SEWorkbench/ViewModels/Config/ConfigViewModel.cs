@@ -32,10 +32,25 @@ namespace Gilgame.SEWorkbench.ViewModels.Config
             }
         }
 
+        private BackupViewModel _Backup;
+        public BackupViewModel Backup
+        {
+            get
+            {
+                return _Backup;
+            }
+            set
+            {
+                _Backup = value;
+                RaisePropertyChanged("Backup");
+            }
+        }
+
         public ConfigViewModel(BaseViewModel parent) : base(parent)
         {
             _TextEditor = new TextEditorViewModel(this);
             _Updater = new UpdaterViewModel(this);
+            _Backup = new BackupViewModel(this);
         }
     }
 }

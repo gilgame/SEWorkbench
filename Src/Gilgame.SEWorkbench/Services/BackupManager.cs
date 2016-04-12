@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Gilgame.SEWorkbench.Services.IO;
 
@@ -16,7 +17,7 @@ namespace Gilgame.SEWorkbench.Services
         public void BackupFile(string original, string contents)
         {
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string backupdir = Path.Combine(appdata, "backup");
+            string backupdir = Path.Combine(appdata, "SEWorkbench", "Backups");
             string project = Path.Combine(backupdir, _ProjectName);
 
             if (!Directory.Exists(project))
@@ -32,7 +33,7 @@ namespace Gilgame.SEWorkbench.Services
         public string GetBackup(string original)
         {
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string backupdir = Path.Combine(appdata, "backup");
+            string backupdir = Path.Combine(appdata, "SEWorkbench", "Backups");
             string project = Path.Combine(backupdir, _ProjectName);
             string backupfile = Path.Combine(project, HashFilename(original));
 
