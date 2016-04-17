@@ -96,6 +96,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformRestoreAll()
         {
+            string message = "Restore All: Are you sure want to restore all backups?";
+            if (MessageBox.ShowQuestion(message) != System.Windows.MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             List<BackupItemViewModel> items = new List<BackupItemViewModel>();
             items.AddRange(_Items);
 
@@ -120,6 +126,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformClearAll()
         {
+            string message = "Delete All: Do you really want to delete all backups for this project? This cannot be undone.";
+            if (MessageBox.ShowQuestion(message) != System.Windows.MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             Clear();
         }
 
@@ -138,6 +150,12 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         private void PerformRestore(string original)
         {
+            string message = String.Format("Restore: Are you sure you want to restore this file ({0})?", original);
+            if (MessageBox.ShowQuestion(message) != System.Windows.MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             BackupItemViewModel backup = null;
             foreach(BackupItemViewModel item in _Items)
             {
@@ -169,7 +187,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformDelete(string original)
         {
-            string message = String.Format("Are you sure you want to delete the backup for this file ({0})?", original);
+            string message = String.Format("Delete: Do you really want to delete the backup for this file ({0})?", original);
             if (MessageBox.ShowQuestion(message) != System.Windows.MessageBoxResult.Yes)
             {
                 return;
