@@ -13,12 +13,12 @@
             <Grid DockPanel.Dock="Top" Background="#FFCFD6E5" Height="26">
                 <StackPanel Margin="3,2,3,2" Orientation="Horizontal">
                     <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
-                                Command="{Binding RestoreAllCommand}">
-                        <Image Source="/Gilgame.SEWorkbench;component/Icons/InsertName.png" Stretch="UniformToFill" />
+                                Command="{Binding RestoreAllCommand}" ToolTip="Restore All">
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/Save.png" Stretch="UniformToFill" />
                     </Button>
                     <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
-                                Command="{Binding ClearAllCommand}">
-                        <Image Source="/Gilgame.SEWorkbench;component/Icons/EditProgram.png" Stretch="UniformToFill" />
+                                Command="{Binding ClearAllCommand}" ToolTip="Delete All">
+                        <Image Source="/Gilgame.SEWorkbench;component/Icons/DeleteHS.png" Stretch="UniformToFill" />
                     </Button>
                 </StackPanel>
             </Grid>
@@ -30,11 +30,11 @@
                                 <Grid>
                                     <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
                                     Command="{Binding Parent.RestoreCommand}" CommandParameter="{Binding Original}" ToolTip="Restore" VerticalAlignment="Top">
-                                        <Image Source="/Gilgame.SEWorkbench;component/Icons/NewPage.png" Stretch="UniformToFill" />
+                                        <Image Source="/Gilgame.SEWorkbench;component/Icons/Save.png" Stretch="UniformToFill" />
                                     </Button>
                                     <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="22" Height="22"
                                     Command="{Binding Parent.DeleteCommand}" CommandParameter="{Binding Original}" ToolTip="Delete" VerticalAlignment="Bottom">
-                                        <Image Source="/Gilgame.SEWorkbench;component/Icons/NewPage.png" Stretch="UniformToFill" />
+                                        <Image Source="/Gilgame.SEWorkbench;component/Icons/DeleteHS.png" Stretch="UniformToFill" />
                                     </Button>
                                 </Grid>
                                 <StackPanel Orientation="Vertical" ToolTip="{Binding Original}">
