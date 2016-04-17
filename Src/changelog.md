@@ -2,7 +2,7 @@ Beta 12
 ================================
  * Updated for 01.130
  * Added an update feature. Workbench will now automatically check for updates and prompt the user to update. This can be disabled in the preferences window.
- * Added an backup feature. Workbench can periodically backup unsaved documents and restore them in the event that the project isn't properly closed (crash, power outage). This can be configured from the preferences window. Note that this will invalidate any existing docking layouts for this release.
+ * Added a backup feature. Workbench can periodically backup unsaved documents and restore them in the event that the project isn't properly closed (crash, power outage). This can be configured from the preferences window. Note that this will invalidate any existing docking layouts for this release.
  * Made changes to hopefully address some startup issues.
  * Added some more error handling to make it easier to report crashes.
 
