@@ -1,7 +1,10 @@
 Beta 12
 ================================
- * Added an auto-update feature.
- * Added an auto-backup feature. Note that this will invalidate any existing docking layouts.
+ * Updated for 01.130
+ * Added an update feature. Workbench will now automatically check for updates and prompt the user to update. This can be disabled in the preferences window.
+ * Added an backup feature. This can be configured from the preferences window. Note that this will invalidate any existing docking layouts for this release.
+ * Made changes to hopefully address some startup issues.
+ * Added some more error handling to make it easier to report crashes.
 
 Beta 11
 ================================
