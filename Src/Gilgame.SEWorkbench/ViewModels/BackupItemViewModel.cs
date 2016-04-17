@@ -29,6 +29,14 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public string Original
+        {
+            get
+            {
+                return _Model.Original;
+            }
+        }
+
         public DateTime? Modified
         {
             get

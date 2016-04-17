@@ -30,25 +30,34 @@ namespace Gilgame.SEWorkbench.Services
             File.Write(backupfile, contents);
         }
 
-        public string GetBackup(string original)
+        public Models.BackupItem GetBackup(string original)
         {
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string backupdir = Path.Combine(appdata, "SEWorkbench", "Backups");
             string project = Path.Combine(backupdir, _ProjectName);
             string backupfile = Path.Combine(project, HashFilename(original));
 
+            Models.BackupItem result = null;
             if (File.Exists(backupfile))
             {
                 if (!FirstIsNewer(original, backupfile))
                 {
                     if (!Compare(original, backupfile))
                     {
-                        return File.Read(backupfile);
+                        string contents = File.Read(backupfile);
+                        result = new Models.BackupItem()
+                        {
+                            Name = Path.GetFileName(original),
+                            Path = backupfile,
+                            Original = original,
+                            Modified = File.LastWriteTime(backupfile),
+                            Contents = contents,
+                        };
                     }
                 }
             }
 
-            return null;
+            return result;
         }
 
         private bool FirstIsNewer(string file1, string file2)

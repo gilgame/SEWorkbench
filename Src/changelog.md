@@ -1,6 +1,7 @@
 Beta 12
 ================================
  * Added an auto-update feature.
+ * Added an auto-backup feature. Note that this will invalidate any existing docking layouts.
 
 Beta 11
 ================================

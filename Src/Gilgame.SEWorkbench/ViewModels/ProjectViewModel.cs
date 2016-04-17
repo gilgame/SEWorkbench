@@ -14,6 +14,19 @@ namespace Gilgame.SEWorkbench.ViewModels
         private IEnumerator<ProjectItemViewModel> _MatchingItemEnumerator;
         private IEnumerator<ProjectItemViewModel> _SelectedItemEnumerator;
 
+        private bool _OpenState = false;
+        public bool OpenState
+        {
+            get
+            {
+                return _OpenState;
+            }
+            set
+            {
+                _OpenState = value;
+            }
+        }
+
         public Models.Project Model
         {
             get
@@ -23,6 +36,7 @@ namespace Gilgame.SEWorkbench.ViewModels
                     Name = _RootItem.Model.Name,
                     Path = _RootItem.Path,
                     RootItem = _RootItem.Model,
+                    OpenState = _OpenState,
                 };
             }
         }
@@ -177,8 +191,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
-        public ProjectViewModel(BaseViewModel parent)
-            : base(parent)
+        public ProjectViewModel(BaseViewModel parent) : base(parent)
         {
 
             _First = new Services.ObservableSortedList<ProjectItemViewModel>(
@@ -892,6 +905,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                     string serialized = File.Read(fullpath);
 
                     Project project = (Project)Serialization.Convert.ToObject(serialized);
+
+                    OpenState = project.OpenState;
                     SetRootItem(project.RootItem);
 
                     LoadBlueprints();
@@ -899,10 +914,11 @@ namespace Gilgame.SEWorkbench.ViewModels
                     if (!ReferencesExists(_RootItem))
                     {
                         _RootItem.AddChild(new ProjectItem() { Name = "References", Type = ProjectItemType.References });
-                        SaveProject();
                     }
 
                     _RootItem.IsExpanded = true;
+
+                    SaveProject();
 
                     RaiseProjectOpened();
                 }
@@ -917,6 +933,39 @@ namespace Gilgame.SEWorkbench.ViewModels
                     child.VerifyPath();
                 }
             }
+        }
+
+        public List<BackupItem> GetBackups()
+        {
+            List<BackupItem> result = new List<BackupItem>();
+            foreach (ProjectItemViewModel child in First)
+            {
+                result.AddRange(GetBackups(child));
+            }
+            return result;
+        }
+
+        private List<BackupItem> GetBackups(ProjectItemViewModel item)
+        {
+            BackupManager manager = new BackupManager(this.Model.Path);
+            
+            List<BackupItem> result = new List<BackupItem>();
+
+            if (item.Type == ProjectItemType.File)
+            {
+                BackupItem backup = manager.GetBackup(item.Path);
+                if (backup != null)
+                {
+                    result.Add(backup);
+                }
+            }
+
+            foreach(ProjectItemViewModel child in item.Children)
+            {
+                result.AddRange(GetBackups(child));
+            }
+
+            return result;
         }
 
         private bool ReferencesExists(ProjectItemViewModel root)
@@ -947,6 +996,7 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformCloseProject()
         {
+            OpenState = false;
             SaveProject();
 
             if (_RootItem != null)

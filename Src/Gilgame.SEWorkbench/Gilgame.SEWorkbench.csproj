@@ -380,6 +380,7 @@
     <Compile Include="ViewModels\Config\FontViewModel.cs" />
     <Compile Include="ViewModels\Config\TextEditorViewModel.cs" />
     <Compile Include="ViewModels\Config\UpdaterViewModel.cs" />
+    <Compile Include="ViewModels\EventArgs\BackupRequestedEventArgs.cs" />
     <Compile Include="ViewModels\EventArgs\ErrorMessageEventArgs.cs" />
     <Compile Include="ViewModels\ExceptionViewModel.cs" />
     <Compile Include="ViewModels\FindReplaceViewModel.cs" />

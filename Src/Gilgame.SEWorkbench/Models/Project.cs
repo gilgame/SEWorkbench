@@ -15,5 +15,8 @@ namespace Gilgame.SEWorkbench.Models
 
         [XmlElement("RootItem")]
         public ProjectItem RootItem { get; set; }
+
+        [XmlElement("OpenState")]
+        public bool OpenState { get; set; }
     }
 }

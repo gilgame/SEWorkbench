@@ -23,6 +23,7 @@ namespace Gilgame.SEWorkbench.Views
         {
             _ProjectManager.CloseViewRequested += ProjectManager_CloseViewRequested;
             _ProjectManager.ScriptRunning += ProjectManager_ScriptRunning;
+            _ProjectManager.BackupsFound += ProjectManager_BackupsFound;
 
             vOutput.ErrorMessageSelected += OutputView_ErrorMessageSelected;
         }
@@ -68,6 +69,13 @@ namespace Gilgame.SEWorkbench.Views
             {
                 ShowAnchorable(pnOutput, AnchorableShowStrategy.Bottom);
             }
+        }
+
+        private void ProjectManager_BackupsFound(object sender, EventArgs e)
+        {
+            ShowAnchorable(pnBackups, AnchorableShowStrategy.Right);
+
+            Services.MessageBox.ShowMessage("This project was not properly closed. Some backups have been found.");
         }
 
         private void OutputView_ErrorMessageSelected(object sender, ErrorMessageEventArgs e)

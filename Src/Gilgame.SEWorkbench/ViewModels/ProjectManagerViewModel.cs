@@ -184,6 +184,16 @@ namespace Gilgame.SEWorkbench.ViewModels
             }
         }
 
+        public event EventHandler BackupsFound;
+        private void RaiseBackupsFound()
+        {
+            var handler = BackupsFound;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
         public ProjectManagerViewModel(BaseViewModel parent) : base(parent)
         {
             Config = new Config.ConfigViewModel(this);
@@ -211,6 +221,7 @@ namespace Gilgame.SEWorkbench.ViewModels
             Output = new OutputViewModel(this);
 
             Backup = new BackupViewModel(this);
+            Backup.RestoreRequested += Backup_RestoreRequested;
 
             FindReplace = new FindReplaceViewModel(this);
 
@@ -236,8 +247,6 @@ namespace Gilgame.SEWorkbench.ViewModels
             _SelectAllCommand = new Commands.DelegateCommand(PerformSelectAll);
 
             _CloseViewCommand = new Commands.DelegateCommand(PerformCloseView);
-
-            StartBackupTimer();
         }
 
         private void BackupTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -277,7 +286,10 @@ namespace Gilgame.SEWorkbench.ViewModels
         {
             _StopBackupTimer = true;
 
-            _BackupTimer.Stop();
+            if (_BackupTimer != null)
+            {
+                _BackupTimer.Stop();
+            }
         }
 
         private void BuildClasses()
@@ -371,6 +383,8 @@ namespace Gilgame.SEWorkbench.ViewModels
             Editor.Items.Clear();
 
             Project.SaveProject();
+
+            StopBackupTimer();
 
             return true;
         }
@@ -497,6 +511,39 @@ namespace Gilgame.SEWorkbench.ViewModels
             scripts.AddRange(Project.GetImports(e.Path, e.Unsaved).Values);
 
             EditorViewModel.Completion.ScriptProvider.UpdateVars(scripts);
+        }
+
+        private void Backup_RestoreRequested(object sender, BackupRequestedEventArgs e)
+        {
+            if (Project == null)
+            {
+                return;
+            }
+
+            if (Editor.Items.Count > 0)
+            {
+                foreach(PageViewModel page in Editor.Items)
+                {
+                    if (page.Filename == e.Path)
+                    {
+                        if (page.IsModified)
+                        {
+                            string message = String.Format("This file ({0}) has unsaved changes. Are you sure you want to restore from backup?", e.Path);
+                            if (Services.MessageBox.ShowQuestion(message) != MessageBoxResult.Yes)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
+                        }
+
+                        Editor.Items.Remove(page);
+
+                        break;
+                    }
+                }
+            }
+
+            File.Write(e.Path, e.Contents);
         }
 
         public bool FindError(OutputItemViewModel item)
@@ -1042,9 +1089,27 @@ namespace Gilgame.SEWorkbench.ViewModels
                     return;
                 }
             }
-
+            
             Editor.Items.Clear();
             Project.PerformOpenProject();
+
+            if (Project.OpenState)
+            {
+                List<Models.BackupItem> backups = Project.GetBackups();
+                foreach (Models.BackupItem backup in backups)
+                {
+                    Backup.AddItem(backup);
+                }
+
+                if (backups.Count > 0)
+                {
+                    RaiseBackupsFound();
+                }
+            }
+
+            Project.OpenState = true;
+
+            StartBackupTimer();
         }
 
         #endregion
@@ -1062,6 +1127,8 @@ namespace Gilgame.SEWorkbench.ViewModels
 
         public void PerformCloseProject()
         {
+            StopBackupTimer();
+
             if (IsModified)
             {
                 MessageBoxResult result = Services.MessageBox.ShowQuestion("One or more files have been modified. Would you like to save them now?");
