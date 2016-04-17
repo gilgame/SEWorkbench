@@ -2,6 +2,13 @@
   <Name>SEWorkbench</Name>
   <Version>1.0.1.3</Version>
   <Location>http://github.com/gilgame/SEWorkbench/releases/download/1013/SEWorkbench-Beta12.zip</Location>
-  <Details>Patch notes go here.</Details>
+  <Details>
+    Beta 12
+    * Updated for 01.130
+    * Added an update feature. Workbench will now automatically check for updates and prompt the user to update. This can be disabled in the preferences window.
+    * Added an backup feature. Workbench can periodically backup unsaved documents and restore them in the event that the project isn't properly closed (crash, power outage). This can be configured from the preferences window. Note that this will invalidate any existing docking layouts for this release.
+    * Made changes to hopefully address some startup issues.
+    * Added some more error handling to make it easier to report crashes.
+  </Details>
   <CheckSum>9ce822a62fc2e1739967de4eb7c88954</CheckSum>
 </Update>
