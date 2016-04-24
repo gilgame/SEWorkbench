@@ -52,18 +52,10 @@ namespace Gilgame.SEWorkbench
 
             if (args.Length > 1 && args[0].ToLower() == "--pid")
             {
-                int pid = Configuration.Convert.ToInteger(args[1]);
-                try
+                Process parent = Process.GetProcessById(Configuration.Convert.ToInteger(args[1]));
+                if (parent != null)
                 {
-                    Process parent = Process.GetProcessById(pid);
-                    if (parent != null)
-                    {
-                        parent.Kill();
-                    }
-                }
-                catch
-                {
-                    // if we're here, the previous instance successfully closed
+                    parent.Kill();
                 }
             }
 
