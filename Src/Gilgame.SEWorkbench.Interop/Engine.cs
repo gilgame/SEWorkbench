@@ -57,7 +57,7 @@ namespace Gilgame.SEWorkbench.Interop
                     "SharpDX.dll",
                     "SharpDX.DXGI.dll",
                     "SharpDX.Toolkit.dll",
-                    "SharpDX.Toolkit.Graphics.dll",
+                    //"SharpDX.Toolkit.Graphics.dll",
                     "SharpDX.XAudio2.dll",
                     "SteamSDK.dll",
                     "steam_api.dll",
