@@ -95,9 +95,9 @@ namespace Gilgame.SEWorkbench.Interop
 
             SetPaths();
 
-            #if DEBUG
-                EnableLogging();
-            #endif
+#if DEBUG
+            EnableLogging();
+#endif
 
             RegisterPlugins();
             LoadSerializers();
@@ -123,8 +123,9 @@ namespace Gilgame.SEWorkbench.Interop
             MyPlugins.RegisterSandboxGameAssemblyFile("Sandbox.Game.dll");
             MyPlugins.Load();
 
-            MyObjectBuilderType.RegisterAssemblies();
-            MyObjectBuilderSerializer.RegisterAssembliesAndLoadSerializers();
+            // No longer at available.
+            //MyObjectBuilderType.RegisterAssemblies();
+            //MyObjectBuilderSerializer.RegisterAssembliesAndLoadSerializers();
         }
 
         private static void EnableLogging()
@@ -158,7 +159,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyAPIGateway));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMySession));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMyCameraController));
-            IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMyEntity));
+            IlChecker.AllowNamespaceOfTypeModAPI(typeof(VRage.Game.ModAPI.Ingame.IMyEntity));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(IMyEntities));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyEntity));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyEntityExtensions));
@@ -192,7 +193,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyStorageData));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyEventArgs));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyGameTimer));
-            IlChecker.AllowNamespaceOfTypeCommon(typeof(IMyInventoryItem));
+            IlChecker.AllowNamespaceOfTypeCommon(typeof(VRage.Game.ModAPI.Ingame.IMyInventoryItem));
             IlChecker.AllowNamespaceOfTypeModAPI(typeof(MyLight));
             Type typeFromHandle = typeof(MyObjectBuilderSerializer);
             IlChecker.AllowedOperands[typeFromHandle] = new HashSet<MemberInfo>
@@ -215,11 +216,11 @@ namespace Gilgame.SEWorkbench.Interop
                     typeof(string)
                 })
             };
-            IlChecker.AllowedOperands.Add(typeof(IMyEntity), new HashSet<MemberInfo>
+            IlChecker.AllowedOperands.Add(typeof(VRage.Game.ModAPI.Ingame.IMyEntity), new HashSet<MemberInfo>
             {
-                typeof(IMyEntity).GetMethod("GetPosition"),
-                typeof(IMyEntity).GetProperty("WorldMatrix").GetGetMethod(),
-                typeof(IMyEntity).GetProperty("Components").GetGetMethod()
+                typeof(VRage.Game.ModAPI.Ingame.IMyEntity).GetMethod("GetPosition"),
+                typeof(VRage.Game.ModAPI.Ingame.IMyEntity).GetProperty("WorldMatrix").GetGetMethod(),
+                typeof(VRage.Game.ModAPI.Ingame.IMyEntity).GetProperty("Components").GetGetMethod()
             });
             IlChecker.AllowedOperands.Add(typeof(IWork), null);
             IlChecker.AllowedOperands.Add(typeof(Task), null);
@@ -227,7 +228,7 @@ namespace Gilgame.SEWorkbench.Interop
             IlChecker.AllowedOperands.Add(typeof(Sandbox.ModAPI.Interfaces.ITerminalAction), null);
             IlChecker.AllowedOperands.Add(typeof(IMyInventoryOwner), null);
             IlChecker.AllowedOperands.Add(typeof(VRage.Game.ModAPI.Ingame.IMyInventory), null);
-            IlChecker.AllowedOperands.Add(typeof(IMyInventoryItem), null);
+            IlChecker.AllowedOperands.Add(typeof(VRage.Game.ModAPI.Ingame.IMyInventoryItem), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty), null);
             IlChecker.AllowedOperands.Add(typeof(ITerminalProperty<>), null);
             IlChecker.AllowedOperands.Add(typeof(TerminalPropertyExtensions), null);
@@ -301,20 +302,20 @@ namespace Gilgame.SEWorkbench.Interop
         {
             Func<string, string> func = (string x) => Path.Combine(MyFileSystem.ExePath, x);
             IlCompiler.Options = new CompilerParameters(new string[]
-	        {
-			    func("SpaceEngineers.ObjectBuilders.dll"),
-			    func("SpaceEngineers.Game.dll"),
-			    func("Sandbox.Game.dll"),
-			    func("Sandbox.Common.dll"),
-			    func("Sandbox.Graphics.dll"),
-			    func("VRage.dll"),
-			    func("VRage.Library.dll"),
-			    func("VRage.Math.dll"),
-			    func("VRage.Game.dll"),
-			    "System.Core.dll",
-			    "System.Xml.dll",
-			    "System.dll"
-	        });
+            {
+                func("SpaceEngineers.ObjectBuilders.dll"),
+                func("SpaceEngineers.Game.dll"),
+                func("Sandbox.Game.dll"),
+                func("Sandbox.Common.dll"),
+                func("Sandbox.Graphics.dll"),
+                func("VRage.dll"),
+                func("VRage.Library.dll"),
+                func("VRage.Math.dll"),
+                func("VRage.Game.dll"),
+                "System.Core.dll",
+                "System.Xml.dll",
+                "System.dll"
+            });
             IlCompiler.Options.GenerateInMemory = true;
             IlCompiler.Options.CompilerOptions = String.Format("/debug {0}", IlCompiler.Options.CompilerOptions);
         }
