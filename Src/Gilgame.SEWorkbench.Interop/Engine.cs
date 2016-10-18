@@ -70,6 +70,7 @@ namespace Gilgame.SEWorkbench.Interop
                     "VRage.Library.dll",
                     "VRage.Math.dll",
                     "VRage.Native.dll",
+                    "VRage.Render.dll",
                     "SpaceEngineers.Game.dll",
                     "SpaceEngineers.ObjectBuilders.dll",
                     "SpaceEngineers.ObjectBuilders.XmlSerializers.dll",
@@ -121,7 +122,19 @@ namespace Gilgame.SEWorkbench.Interop
             MyPlugins.RegisterGameObjectBuildersAssemblyFile("SpaceEngineers.ObjectBuilders.dll");
             MyPlugins.RegisterSandboxAssemblyFile("Sandbox.Common.dll");
             MyPlugins.RegisterSandboxGameAssemblyFile("Sandbox.Game.dll");
+#if DEBUG
+            try
+            {
+                MyPlugins.Load();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                MyLog.Default.WriteLine(ex);
+                throw;
+            }
+#else
             MyPlugins.Load();
+#endif
 
             // No longer at available.
             //MyObjectBuilderType.RegisterAssemblies();
