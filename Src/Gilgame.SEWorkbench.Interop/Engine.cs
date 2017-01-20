@@ -1,10 +1,10 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
 using ParallelTasks;
 using Sandbox.Common.ObjectBuilders;
 using Sandbox.Common.ObjectBuilders.Definitions;
@@ -38,13 +38,12 @@ using VRageMath;
 
 namespace Gilgame.SEWorkbench.Interop
 {
-    public class Engine
+    public static class Engine
     {
-        public static List<string> Dependencies
+        private static ReadOnlyCollection<string> _dependencies;
+        static Engine()
         {
-            get
-            {
-                List<string> assemblies = new List<string>()
+            var assemblies = new List<string>()
                 {
                     "HavokWrapper.dll",
                     "InfinarioSDK.dll",
@@ -56,7 +55,7 @@ namespace Gilgame.SEWorkbench.Interop
                     "SharpDX.DirectInput.dll",
                     "SharpDX.dll",
                     "SharpDX.DXGI.dll",
-                    "SharpDX.Toolkit.dll",
+                    //"SharpDX.Toolkit.dll",
                     //"SharpDX.Toolkit.Graphics.dll",
                     "SharpDX.XAudio2.dll",
                     "SteamSDK.dll",
@@ -75,9 +74,12 @@ namespace Gilgame.SEWorkbench.Interop
                     "SpaceEngineers.ObjectBuilders.dll",
                     "SpaceEngineers.ObjectBuilders.XmlSerializers.dll",
                 };
-                return assemblies;
-            }
+            _dependencies = assemblies.AsReadOnly();
         }
+
+
+        public static IList<string> Dependencies { get { return _dependencies; } }
+
 
         private static bool _Initialized = false;
         public static bool Initialized
