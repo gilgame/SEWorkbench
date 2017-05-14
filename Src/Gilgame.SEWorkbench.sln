@@ -28,10 +28,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gilgame.SEWorkbench.Interop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.Decompiler", "ICSharpCode.Decompiler\ICSharpCode.Decompiler.csproj", "{984CC812-9470-4A13-AFF9-CC44068D666C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xceed.Wpf.AvalonDock.Themes.VS2010", "Xceed.Wpf.AvalonDock.Themes.VS2010\Xceed.Wpf.AvalonDock.Themes.VS2010.csproj", "{B3FC3E21-5F2D-4581-AEA2-59F671CFFC21}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xceed.Wpf.AvalonDock", "Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj", "{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -58,14 +54,6 @@ Global
 		{984CC812-9470-4A13-AFF9-CC44068D666C}.Debug|x64.Build.0 = Debug|x64
 		{984CC812-9470-4A13-AFF9-CC44068D666C}.Release|x64.ActiveCfg = Release|x64
 		{984CC812-9470-4A13-AFF9-CC44068D666C}.Release|x64.Build.0 = Release|x64
-		{B3FC3E21-5F2D-4581-AEA2-59F671CFFC21}.Debug|x64.ActiveCfg = Debug|x64
-		{B3FC3E21-5F2D-4581-AEA2-59F671CFFC21}.Debug|x64.Build.0 = Debug|x64
-		{B3FC3E21-5F2D-4581-AEA2-59F671CFFC21}.Release|x64.ActiveCfg = Release|x64
-		{B3FC3E21-5F2D-4581-AEA2-59F671CFFC21}.Release|x64.Build.0 = Release|x64
-		{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}.Debug|x64.ActiveCfg = Debug|x64
-		{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}.Debug|x64.Build.0 = Debug|x64
-		{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}.Release|x64.ActiveCfg = Release|x64
-		{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
