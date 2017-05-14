@@ -555,6 +555,8 @@ namespace Gilgame.SEWorkbench.ViewModels
                 try { page = Editor.Items.Where(i => i.Filename == item.Filename).Single(); } catch { /* if we're here the page is closed */ }
                 if (page != null)
                 {
+                    if (item.Line <= 0 || item.Line > page.Content.Document.LineCount)
+                        return false;
                     DocumentLine line = page.Content.Document.GetLineByNumber(item.Line);
                     page.Content.Select(line.Offset, line.Length);
                     page.Content.TextArea.Caret.BringCaretToView();

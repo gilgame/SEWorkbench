@@ -27,13 +27,14 @@ namespace ICSharpCode.CodeCompletion
                 typeof(object).Assembly, // mscorlib
                 typeof(Uri).Assembly, // System.dll
                 typeof(Enumerable).Assembly, // System.Core.dll
-			    typeof(System.Xml.XmlDocument).Assembly, // System.Xml.dll
+                typeof(System.Xml.XmlDocument).Assembly, // System.Xml.dll
                 typeof(Sandbox.Common.ObjectBuilders.MyObjectBuilder_AdvancedDoor).Assembly, // SpaceEngineers.ObjectBuilders.dll
                 typeof(SpaceEngineers.Game.ModAPI.IMyButtonPanel).Assembly, // SpaceEngineers.Game.dll
                 typeof(Sandbox.MySandboxGame).Assembly, // Sandbox.Game.dll
                 typeof(Sandbox.ModAPI.MyAPIGateway).Assembly, // Sandbox.Common.dll
                 typeof(Sandbox.Graphics.GUI.MyGuiSandbox).Assembly, // Sandbox.Graphics.dll
-                typeof(VRage.MyModelData).Assembly, // VRage.dll
+                //typeof(VRage.MyModelData).Assembly, // VRage.dll
+                typeof(VRage.MyCommand).Assembly, // VRage.dll
                 typeof(VRage.Exceptions).Assembly, // VRage.Library.dll
                 typeof(VRageMath.MathHelper).Assembly, // VRage.Math
                 typeof(VRage.Game.ObjectBuilders.MyObjectBuilder_EntityStat).Assembly, //VRage.Game
