@@ -1,3 +1,5 @@
+This project is currently inactive. I stopped working on it temporarily because Keen kept changing up their code base, breaking SE Workbench and forcing me to reverse engineer their changes each week. I haven't had the time to pick it back up and see if Keen has settled on a design pattern. Interest in SE workbench wasn't very big to begin with, but if someone would like to take over, you're welcome to do so.
+
 Space Engineers Workbench
 =================================
 SE Workbench is a development environment designed to help facilitate the creation and organization of in-game scripts, out of game. The focus of this project is to provide most of the tools one would expect from a development platform without the hassle of configuring Visual Studio. The goal is to overcome technical hurdles and make scripting in Space Engineers something anyone can begin learning to do, regardless of their background or experience.
